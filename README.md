@@ -1,5 +1,7 @@
-Modular Force Field System V2 is a Minecraft Mod and part of the [FTB Modpack](http://feed-the-beast.com/#download_wrapper).
+ModularForceFieldSystem V2 is a Minecraft Mod
 
- Developed by Thunderdark, Matchlighter
+ Developed By Thunderdark,Matchlighter
+
+ NEI Plugin: mistaqur
  
  Bughunter: Lightone
