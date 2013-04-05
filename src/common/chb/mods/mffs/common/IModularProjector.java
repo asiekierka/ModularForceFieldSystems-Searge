@@ -22,6 +22,8 @@ package chb.mods.mffs.common;
 
 import java.util.Set;
 
+import chb.mods.mffs.api.PointXYZ;
+
 import net.minecraft.src.IInventory;
 import net.minecraft.src.World;
 

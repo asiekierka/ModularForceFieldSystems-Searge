@@ -18,8 +18,10 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.multitool;
 
+import railcraft.common.api.core.items.ICrowbar;
+import buildcraft.api.tools.IToolWrench;
 import ic2.api.IWrenchable;
 import net.minecraft.src.Block;
 import net.minecraft.src.EntityItem;
@@ -28,10 +30,17 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import chb.mods.mffs.api.IMFFS_Wrench;
+import chb.mods.mffs.common.ForceEnergyItems;
+import chb.mods.mffs.common.Functions;
+import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.TileEntityAdvSecurityStation;
+import chb.mods.mffs.common.TileEntityAreaDefenseStation;
+import chb.mods.mffs.common.TileEntityMachines;
+import chb.mods.mffs.common.TileEntityProjector;
 
-public class ItemWrench extends ItemMultitool  {
+public class ItemWrench extends ItemMultitool implements IToolWrench,ICrowbar  {
 	
-	protected ItemWrench(int id) {
+	public ItemWrench(int id) {
 		super(id, 0);
 	}
 
@@ -53,9 +62,9 @@ public class ItemWrench extends ItemMultitool  {
 			if(((TileEntityProjector)tileentity).isBurnout())
 			{
 			
-				if(ForceEnergyItems.use(stack, 10000, false,player))
+				if(this.consumePower(stack, 10000, true))
 				{
-					ForceEnergyItems.use(stack, 10000, true,player);
+					this.consumePower(stack, 10000, false);
 					((TileEntityProjector)tileentity).setBurnedOut(false);
 					Functions.ChattoPlayer(player,"[MultiTool] Projector repaired");
 					return true;
@@ -71,14 +80,14 @@ public class ItemWrench extends ItemMultitool  {
 		
 		if(tileentity instanceof IWrenchable && !(tileentity instanceof IMFFS_Wrench))
 		{
-			if(ForceEnergyItems.use(stack, 1000, false,player))
+			if(this.consumePower(stack, 1000, true))
 			{
 				
 				if(((IWrenchable)tileentity).wrenchCanSetFacing(player, side))
 				{
 					
 					((IWrenchable)tileentity).setFacing((short) side);
-					ForceEnergyItems.use(stack, 1000, true,player);
+					this.consumePower(stack, 1000, false);
 					return true;
 					
 				}
@@ -100,11 +109,9 @@ public class ItemWrench extends ItemMultitool  {
 		{
 		
 			
-			if(ForceEnergyItems.use(stack, 1000, false,player))
+			if(this.consumePower(stack, 1000, true))
 			{
-				
-		
-			
+
 			if(((IMFFS_Wrench)tileentity).wrenchCanManipulate(player, side))
 			{
 		
@@ -138,7 +145,7 @@ public class ItemWrench extends ItemMultitool  {
 
 
 					((IMFFS_Wrench)tileentity).setSide( side);
-					ForceEnergyItems.use(stack, 1000, true,player);
+					this.consumePower(stack, 1000, false);
 					return true;
 				}else{
 					
@@ -161,16 +168,25 @@ public class ItemWrench extends ItemMultitool  {
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
 		
-		
-		if(entityplayer.isSneaking())
+		return super.onItemRightClick(itemstack, world, entityplayer);
+	}
+
+
+
+	@Override
+	public boolean canWrench(EntityPlayer player, int x, int y, int z) {
+		if(this.consumePower(player.inventory.getCurrentItem(), 1000, true))
 		{
-			int powerleft = this.getForceEnergy(itemstack);
-			ItemStack hand = entityplayer.inventory.getCurrentItem();
-			hand= new ItemStack(ModularForceFieldSystem.MFFSitemSwitch, 1);
-			ForceEnergyItems.charge(hand, powerleft,entityplayer);
-		return hand;
+			return true;
 		}
-		return itemstack;
+		return false;
+	}
+
+
+
+	@Override
+	public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
+		this.consumePower(player.inventory.getCurrentItem(), 1000, false);
 	}
 
 

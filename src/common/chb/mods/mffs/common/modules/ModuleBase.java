@@ -30,11 +30,12 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
+import chb.mods.mffs.api.PointXYZ;
+import chb.mods.mffs.api.security.SecurityRight;
 import chb.mods.mffs.common.ForceFieldTyps;
 import chb.mods.mffs.common.Functions;
 import chb.mods.mffs.common.IModularProjector;
 import chb.mods.mffs.common.ModularForceFieldSystem;
-import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.ProjectorTyp;
 import chb.mods.mffs.common.SecurityHelper;
 import chb.mods.mffs.common.TileEntityProjector;
@@ -86,7 +87,7 @@ public abstract class ModuleBase extends Item {
 
 		if (!world.isRemote) {
 			if (tileEntity instanceof IModularProjector) {
-				if(!SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
+				if(!SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,SecurityRight.EB))
 				{return false;}
 
 				if(((IModularProjector)tileEntity).getStackInSlot(1)==null)

@@ -32,7 +32,8 @@ public class GuiManuelScreen extends GuiContainer
 		super(par1Container);
 		generateIndex();
 		maxpage=pages.size()-1;
-		
+		xSize = 256;
+		ySize = 216;
 	}
 
     @Override
@@ -41,7 +42,7 @@ public class GuiManuelScreen extends GuiContainer
     	controlList.add(new GuiButton(0, (width / 2) +90, (height / 2) +80,22,16,"-->"));
     	controlList.add(new GuiButton(1,  (width / 2) -110, (height / 2) +80,22,16,"<--"));
 		super.initGui();
-
+		
     }
 
 	 @Override
@@ -73,10 +74,9 @@ public class GuiManuelScreen extends GuiContainer
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
     	
-    	fontRenderer.drawString("ModularForceFieldSystem Guide",   -20, -10, 0xFFFFFF);
-    	fontRenderer.drawString("Version:"+ Versioninfo.version(), -20, 0, 0xFFFFFF);
+    	fontRenderer.drawString("ModularForceFieldSystem Guide",   20, 15, 0xFFFFFF);
     	getcontent(page);
-    	fontRenderer.drawString("Page [" + this.page+"] :"+ pages.get(page) , 5, 168, 0xFFFFFF);
+    	fontRenderer.drawString("Page [" + this.page+"] :"+ pages.get(page) , 45, 193, 0xFFFFFF);
 	}
     
     
@@ -85,6 +85,7 @@ public class GuiManuelScreen extends GuiContainer
     	pages.clear();
     	pages.add("Table of Content");
     	pages.add("Changelog");
+    	pages.add("Version Check");
     	pages.add("Monazit/Forcicium/-Cell");
     }
     
@@ -93,40 +94,41 @@ public class GuiManuelScreen extends GuiContainer
     	switch(page)
     	{
     	case 0:
-    	 fontRenderer.drawString("Table of Content", 50, 20, 0xFFFFFF);	
-    	for(int p=0;p<pages.size();p++)	
-    	{
-    	 fontRenderer.drawString("["+p+"]: "+ pages.get(p), -20, 40+(p*10), 0xFFFFFF);		
-    	}
-    	break;
+    		fontRenderer.drawString("Table of Contents", 90, 45, 0xFFFFFF);	
+	    	for(int p=0;p<pages.size();p++)	
+	    	{
+	    		fontRenderer.drawString("["+p+"]: "+ pages.get(p), 20, 65+(p*10), 0xFFFFFF);		
+	    	}
+	    	break;
     	case 1:
-    	 fontRenderer.drawString("Changelog", 50, 20, 0xFFFFFF);
-         fontRenderer.drawString("add MFFS MultiTool <Guide> (in progress) ", -20, 40, 0xFFFFFF);
-    	 fontRenderer.drawString("Projector Camo System add Mod Blocks", -20, 60, 0xFFFFFF);
-    	 fontRenderer.drawString("fix ForceField Typs bug", -20, 70, 0xFFFFFF);
-       	 fontRenderer.drawString("(graphic errors possible if not supportet)", -20, 80, 0xFFFFFF);
-       	 
-    	 fontRenderer.drawString("update UE API to 1.2.0", -20, 100, 0xFFFFFF);
+    	 fontRenderer.drawString("Changelog", 90, 45, 0xFFFFFF);
+         fontRenderer.drawString("add Projector Typ <diagonallywall> ", 20, 65, 0xFFFFFF);
+         fontRenderer.drawString("add Version Check to Guild ", 20, 75, 0xFFFFFF);
+
     	break;	
-	case 2:
+    case 2:
+    	fontRenderer.drawString("Versions Check", 90, 45, 0xFFFFFF);
+       	fontRenderer.drawString("Current Version: "+ Versioninfo.curentversion(), 20, 65, 0xFFFFFF);
+       	fontRenderer.drawString("Newest Version : "+ Versioninfo.newestversion(),20, 75, 0xFFFFFF);
+      	break;
+	case 3:
 		RenderItem renderItem = new RenderItem();
-        RenderHelper.enableGUIStandardItemLighting();
-        renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(ModularForceFieldSystem.MFFSMonazitOre), -10, 20);
-        renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(ModularForceFieldSystem.MFFSitemForcicium), -10, 40);
-        renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(ModularForceFieldSystem.MFFSitemForcicumCell), -10, 60);
-        RenderHelper.disableStandardItemLighting();
+        renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(ModularForceFieldSystem.MFFSMonazitOre), 30, 45);
+        renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(ModularForceFieldSystem.MFFSitemForcicium), 30, 65);
+        renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine, new ItemStack(ModularForceFieldSystem.MFFSitemForcicumCell), 30, 85);
+
 		
-        fontRenderer.drawString("Monazit Ore (Block/WorldGen)", 20, 25, 0xFFFFFF);
-        fontRenderer.drawString("Forcicium (Item/for Crafting)", 20, 45, 0xFFFFFF);
-        fontRenderer.drawString("Forcicium Cell (Item/from Crafting)", 20, 65, 0xFFFFFF);
+        fontRenderer.drawString("Monazit Ore (Block/WorldGen)", 60, 50, 0xFFFFFF);
+        fontRenderer.drawString("Forcicium (Item/for Crafting)", 60, 70, 0xFFFFFF);
+        fontRenderer.drawString("Forcicium Cell (Item/from Crafting)", 60, 90, 0xFFFFFF);
    		
-        fontRenderer.drawString("Monazite can be found between 80 and 0", -20, 80, 0xFFFFFF);
-        fontRenderer.drawString("Use furnace to get 4 Forcicium", -20, 90, 0xFFFFFF);
-        fontRenderer.drawString("Use IC Macerator to get 8 Forcicium", -20, 100, 0xFFFFFF);
-        fontRenderer.drawString("Forcicium Cell can store 1kForcicium", -20, 110, 0xFFFFFF);
-        fontRenderer.drawString("if in hand right click to activate", -20, 120, 0xFFFFFF);
-        fontRenderer.drawString("when active remove Forcicium from  ", -20, 130, 0xFFFFFF);
-        fontRenderer.drawString("Player Inventory and stores it", -20, 140, 0xFFFFFF);
+        fontRenderer.drawString("Monazite can be found between 80 and 0", 20, 105, 0xFFFFFF);
+        fontRenderer.drawString("Use furnace to get 4 Forcicium", 20, 115, 0xFFFFFF);
+        fontRenderer.drawString("Use IC Macerator to get 8 Forcicium", 20, 125, 0xFFFFFF);
+        fontRenderer.drawString("Forcicium Cell can store 1kForcicium", 20, 135, 0xFFFFFF);
+        fontRenderer.drawString("if in hand right click to activate", 20, 145, 0xFFFFFF);
+        fontRenderer.drawString("when active remove Forcicium from  ", 20, 155, 0xFFFFFF);
+        fontRenderer.drawString("Player Inventory and stores it", 20, 165, 0xFFFFFF);
    	break;	
    	}
     }

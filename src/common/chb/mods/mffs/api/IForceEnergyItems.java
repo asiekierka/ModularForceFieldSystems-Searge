@@ -1,17 +1,21 @@
 package chb.mods.mffs.api;
 
+import chb.mods.mffs.common.TileEntityMachines;
 import net.minecraft.src.ItemStack;
 
 public interface IForceEnergyItems {
+		
+	public int getAvailablePower(ItemStack itemStack);
 	
-	int getforceEnergyTransferMax();
+	public int getMaximumPower(ItemStack itemStack);
+	
+	public boolean consumePower(ItemStack itemStack, int powerAmount,boolean simulation);
+	
+	public void setAvailablePower(ItemStack itemStack, int amount);
 
-	int getItemDamage(ItemStack itemStack);
+	public int getPowerTransferrate();
 
-	int getMaxForceEnergy();
-
-	void setForceEnergy(ItemStack itemStack, int ForceEnergy);
-
-	int getForceEnergy(ItemStack itemstack);
+	public int getItemDamage(ItemStack stackInSlot);
+	
 	
 }

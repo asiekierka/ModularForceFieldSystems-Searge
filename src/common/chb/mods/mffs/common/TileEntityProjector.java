@@ -48,6 +48,9 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
+import chb.mods.mffs.api.IPowerLinkItem;
+import chb.mods.mffs.api.ISwitchabel;
+import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.IModularProjector.Slots;
 import chb.mods.mffs.common.modules.Module3DBase;
 import chb.mods.mffs.common.modules.ModuleBase;
@@ -137,7 +140,25 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	   this.SwitchTyp = a;
 	}
 
+	@Override
+	public boolean isSwitchabel() {
+		if(SwitchTyp==1)
+			return true;
+		return false;
+	}
 
+	@Override
+	public boolean getSwitchstate() {
+		return OnOffSwitch;
+	}
+
+	@Override
+	public void toogleSwitchstate() {
+		if(OnOffSwitch){
+			OnOffSwitch=false;
+		}else{ OnOffSwitch =true;}
+	}
+	
 	public int getaccesstyp() {
 		return accesstyp;
 	}
@@ -381,9 +402,7 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 		
 
 		if (getStackInSlot(11) != null) {
-			
-	
-			
+
 			if(getStackInSlot(11).itemID <4095){
 
 		    String ForcefieldTexturtemp ="180/180/180/180/180/180";
@@ -422,8 +441,10 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 
 		
 		}else {
-			if(!ForceFieldTexturids.equalsIgnoreCase("-76/-76/-76/-76/-76/-76"))
+			if(!ForceFieldTexturids.equalsIgnoreCase("-76/-76/-76/-76/-76/-76") || this.getForcefieldCamoblockid()!=-1)
 			{
+				this.setForcefieldCamoblockmeta(0);
+				this.setForcefieldCamoblockid(-1);
 				this.setForceFieldTexturID("-76/-76/-76/-76/-76/-76");
 				this.setForceFieldTexturfile("/terrain.png");
 				UpdateForcefieldTexttur();
@@ -526,6 +547,10 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 				this.setCreate(false);
 			}
 		
+			
+			
+			
+			
 			
 			TileEntityCapacitor cap = getLinkedCapacitor();
 			
@@ -945,8 +970,9 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	}
 
 	@Override
-	public void onNetworkHandlerEvent(String event) {
+	public void onNetworkHandlerEvent(int key,String event) {
 		
+		if(this.isActive()) return;
 		
 		switch(Integer.parseInt(event))
 		   {
@@ -1004,7 +1030,7 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
 		
 		if(Slot == 1 &&  par1ItemStack.getItem() instanceof ModuleBase)return true;
-		if(Slot==0 && par1ItemStack.getItem() instanceof ItemCardPowerLink)return true;
+		if(Slot==0 && par1ItemStack.getItem() instanceof IPowerLinkItem)return true;
 		if(Slot == 11 && par1ItemStack.itemID < 4096  && this.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage))return true;
 		if(Slot==12 && par1ItemStack.getItem() instanceof ItemCardSecurityLink)return true;	
 		
@@ -1153,7 +1179,7 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 
 		return ret;
 	}
-	
+
 
 	
 }

@@ -20,6 +20,8 @@
 
 package chb.mods.mffs.common;
 
+import chb.mods.mffs.api.PointXYZ;
+import chb.mods.mffs.api.security.SecurityRight;
 import net.minecraft.src.Block;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
@@ -59,7 +61,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 	
 			if(((TileEntityAdvSecurityStation)tileEntity).isActive()){
 				
-			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"CSR")) {
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,SecurityRight.CSR)) {
 	
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSItemSecLinkCard);
 				
@@ -86,7 +88,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 		if (tileEntity instanceof TileEntityCapacitor) {
 			
 			
-			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB")) {
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,SecurityRight.EB)) {
 				  				  
 				ItemStack newcard = new ItemStack(ModularForceFieldSystem.MFFSitemfc);
 				((ItemCardPowerLink)newcard.getItem()).setInformation(newcard, new PointXYZ(i,j,k,world),"CapacitorID",((TileEntityCapacitor)tileEntity).getCapacitor_ID());

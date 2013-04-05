@@ -25,6 +25,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
 
+import chb.mods.mffs.api.PointXYZ;
+
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
@@ -165,7 +167,7 @@ public final class Linkgrid {
 			
 			
 			for (TileEntityAreaDefenseStation tileentity : DefStation.values()) {
-				if (tileentity.getLinkCapacitor_ID() == Cap.getCapacitor_ID()) {
+				if (tileentity.getPowerSourceID() == Cap.getCapacitor_ID()) {
 					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
 						counter++;
 					}
@@ -181,7 +183,7 @@ public final class Linkgrid {
 			}
 			
 			for (TileEntityConverter tileentity : Converter.values()) {
-				if (tileentity.getLinkCapacitor_ID() == Cap.getCapacitor_ID()) {
+				if (tileentity.getPowerSourceID() == Cap.getCapacitor_ID()) {
 					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
 						counter++;
 					}

@@ -103,14 +103,15 @@ public void onPacketData(INetworkManager manager,Packet250CustomPayload packet, 
 	
 	case 3:
 		int dimension2 = dat.readInt() ;
-		String evt = dat.readUTF();
+		int key = dat.readInt() ;
+		String value = dat.readUTF();
 		
 		World serverworld2 = DimensionManager.getWorld(dimension2);
 		TileEntity servertileEntity2 = serverworld2.getBlockTileEntity(x, y, z);
 		
 		if(servertileEntity2 instanceof INetworkHandlerEventListener)
 		{
-			((INetworkHandlerEventListener)servertileEntity2).onNetworkHandlerEvent(evt);
+			((INetworkHandlerEventListener)servertileEntity2).onNetworkHandlerEvent(key,value);
 			
 		}
 		

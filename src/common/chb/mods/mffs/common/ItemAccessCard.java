@@ -31,12 +31,13 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 
-public class ItemCardPersonalID extends Item{
-	public ItemCardPersonalID(int i) {
+public class ItemAccessCard extends Item{
+	public ItemAccessCard(int i) {
 		super(i);
-		setIconIndex(18);
+		setIconIndex(20);
 		setMaxStackSize(1);
 	}
+	
 	@Override
 	public String getTextureFile() {
 		return "/chb/mods/mffs/sprites/items.png";
@@ -69,46 +70,47 @@ public class ItemCardPersonalID extends Item{
     	rightsTag.setBoolean(sr.rightKey, value);
     	NBTTagCompoundHelper.getTAGfromItemstack(itemStack).setCompoundTag("rights", rightsTag);
     }
-		
-
-    public static  void setOwner(ItemStack itemStack, String username)
+    
+	
+    public static  void setforArea(ItemStack itemStack, TileEntityAdvSecurityStation sec)
     {
-       NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-       nbtTagCompound.setString("name", username);
+    	if(sec != null)
+    	{
+    	  NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+    	  nbtTagCompound.setString("Areaname", sec.getStationname());
+    	}
     }
 
 
-    public String getUsername(ItemStack itemstack)
+    public String getforAreaname(ItemStack itemstack)
     {
     	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
     	if(nbtTagCompound != null)
     	{
-    		return nbtTagCompound.getString("name") ;
+    		return nbtTagCompound.getString("Areaname") ;
     	}
-       return "nobody";
+       return "";
     }
+	
 
+	
     @Override
     public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
     {
-        String tooltip = String.format("Owner: %s ", NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getString("name") );
+        String tooltip = String.format("for Area: %s ", NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getString("Areaname") );
         info.add(tooltip);
         
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-//            NBTTagCompound rightsTag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getCompoundTag("rights");
+            NBTTagCompound rightsTag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getCompoundTag("rights");
             info.add("Rights:");
             for (SecurityRight sr : SecurityRight.rights.values()) {
-            	
-            	if (hasRight(itemStack,sr)){
-            		info.add("-" + sr.name);
-            	}
-            	
-//				if (rightsTag.getBoolean(sr.rightKey)){
-//					info.add("-" + sr.name);
-//				}
+				if (rightsTag.getBoolean(sr.rightKey)){
+					info.add("-" + sr.name);
+				}
 			}
         }else{
         	info.add("Rights: (Hold Shift)");
         }
     }
+
 }

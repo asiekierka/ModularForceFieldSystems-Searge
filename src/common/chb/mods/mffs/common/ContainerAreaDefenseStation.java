@@ -47,11 +47,11 @@ public class ContainerAreaDefenseStation extends Container {
 		defstation = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new SlotHelper(defstation, 0, -27, 2)); //Power Link
-		addSlotToContainer(new SlotHelper(defstation, 1, 57, 2)); //Security Link
+		addSlotToContainer(new SlotHelper(defstation, 0, 13, 27)); //Power Link
+		addSlotToContainer(new SlotHelper(defstation, 1, 97, 27)); //Security Link
 
-		addSlotToContainer(new SlotHelper(defstation, 2, -26, 26)); //Distance mod
-		addSlotToContainer(new SlotHelper(defstation, 3, -26, 63)); //Distance mod
+		addSlotToContainer(new SlotHelper(defstation, 2, 14, 51)); //Distance mod
+		addSlotToContainer(new SlotHelper(defstation, 3, 14, 88)); //Distance mod
 
 		int var3;
 		int var4;
@@ -60,7 +60,7 @@ public class ContainerAreaDefenseStation extends Container {
 		for (var3 = 0; var3 < 2; ++var3) {
 			for (var4 = 0; var4 < 4; ++var4) {
 				this.addSlotToContainer(new SlotHelper(defstation, (var4 + var3 * 4)+5,
-						136 + var4 * 18, 1 + var3 * 18));
+						176 + var4 * 18, 26 + var3 * 18));
 			}
 		}
 		
@@ -68,7 +68,7 @@ public class ContainerAreaDefenseStation extends Container {
 		for (var3 = 0; var3 < 5; ++var3) {
 			for (var4 = 0; var4 < 4; ++var4) {
 				this.addSlotToContainer(new SlotHelper(defstation, (var4 + var3 * 4)+15,
-						136 + var4 * 18, 73 + var3 * 18));
+						176 + var4 * 18, 98 + var3 * 18));
 			}
 		}
 		
@@ -77,12 +77,12 @@ public class ContainerAreaDefenseStation extends Container {
 		for (var3 = 0; var3 < 3; ++var3) {
 			for ( var4 = 0; var4 < 9; ++var4) {
 				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						-32 + var4 * 18, 109 + var3 * 18));
+						8 + var4 * 18, 134 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, -32 + var3 * 18, 167));
+			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 192));
 		}
 	}
 
@@ -96,52 +96,54 @@ public class ContainerAreaDefenseStation extends Container {
 
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
-
-
-            if(capacity != defstation.getCapacity())
-            	icrafting.sendProgressBarUpdate(this, 0, defstation.getCapacity());
             
 			if (SwitchTyp != defstation.getswitchtyp()) {
-				icrafting.sendProgressBarUpdate(this, 1,
+				icrafting.sendProgressBarUpdate(this, 0,
 						defstation.getswitchtyp());
 			}
 			if (contratyp != defstation.getcontratyp()) {
-				icrafting.sendProgressBarUpdate(this, 2,
+				icrafting.sendProgressBarUpdate(this, 1,
 						defstation.getcontratyp());
 			}
 			if (actionmode != defstation.getActionmode()) {
-				icrafting.sendProgressBarUpdate(this, 3,
+				icrafting.sendProgressBarUpdate(this, 2,
 						defstation.getActionmode());
 			}
 			if (scanmode != defstation.getScanmode()) {
-				icrafting.sendProgressBarUpdate(this, 4,
+				icrafting.sendProgressBarUpdate(this, 3,
 						defstation.getScanmode());
 			}
+			
+			if (capacity != defstation.getPercentageCapacity()) {
+				icrafting.sendProgressBarUpdate(this, 4,
+						defstation.getPercentageCapacity());
+			}
 		}
+		
 		scanmode = defstation.getScanmode();
 		actionmode = defstation.getActionmode();
 		contratyp = defstation.getcontratyp();
-		capacity = defstation.getCapacity();
 		SwitchTyp = defstation.getswitchtyp();
+		capacity = defstation.getPercentageCapacity();
 	}
 
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 
-        case 0:
-        	defstation.setCapacity(j);
-            break;
-		case 1:
+		case 0:
 			defstation.setswitchtyp(j);
 			break;
-		case 2:
+		case 1:
 			defstation.setcontratyp(j);
 			break;
-		case 3:
+		case 2:
 			defstation.setActionmode(j);
 			break;
-		case 4:
+		case 3:
 			defstation.setScanmode(j);
+			break;
+		case 4:
+			defstation.setCapacity(j);
 			break;
 		}
 	}
@@ -149,24 +151,5 @@ public class ContainerAreaDefenseStation extends Container {
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return defstation.isUseableByPlayer(entityplayer);
 	}
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
-		ItemStack itemstack = null;
-		Slot slot = (Slot) inventorySlots.get(i);
-		if (slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
-			if (itemstack1.stackSize == 0) {
-				slot.putStack(null);
-			} else {
-				slot.onSlotChanged();
-			}
-			if (itemstack1.stackSize != itemstack.stackSize) {
-				slot.onSlotChanged();
-			} else {
-				return null;
-			}
-		}
-		return itemstack;
-	}
+
 }

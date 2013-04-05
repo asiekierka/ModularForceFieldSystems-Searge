@@ -18,7 +18,7 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.multitool;
 
 import java.util.Arrays;
 
@@ -29,12 +29,14 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import chb.mods.mffs.api.ForcefieldProtected;
 import chb.mods.mffs.api.IForceEnergyItems;
+import chb.mods.mffs.common.TileEntityForceField;
+import chb.mods.mffs.common.TileEntityProjector;
 
 public class ItemDebugger extends  ItemMultitool  {
 	protected StringBuffer info = new StringBuffer();
 
 	public ItemDebugger(int i) {
-		super(i,3);
+		super(i,3, false);
 	}
 
 	

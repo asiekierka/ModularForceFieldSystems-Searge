@@ -23,6 +23,8 @@ package chb.mods.mffs.common;
 import java.util.List;
 import java.util.Map;
 
+import chb.mods.mffs.api.security.SecurityRight;
+
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.DamageSource;
 import net.minecraft.src.EntityGhast;
@@ -67,7 +69,7 @@ public final class ForceFieldOptions {
 			 if(entityplayer != null)
 			 {
 				
-			    	 if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world, "RPB",true))
+			    	 if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world, SecurityRight.RPB,true))
 			    	 { 
 			         return true;
 			    	 }

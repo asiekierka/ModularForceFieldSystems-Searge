@@ -3,7 +3,7 @@
   "modid": "ModularForceFieldSystem",
   "name": "Modular ForceField System V2",
   "description": "This is a complete re-write of my Modular Force Field System Mod.I changed the whole concept to an item upgrade system (like the IC2 Overclockers, Storage Upgrades, and Transformer Upgrades) instead of multiple blocks.",
-  "version": "2.2.8.1.17c",
+  "version": "2.2.8.2.1a",
   "mcversion": "1.4.5",
   "url": "http://forum.industrial-craft.net/index.php?page=Thread&postID=8063#post8063",
   "updateUrl": "",

@@ -21,16 +21,14 @@
 
  */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.api;
 
 public interface ISwitchabel {
 
+    public boolean isSwitchabel();
+    
+    public boolean getSwitchstate();
+    
+    public void toogleSwitchstate();
 
-	public void setswitchtyp(int i);
-	 
-	public int getswitchtyp();
-	
-	public boolean getOnOffSwitch();
-	
-	public void setOnOffSwitch(boolean b);
 }

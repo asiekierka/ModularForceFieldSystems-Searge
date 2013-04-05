@@ -16,36 +16,47 @@
     
     Contributors:
     Thunderdark - initial implementation
+    Matchlighter 
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.multitool;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import chb.mods.mffs.api.IForceEnergyItems;
+import chb.mods.mffs.common.ForceEnergyItems;
+import chb.mods.mffs.common.ItemMFFSBase;
+import chb.mods.mffs.common.NBTTagCompoundHelper;
+import cpw.mods.fml.common.Side;
+import cpw.mods.fml.common.asm.SideOnly;
 
 
-public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEnergyItems{
+public abstract class ItemMultitool extends  ForceEnergyItems  implements IForceEnergyItems{
 	private int typ;
 
-	protected ItemMultitool(int id,int typ) {
+	protected ItemMultitool(int id, int typ, boolean addToList) {
 		super(id);
 		this.typ = typ;
 		setIconIndex(typ);
 		setMaxStackSize(1);
 		setMaxDamage(100);
+		if (addToList)
+			MTTypes.add(this);
+	}
+	
+	protected ItemMultitool(int id, int typ) {
+		this(id, typ, true);
 	}
 
+	private static List<ItemMultitool> MTTypes = new ArrayList<ItemMultitool>();
+	
 	@Override
 	public String getTextureFile() {
 		return "/chb/mods/mffs/sprites/items.png";
@@ -68,29 +79,29 @@ public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEner
 	public abstract boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ);
 
 	@Override
-	public abstract ItemStack onItemRightClick(ItemStack itemstack, World world,
-			EntityPlayer entityplayer);
+	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer){
+		if (entityplayer.isSneaking()){
+			int modeNum = 0;
+			for (int i = 0; i < MTTypes.size(); i++) {
+				ItemMultitool MT = MTTypes.get(i);
+				if (MT.shiftedIndex == itemstack.getItem().shiftedIndex){
+					if (i+1 < MTTypes.size())
+						modeNum=i+1;
+					else
+						modeNum=0;
+				}
+			}
+			
+			int powerleft = getAvailablePower(itemstack);
+			ItemStack hand = entityplayer.inventory.getCurrentItem();
+			hand= new ItemStack(MTTypes.get(modeNum), 1);
+			this.chargeItem(hand, powerleft);
+			return hand;
+		}
+		return itemstack;
+	}
 	
-	@Override
-    public   void setForceEnergy(ItemStack itemStack, int  ForceEnergy)
-    {
-       
-       NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-       nbtTagCompound.setInteger("ForceEnergy", ForceEnergy);
 
-    }
-
-    @Override
-    public  int getForceEnergy(ItemStack itemstack)
-    {
-   
-    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
-    	if(nbtTagCompound != null)
-    	{
-    		return nbtTagCompound.getInteger("ForceEnergy");
-    	}
-       return 0;
-    }
 		
 	    
 	    @Override
@@ -103,18 +114,18 @@ public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEner
 	    @Override
 	    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
 	    {
-	        String tooltip = String.format( "%d FE/%d FE ",getForceEnergy(itemStack),getMaxForceEnergy());
+	        String tooltip = String.format( "%d FE/%d FE ",getAvailablePower(itemStack),getMaximumPower(itemStack));
 	        info.add(tooltip);
 	    }
 	    
 		@Override
-		public int getforceEnergyTransferMax() {
+		public int getPowerTransferrate() {
 			
 			return 50000;
 		}
 		
 		@Override
-		public  int getMaxForceEnergy() {
+		public  int getMaximumPower(ItemStack itemStack) {
 			
 			return 1000000;
 		}
@@ -124,7 +135,7 @@ public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEner
 		@Override
 		public int getItemDamage(ItemStack itemStack)
 		{
-			return 101-((getForceEnergy(itemStack)*100)/getMaxForceEnergy());
+			return 101-((getAvailablePower(itemStack)*100)/getMaximumPower(itemStack));
 			
 
 		}
@@ -134,7 +145,7 @@ public abstract class ItemMultitool extends  ItemMFFSBase  implements IForceEner
 		{
 			ItemStack charged = new ItemStack(this, 1);
 			charged.setItemDamage(1);
-			setForceEnergy(charged, getMaxForceEnergy());
+			setAvailablePower(charged, getMaximumPower(null));
 			itemList.add(charged);
 		}
 }

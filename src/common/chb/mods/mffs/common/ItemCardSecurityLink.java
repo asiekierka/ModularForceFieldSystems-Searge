@@ -22,6 +22,9 @@ package chb.mods.mffs.common;
 
 import java.util.List;
 
+import chb.mods.mffs.api.PointXYZ;
+import chb.mods.mffs.api.security.SecurityRight;
+
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -94,7 +97,7 @@ public class ItemCardSecurityLink extends ItemCard  {
 			if (tileEntity instanceof TileEntityCapacitor) {
 
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
-						world, "EB")) {
+						world, SecurityRight.EB)) {
 
 					return Functions.setIteminSlot(itemstack, entityplayer,
 							tileEntity, 4, "<Security Station Link>");
@@ -104,7 +107,7 @@ public class ItemCardSecurityLink extends ItemCard  {
 
 			if (tileEntity instanceof TileEntityAreaDefenseStation) {
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
-						world, "EB")) {
+						world, SecurityRight.EB)) {
 
 					return Functions.setIteminSlot(itemstack, entityplayer,
 							tileEntity, 1, "<Security Station Link>");
@@ -113,7 +116,7 @@ public class ItemCardSecurityLink extends ItemCard  {
 			
 			if (tileEntity instanceof TileEntitySecStorage) {
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
-						world, "EB")) {
+						world, SecurityRight.EB)) {
 
 					return Functions.setIteminSlot(itemstack, entityplayer,
 							tileEntity, 0, "<Security Station Link>");
@@ -123,7 +126,7 @@ public class ItemCardSecurityLink extends ItemCard  {
 
 			if (tileEntity instanceof TileEntityProjector) {
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
-						world, "EB")) {
+						world, SecurityRight.EB)) {
 
 					return Functions.setIteminSlot(itemstack, entityplayer,
 							tileEntity, 12, "<Security Station Link>");

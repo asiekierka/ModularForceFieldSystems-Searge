@@ -34,7 +34,9 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 
+import chb.mods.mffs.api.security.SecurityRight;
 import chb.mods.mffs.common.modules.ModuleBase;
+import chb.mods.mffs.common.multitool.ItemMultitool;
 
 public abstract class BlockMFFSBase extends BlockContainer {
 	private int blockid;
@@ -81,13 +83,13 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		if(tileentity instanceof TileEntityAdvSecurityStation){
 			if(tileentity.isActive())
 			{
-				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"CSR"))
+				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,SecurityRight.CSR))
 				{return true;}
 			}
 		}
 			
 		
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
+		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,SecurityRight.EB))
 		{return true;}
 
 

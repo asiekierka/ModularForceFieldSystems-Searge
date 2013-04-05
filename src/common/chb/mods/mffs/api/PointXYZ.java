@@ -1,4 +1,3 @@
-
 /*  
     Copyright (C) 2012 Thunderdark
 
@@ -22,7 +21,8 @@
 
  */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.api;
+import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -33,43 +33,40 @@ public class PointXYZ {
 	public int Z = 0;
 	public int dimensionId;
 	
-
-	
 	public PointXYZ(int x, int y, int z) {
-		
-		X=x;
-		Y=y;
-		Z=z;
-		dimensionId = Integer.MAX_VALUE;
-		
+		this(x,y,z, Integer.MAX_VALUE);
 	}
 	
-	
 	public PointXYZ(int x, int y, int z, World worldObj) {
-		
-		X=x;
-		Y=y;
-		Z=z;
-		dimensionId =   worldObj.provider.dimensionId;
-		
+		this(x,y,z, worldObj.provider.dimensionId);
 	}
 	
 	public PointXYZ(int x, int y, int z, int  dimensionId) {
-		
 		X=x;
 		Y=y;
 		Z=z;
 		this.dimensionId = dimensionId;
-		
 	}
 	
+	public PointXYZ(NBTTagCompound nbt){
+		this(nbt.getInteger("x"), nbt.getInteger("y"), nbt.getInteger("z"), nbt.getInteger("dim"));
+	}
+	
+	public NBTTagCompound asNBT(){
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("x", X);
+		nbt.setInteger("y", Y);
+		nbt.setInteger("z", Z);
+		nbt.setInteger("dim", dimensionId);
+		return nbt;
+	}
+		
 	public World getPointWorld()
 	{
 		if(dimensionId!=Integer.MAX_VALUE)
 			return DimensionManager.getWorld(dimensionId);
 		return null;
 	}
-	
 	
 	public static double distance(PointXYZ png1, PointXYZ png2)
 	{
@@ -83,7 +80,19 @@ public class PointXYZ {
 		return Integer.MAX_VALUE;
 	}
 	
-
+	@Override
+	public boolean equals(Object pnt2){
+		if (pnt2 instanceof PointXYZ){
+			PointXYZ p = (PointXYZ)pnt2;
+			return (this.X==p.X && this.Y==p.Y && this.Z==p.Z && this.dimensionId==p.dimensionId);
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return ("X: " + X + " Y: " + Y + " Z: " + Z + "D: " + dimensionId).hashCode(); 
+	}
 	
 	@Override
 	public String toString(){

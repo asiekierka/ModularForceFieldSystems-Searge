@@ -22,8 +22,8 @@ package chb.mods.mffs.common.options;
 
 import java.util.List;
 
+import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.ModularForceFieldSystem;
-import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.TileEntityProjector;
 
 import net.minecraft.src.CreativeTabs;

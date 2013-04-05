@@ -23,6 +23,8 @@ package chb.mods.mffs.common;
 import java.util.EnumSet;
 import java.util.List;
 
+import chb.mods.mffs.api.PointXYZ;
+
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -53,31 +55,43 @@ public class ItemCard extends Item {
 		return false;
 		
 	}
+
 	
+	public boolean isvalid(ItemStack itemStack){
+		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+		if (tag.hasKey("valid"))
+			return tag.getBoolean("valid");
+		return false;
+	}
 	
-	
+	public void setinvalid(ItemStack itemStack){
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+		nbtTagCompound.setBoolean("valid", false);
+	}
+
 	@Override
 	public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b){
 		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
 		if (tag.hasKey("worldname"))
 			info.add("World: " + tag.getString("worldname"));
-		if (tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z"))
-			info.add("Coords: " + new PointXYZ(tag.getInteger("X"),tag.getInteger("Y"),tag.getInteger("Z"),0).toString());
-		if (tag.hasKey("DId"))
-			{info.add("valid: "+ tag.getBoolean("valid"));}else{info.add("valid: false");}
+		if (tag.hasKey("linkTarget"))
+			info.add("Coords: " + new PointXYZ(tag.getCompoundTag("linkTarget")).toString());
+		if (tag.hasKey("valid"))
+			info.add("valid: "+ tag.getBoolean("valid"));
+
 	}
+		
 	
 	public void setInformation(ItemStack itemStack,PointXYZ png, String key,int value){
-	
+		
+
 		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
 		
 		nbtTagCompound.setInteger(key, value);
 		nbtTagCompound.setString("worldname", DimensionManager.getWorld(png.dimensionId).getWorldInfo().getWorldName());
-		nbtTagCompound.setInteger("DId", png.dimensionId);
-		nbtTagCompound.setInteger("X", png.X);
-		nbtTagCompound.setInteger("Y", png.Y);
-		nbtTagCompound.setInteger("Z", png.Z);
+		nbtTagCompound.setTag("linkTarget", png.asNBT());
 		nbtTagCompound.setBoolean("valid", true);
+
 	}
 	
 	
@@ -86,28 +100,18 @@ public class ItemCard extends Item {
 		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
 		if (tag.hasKey(key))
 			return tag.getInteger(key);
-     return 0;
-		
+		return 0;
 	}
 	public PointXYZ getCardTargetPoint(ItemStack itemStack)
 	{
 		NBTTagCompound tag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-		if (tag.hasKey("DId") && tag.hasKey("X") && tag.hasKey("Y") && tag.hasKey("Z")){
-		    return new PointXYZ(tag.getInteger("X"),tag.getInteger("Y"),tag.getInteger("Z"),tag.getInteger("DId"));
+		if (tag.hasKey("linkTarget")){
+		    return new PointXYZ(tag.getCompoundTag("linkTarget"));
 		}else{
 			tag.setBoolean("valid", false);
 		}
 		
 		return null;
 	}
-	
-
-	
-	
-	
-
-
-	
-
 	
 }

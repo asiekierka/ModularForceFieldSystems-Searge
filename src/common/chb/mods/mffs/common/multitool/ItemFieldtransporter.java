@@ -18,8 +18,18 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.multitool;
 
+import chb.mods.mffs.api.security.SecurityRight;
+import chb.mods.mffs.common.ForceEnergyItems;
+import chb.mods.mffs.common.ForceFieldBlockStack;
+import chb.mods.mffs.common.Functions;
+import chb.mods.mffs.common.Linkgrid;
+import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.SecurityHelper;
+import chb.mods.mffs.common.TileEntityCapacitor;
+import chb.mods.mffs.common.TileEntityProjector;
+import chb.mods.mffs.common.WorldMap;
 import chb.mods.mffs.common.WorldMap.ForceFieldWorld;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
@@ -31,7 +41,7 @@ import net.minecraft.src.World;
 
 public class ItemFieldtransporter extends ItemMultitool{
 
-	protected ItemFieldtransporter(int id) {
+	public ItemFieldtransporter(int id) {
 	super(id, 4);
 	
 	}
@@ -73,10 +83,10 @@ public class ItemFieldtransporter extends ItemMultitool{
 			passtrue = true;
 			break;
 			case 2:
-				passtrue = SecurityHelper.isAccessGranted(generator, entityplayer, world,"FFB");
+				passtrue = SecurityHelper.isAccessGranted(generator, entityplayer, world,SecurityRight.FFB);
 			break;
 			case 3:
-				passtrue = SecurityHelper.isAccessGranted(projector, entityplayer, world,"FFB");
+				passtrue = SecurityHelper.isAccessGranted(projector, entityplayer, world,SecurityRight.FFB);
 			break;
 
 			}
@@ -150,9 +160,9 @@ public class ItemFieldtransporter extends ItemMultitool{
 							if(y-ymodi <=0){
 							Functions.ChattoPlayer(entityplayer,"[Field Security] Fail: transmission into Void not allowed ");
 							}else{
-								if(ForceEnergyItems.use(stack, ModularForceFieldSystem.forcefieldtransportcost,false,entityplayer))
+								if(this.consumePower(stack, ModularForceFieldSystem.forcefieldtransportcost,true))
 								{
-									ForceEnergyItems.use(stack, ModularForceFieldSystem.forcefieldtransportcost,true,entityplayer);
+									this.consumePower(stack, ModularForceFieldSystem.forcefieldtransportcost,false);
 									entityplayer.setPositionAndUpdate(x + 0.5, y-ymodi ,z + 0.5);
 								
 									Functions.ChattoPlayer(entityplayer,"[Field Security] Success: transmission complete");
@@ -185,16 +195,10 @@ return true;
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
-		if(entityplayer.isSneaking())
-		{
-			int powerleft = this.getForceEnergy(itemstack);
-			ItemStack hand = entityplayer.inventory.getCurrentItem();
-			hand= new ItemStack(ModularForceFieldSystem.MFFSitemManuelBook, 1);
-			ForceEnergyItems.charge(hand, powerleft,entityplayer);
-		return hand;
-		}
-		return itemstack;
 		
+		return super.onItemRightClick(itemstack, world, entityplayer);
+		
+
 	}
 
 }

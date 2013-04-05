@@ -1,5 +1,7 @@
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.multitool;
 
+import chb.mods.mffs.common.ForceEnergyItems;
+import chb.mods.mffs.common.ModularForceFieldSystem;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
@@ -24,11 +26,7 @@ public class ItemManuelBook extends ItemMultitool  {
 			EntityPlayer entityplayer) {
 		if(entityplayer.isSneaking())
 		{
-			int powerleft = this.getForceEnergy(itemstack);
-			ItemStack hand = entityplayer.inventory.getCurrentItem();
-			hand= new ItemStack(ModularForceFieldSystem.MFFSitemWrench, 1);
-			ForceEnergyItems.charge(hand, powerleft,entityplayer);
-		return hand;
+			return super.onItemRightClick(itemstack, world, entityplayer);
 		}
 		
 		

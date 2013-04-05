@@ -23,11 +23,6 @@ package chb.mods.mffs.common;
 import ic2.api.IWrenchable;
 
 import java.util.Random;
-
-import buildcraft.api.transport.IExtractionHandler;
-import buildcraft.api.transport.IPipe;
-import buildcraft.api.transport.PipeManager;
-
 import net.minecraft.src.Block;
 import net.minecraft.src.ChunkCoordIntPair;
 import net.minecraft.src.Container;
@@ -45,10 +40,12 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.ISidedInventory;
 import chb.mods.mffs.api.IMFFS_Wrench;
+import chb.mods.mffs.api.PointXYZ;
+import chb.mods.mffs.api.security.SecurityRight;
 import chb.mods.mffs.common.IModularProjector.Slots;
 import chb.mods.mffs.network.NetworkHandlerServer;
 
-public abstract class TileEntityMachines extends TileEntity implements ISidedInventory,IMFFS_Wrench,IWrenchable,IExtractionHandler{
+public abstract class TileEntityMachines extends TileEntity implements ISidedInventory,IMFFS_Wrench,IWrenchable{
 	private boolean active;
 	private int side;
 	private short ticker;
@@ -61,7 +58,6 @@ public abstract class TileEntityMachines extends TileEntity implements ISidedInv
 		side = -1;
 		ticker = 0;
 		
-		PipeManager.registerExtractionHandler(this);
 	}
 	
 	public PointXYZ getMaschinePoint()
@@ -110,7 +106,7 @@ public abstract class TileEntityMachines extends TileEntity implements ISidedInv
 
 	@Override
 	public boolean wrenchCanManipulate(EntityPlayer entityPlayer, int side) {
-		   if(!SecurityHelper.isAccessGranted(this, entityPlayer, worldObj,"EB"))
+		   if(!SecurityHelper.isAccessGranted(this, entityPlayer, worldObj,SecurityRight.EB))
 		   {return false;}
 
 		return true;
@@ -206,36 +202,9 @@ public abstract class TileEntityMachines extends TileEntity implements ISidedInv
 	@Override
     public void invalidate() {
     ForgeChunkManager.releaseTicket(chunkTicket);
-    PipeManager.extractionHandlers.remove(this);
     super.invalidate();
     }
 	
-	@Override
-	public  boolean canExtractItems(IPipe pipe, World world, int i, int j,int k){
-		
-	TileEntity tileentity =	world.getBlockTileEntity(i, j, k);
-	if(tileentity != null)
-	{
-		if(tileentity instanceof TileEntitySecStorage)
-		{
-		 if(((TileEntitySecStorage)tileentity).isActive())
-		 {
-			 return false;
-		 }
-			
-		}
-	}
-		
-		
-		
-		return true;
-	}
-	
-	@Override
-	public boolean canExtractLiquids(IPipe pipe, World world, int i, int j,int k) {
-	
-		return true;
-	}
 	
 	
 	public abstract boolean isItemValid(ItemStack par1ItemStack, int Slot);

@@ -23,6 +23,7 @@
 
 package chb.mods.mffs.common;
 
+import chb.mods.mffs.api.security.SecurityRight;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
@@ -33,15 +34,15 @@ public class SecurityHelper {
 	
 	
 	public static boolean isAccessGranted(TileEntity tileEntity,
-			EntityPlayer entityplayer, World world, String right) {
+			EntityPlayer entityplayer, World world, SecurityRight right) {
 		
-		return isAccessGranted( tileEntity,
-				 entityplayer,  world,  right,false);
+		return isAccessGranted(tileEntity,
+				 entityplayer, world, right,false);
 	}
 	
 	
 	public static boolean isAccessGranted(TileEntity tileEntity,
-			EntityPlayer entityplayer, World world, String right,boolean suppresswarning) {
+			EntityPlayer entityplayer, World world, SecurityRight right,boolean suppresswarning) {
 		
 		
 
@@ -86,7 +87,7 @@ public class SecurityHelper {
 
 		if (tileEntity instanceof TileEntityConverter) {
 			
-			TileEntityCapacitor cap = ((TileEntityConverter)tileEntity).getLinkedCapacitor();
+			TileEntityCapacitor cap =Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityConverter)tileEntity).getPowerSourceID());
 			if(cap != null)
 			{
 				TileEntityAdvSecurityStation sec = cap.getLinkedSecurityStation();

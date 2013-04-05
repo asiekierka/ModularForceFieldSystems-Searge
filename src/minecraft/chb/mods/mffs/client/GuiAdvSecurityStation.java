@@ -16,6 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
+    Matchlighter
 */
 
 package chb.mods.mffs.client;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.GuiContainer;
+import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.RenderHelper;
 import net.minecraft.src.Tessellator;
@@ -32,35 +34,49 @@ import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import chb.mods.mffs.api.security.SecurityRight;
 import chb.mods.mffs.common.ContainerAdvSecurityStation;
+import chb.mods.mffs.common.ItemCardPersonalID;
 import chb.mods.mffs.common.TileEntityAdvSecurityStation;
 import chb.mods.mffs.network.NetworkHandlerClient;
 
 public class GuiAdvSecurityStation extends GuiContainer {
 	private TileEntityAdvSecurityStation tileEntity;
-	private static ArrayList<String> flags = new ArrayList<String>();
-	private String hovertext;
-	
-	
-	static {
-		flags.add("ForceField Bypass (FFB)");
-		flags.add("Edit MFFS Block (EB)");
-		flags.add("Config Security Rights (CSR)");
-		flags.add("Stay Right (SR)");
-		flags.add("Open Secure Storage (OSS)");
-		flags.add("Remote Protected Block (RPB)");
-		flags.add("Allow have all Items (AAI)");
-	}
+	private SecurityRight hoverSR;
+	private boolean editMode = false;
 
 	public GuiAdvSecurityStation(EntityPlayer player,
 			TileEntityAdvSecurityStation tileentity) {
 		super(new ContainerAdvSecurityStation(player, tileentity));
 		this.tileEntity = tileentity;
+		xSize = 256;
+		ySize = 216;
 	}
+	
+	@Override
+    protected void keyTyped(char c, int i) {
+		
+		if (i != 1 && editMode) {
+			if (c == 13) {
+			editMode = false;
+			return;
+			}
+			
+			if(i ==14)
+			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 3,"");
+			
+			if(i !=54 && i !=42 && i !=58 && i !=14)
+			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 2,String.valueOf(c));
+			
+		}else {
+			super.keyTyped(c, i);
+		}
+	
+	}
+	
+	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
-		int xSize = 256;
-		int ySize = 216;
 		int textur = mc.renderEngine.getTexture("/chb/mods/mffs/sprites/GuiAdvSecstation.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(textur);
@@ -68,43 +84,44 @@ public class GuiAdvSecurityStation extends GuiContainer {
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
 		
-		hovertext = null;
-		int x = 5, y =10;
+		hoverSR = null;
 		int scale = 18;
-
-		int count =0;
+		int ct=0;
 		
-		for (String flag : flags) {
-			
-			
-			if (tileEntity.getLinkOption(flag)) {
-				drawSprite(this.guiLeft+x, this.guiTop+40+y, 0,0,count);
-			} else {
-				drawSprite(this.guiLeft+x, this.guiTop+40+y, 0,scale,count);
+		ItemStack modCard = tileEntity.getModCardStack();
+		if (modCard != null){
+			List<String> srKeys = new ArrayList<String>();
+			srKeys.addAll(SecurityRight.rights.keySet());
+			java.util.Collections.sort(srKeys);
+			for (String srKey : srKeys) {
+				//for (SecurityRight sr : SecurityRight.rights.values()) {
+				SecurityRight sr = SecurityRight.rights.get(srKey);
+				
+				int x = ct%4 * (scale+2) + 45;
+				int y = ct/4 * (scale+2) + 75;
+				
+				if (ItemCardPersonalID.hasRight(modCard, sr)) {
+					drawSprite(this.guiLeft+x, this.guiTop+y, 0, 0, sr);
+				} else {
+					drawSprite(this.guiLeft+x, this.guiTop+y, 0, scale, sr);
+				}
+				if ((mouseX >= x + guiLeft && mouseX <= x + guiLeft + scale) && (mouseY >= guiTop + y && mouseY <= guiTop + y + scale)) {
+					hoverSR = sr;
+				}
+
+				ct++;
 			}
-			if ((mouseX >= x + guiLeft && mouseX <= x + guiLeft + scale) && (mouseY >= guiTop + 40+ y && mouseY <= guiTop +40+ y + scale)) {
-				hovertext = flag;
-			}
-			y += scale+2;
-			if (y >= 40) {
-				y = 10;
-				x += scale+2;
-			}
-			
-			count++;
-		}
-			
+		}	
 	}
 	
 	
-	private void drawSprite(int par1, int par2, int par3, int par4,int count)
+	private void drawSprite(int par1, int par2, int par3, int par4, SecurityRight sr)
 	{
-		int var5 = this.mc.renderEngine.getTexture("/chb/mods/mffs/sprites/AdvSecStationButtons.png");
+		int var5 = this.mc.renderEngine.getTexture(sr.texture);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(var5);
 		
-		par3+=count*18;
-		
+		par3+=sr.texIndex*18;
 		Tessellator var10 = Tessellator.instance;
 		var10.startDrawingQuads();
 		var10.addVertexWithUV((double)(par1 + 0), (double)(par2 + 18), (double)this.zLevel, (double)((float)(par3 + 0) * 0.0078125F), (double)((float)(par4 + 18) * 0.0078125F));
@@ -118,21 +135,34 @@ public class GuiAdvSecurityStation extends GuiContainer {
 	protected void mouseClicked(int i, int j, int k) {
 		super.mouseClicked(i, j, k);
 		
-		if (hovertext != null) {
-			NetworkHandlerClient.fireTileEntityEvent(tileEntity, hovertext);
+		int xMin = (width - xSize) / 2;
+		int yMin = (height - ySize) / 2;
+
+		int x = i - xMin;
+		int y = j - yMin;
+		
+		if (editMode){
+			editMode = false;
+		}else if(x >= 120 && y >= 4 && x <= 250 && y <= 18){
+			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 1,"null");
+			editMode = true;
+		}
+		if (hoverSR != null) {
+			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 0,hoverSR.rightKey);
 		}
 	}
 	
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString("MFFS Advanced Security Station", -32, -17, 0x404040);
-		fontRenderer.drawString("Master Personal ID Card", -5, 7, 0x404040);
-		fontRenderer.drawString("Rights Allocation", 10, 35, 0x404040);
+		fontRenderer.drawString("MFFS Security Station:", 8, 8, 0x404040);
+		fontRenderer.drawString(tileEntity.getStationname(), 125, 8, 0x404040);
+		fontRenderer.drawString("Master Personal ID Card", 35, 32, 0x404040);
+		fontRenderer.drawString("Rights Allocation", 50, 60, 0x404040);
 
-		if (hovertext != null) {
+		if (hoverSR != null) {
 			List list = new ArrayList();
-			list.add(hovertext);
+			list.add(hoverSR.name);
 			if (list.size() > 0) {
 				GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 				RenderHelper.disableStandardItemLighting();

@@ -36,14 +36,9 @@ import universalelectricity.core.electricity.ElectricityConnections;
 import universalelectricity.core.implement.IConductor;
 import universalelectricity.core.vector.Vector3;
 
-import buildcraft.api.gates.IOverrideDefaultTriggers;
-import buildcraft.api.gates.ITrigger;
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerFramework;
-
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
 
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
@@ -63,7 +58,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
 public class TileEntityExtractor extends TileEntityMachines implements 
-INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink{
+INetworkHandlerListener,IPowerReceptor,IEnergySink{
 	private ItemStack inventory[];
 
 	private int workmode = 0;
@@ -560,11 +555,8 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink{
 		
 		if(field.equalsIgnoreCase("side") && ModularForceFieldSystem.uefound)
 		{
-
 		  ElectricityConnections.registerConnector(this, EnumSet.of(ForgeDirection.getOrientation(this.getFacing()).getOpposite()));
-			
 		}
-		
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 		
 	}
@@ -715,12 +707,9 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink{
 		return (int) Math.round(MaxWorkEnergyinMj - workEnergyinMJ) ;
 	}
 
-	@Override
-	public LinkedList<ITrigger> getTriggers() {
-		return null;
-	}
 
 	public void converUEtoWorkEnergy(){
+		
 		
 		ForgeDirection inputDirection = ForgeDirection.getOrientation(this.getFacing()).getOpposite();
 		
@@ -741,12 +730,6 @@ INetworkHandlerListener,IPowerReceptor,IOverrideDefaultTriggers,IEnergySink{
 		   this.setWorkEnergy((int) (getWorkEnergy() + ((IConductor) inputTile).getNetwork().consumeElectricity(this).getWatts()/2));
 	      }
 		  }
-		}	
-		
-		System.out.println(getWorkEnergy());
-		
-
+		}		
 	}
-
-
 }

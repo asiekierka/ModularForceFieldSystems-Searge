@@ -29,8 +29,8 @@ import net.minecraft.src.Slot;
 public class ContainerConverter extends Container {
     private int linkPower;
     private int SwitchTyp;
-    private int capacity;
     private int output;
+    private int capacity;
 	private EntityPlayer player;
 	private TileEntityConverter Capacitor;
 
@@ -40,8 +40,8 @@ public class ContainerConverter extends Container {
 		this.player = player;
         linkPower = -1;
         SwitchTyp = -1;
-        capacity = -1;
         output = -1;
+        capacity = -1;
 
 		addSlotToContainer(new SlotHelper(Capacitor, 0, 11, 25)); //Power link
 
@@ -70,20 +70,21 @@ public class ContainerConverter extends Container {
             	icrafting.sendProgressBarUpdate(this, 1,Capacitor.getLinkPower() >>> 16);
             }
 
-            if(capacity != Capacitor.getCapacity())
-            	icrafting.sendProgressBarUpdate(this, 2, Capacitor.getCapacity());
-
             if(SwitchTyp != Capacitor.getswitchtyp())
-            	icrafting.sendProgressBarUpdate(this, 3,Capacitor.getswitchtyp());
+            	icrafting.sendProgressBarUpdate(this, 2,Capacitor.getswitchtyp());
 
             if(output != Capacitor.getOutput())
-            	icrafting.sendProgressBarUpdate(this, 4, Capacitor.getOutput());
+            	icrafting.sendProgressBarUpdate(this, 3, Capacitor.getOutput());
+            
+			if (capacity != Capacitor.getPercentageCapacity()) 
+				icrafting.sendProgressBarUpdate(this, 4,Capacitor.getPercentageCapacity());
+			
         }
 
         linkPower = Capacitor.getLinkPower();
         SwitchTyp = Capacitor.getswitchtyp();
-        capacity = Capacitor.getCapacity();
         output = Capacitor.getOutput();
+        capacity = Capacitor.getPercentageCapacity();
     }
 
     public void updateProgressBar(int i, int j) {
@@ -95,14 +96,14 @@ public class ContainerConverter extends Container {
             Capacitor.setLinkPower(Capacitor.getLinkPower() & 0xffff | j << 16);
             break;
         case 2:
-            Capacitor.setCapacity(j);
-            break;
-        case 3:
             Capacitor.setswitchtyp(j);
             break;
-        case 4:
+        case 3:
             Capacitor.setOutput(j);
             break;
+		case 4:
+			Capacitor.setCapacity(j);
+			break;
         }
     }
 

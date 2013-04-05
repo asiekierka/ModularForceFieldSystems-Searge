@@ -24,39 +24,62 @@
 package chb.mods.mffs.common;
 
 import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.NBTTagCompound;
 import chb.mods.mffs.api.IForceEnergyItems;
 
-public class ForceEnergyItems {
+public abstract class ForceEnergyItems extends ItemMFFSBase implements IForceEnergyItems{
 	
-	public static boolean use(ItemStack itemStack, int amount,boolean trial,EntityPlayer entityplayer)
+	public ForceEnergyItems(int i) {
+		super(i);
+	}
+
+
+	public  boolean consumePower(ItemStack itemStack, int amount,boolean simulation)
 	{
 		if (itemStack.getItem() instanceof IForceEnergyItems) {
 			
 			IForceEnergyItems ForceEnergyItem = (IForceEnergyItems) itemStack.getItem();
-			if(ForceEnergyItem.getForceEnergy(itemStack) >= amount)
+			if(ForceEnergyItem.getAvailablePower(itemStack) >= amount)
 			{
-				if(trial)
+				if(!simulation)
 				{
-					ForceEnergyItem.setForceEnergy(itemStack, ForceEnergyItem.getForceEnergy(itemStack) - amount);
+					ForceEnergyItem.setAvailablePower(itemStack, ForceEnergyItem.getAvailablePower(itemStack) - amount);
 				}
 				return true;
-			}
-			
+			}	
 		}
-		
 		return false;
 	}
 	
 	
-	public static void charge(ItemStack itemStack, int amount,EntityPlayer entityplayer)
+	public  void chargeItem(ItemStack itemStack, int amount)
 	{
 		if (itemStack.getItem() instanceof IForceEnergyItems) {
 			
 			IForceEnergyItems ForceEnergyItem = (IForceEnergyItems) itemStack.getItem();
-			ForceEnergyItem.setForceEnergy(itemStack, amount);
+			ForceEnergyItem.setAvailablePower(itemStack, amount);
 		}
-
 	}
+	
+
+	public void setAvailablePower(ItemStack itemStack, int  ForceEnergy)
+    {
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
+		nbtTagCompound.setInteger("ForceEnergy", ForceEnergy);
+    }
+
+   
+    public  int getAvailablePower(ItemStack itemstack)
+    {
+   
+    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
+    	if(nbtTagCompound != null)
+    	{
+    		return nbtTagCompound.getInteger("ForceEnergy");
+    	}
+       return 0;
+    }
 
 }

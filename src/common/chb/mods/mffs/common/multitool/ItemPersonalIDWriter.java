@@ -18,9 +18,14 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.multitool;
 
 import java.util.List;
+
+import chb.mods.mffs.common.ForceEnergyItems;
+import chb.mods.mffs.common.Functions;
+import chb.mods.mffs.common.ItemCardPersonalID;
+import chb.mods.mffs.common.ModularForceFieldSystem;
 
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
@@ -42,9 +47,9 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 			ItemStack stack = slot.getStack();
 			if (stack != null) {
 				if (stack.getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
-					if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
+					if(this.consumePower(itemstack, 1000, true))
 					{
-				     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
+						this.consumePower(itemstack, 1000, false);
                         ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
                         ItemCardPersonalID.setOwner(IDCard, ((EntityPlayer)entity).username);
                     
@@ -74,12 +79,7 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 			EntityPlayer entityplayer) {
 		if(entityplayer.isSneaking())
 		{
-			int powerleft = this.getForceEnergy(itemstack);
-			ItemStack hand = entityplayer.inventory.getCurrentItem();
-			hand= new ItemStack(ModularForceFieldSystem.MFFSitemFieldTeleporter, 1);
-			ForceEnergyItems.charge(hand, powerleft,entityplayer);
-
-			return hand;
+			return super.onItemRightClick(itemstack, world, entityplayer);
 		}
 
 			List<Slot> slots = entityplayer.inventoryContainer.inventorySlots;
@@ -87,9 +87,9 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 				ItemStack stack = slot.getStack();
 				if (stack != null) {
 					if (stack.getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
-						if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
+						if(this.consumePower(itemstack, 1000, true))
 						{
-					     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
+							this.consumePower(itemstack, 1000, false);
                             ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
                             ItemCardPersonalID.setOwner(IDCard, entityplayer.username);
    

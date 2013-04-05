@@ -43,6 +43,8 @@ public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
 				TileEntity te = world.getBlockTileEntity(x, y, z);
 				if(te instanceof TileEntityForceField)
 				{
+					if(((TileEntityForceField)te).getForcefieldCamoblockid()!=-1)
+					{
 					if(ForceFieldTyps.Camouflage.ordinal()==((TileEntityForceField)te).getForcefieldCamoblockmeta()
 						&& ((TileEntityForceField)te).getForcefieldCamoblockid() != 327	&& ((TileEntityForceField)te).getForcefieldCamoblockid() != 326	)
 					{
@@ -54,7 +56,7 @@ public class ForceFieldRenderer implements ISimpleBlockRenderingHandler {
 					return true;
 					}
 					}
-					
+					}
 					if(((TileEntityForceField)te).getTexturfile()!=null)
 					{	
 	                ForgeHooksClient.bindTexture(((TileEntityForceField)te).getTexturfile(), 0);

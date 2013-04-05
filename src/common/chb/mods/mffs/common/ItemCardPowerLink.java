@@ -24,6 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import chb.mods.mffs.api.IPowerLinkItem;
+import chb.mods.mffs.api.PointXYZ;
+import chb.mods.mffs.api.security.SecurityRight;
+
 import net.minecraft.src.Entity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
@@ -33,7 +37,7 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ISidedInventory;
 
-public class ItemCardPowerLink extends ItemCard  {
+public class ItemCardPowerLink extends ItemCard implements IPowerLinkItem{
 
 	public ItemCardPowerLink(int i) {
 		super(i);
@@ -95,7 +99,7 @@ public class ItemCardPowerLink extends ItemCard  {
 			
 
 			if (tileEntity instanceof TileEntityConverter) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,SecurityRight.EB))
 				  {
 
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
@@ -106,7 +110,7 @@ public class ItemCardPowerLink extends ItemCard  {
 			
 			
 			if (tileEntity instanceof TileEntityProjector) {
-			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
+			  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,SecurityRight.EB))
 			  {
 
 				  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
@@ -115,7 +119,7 @@ public class ItemCardPowerLink extends ItemCard  {
             }
 			
 			if (tileEntity instanceof TileEntityExtractor ) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,SecurityRight.EB))
 				  {
 				
 						if(((TileEntityExtractor)tileEntity).getStackInSlot(1)==null)
@@ -142,7 +146,7 @@ public class ItemCardPowerLink extends ItemCard  {
 			
 			
 			if (tileEntity instanceof TileEntityAreaDefenseStation) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,SecurityRight.EB))
 				  {
 		
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 0,"<Power-Link>");
@@ -150,7 +154,7 @@ public class ItemCardPowerLink extends ItemCard  {
 			}
 			
 			if (tileEntity instanceof TileEntityCapacitor) {
-				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,"EB"))
+				  if(SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,SecurityRight.EB))
 				  {
 		
 					  return Functions.setIteminSlot(itemstack, entityplayer, tileEntity, 2,"<Power-Link>");
@@ -160,10 +164,127 @@ public class ItemCardPowerLink extends ItemCard  {
 		}
 		return false;
 	}
+/*----------------------------working on-------------------------------*/
+	
+	public TileEntityCapacitor getLinkedCapacitor(ItemStack itemStack,TileEntityMachines tem,World world)
+	{
+		if(itemStack!= null && itemStack.getItem() instanceof ItemCard)
+		{	
+		if(((ItemCard)itemStack.getItem()).isvalid(itemStack))
+		{
+		PointXYZ png = this.getCardTargetPoint(itemStack);
+		if(png != null)
+		{
+		if(png.dimensionId != world.provider.dimensionId) return null;
+			
+		if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityCapacitor)
+		{
+			TileEntityCapacitor cap = (TileEntityCapacitor) world.getBlockTileEntity(png.X, png.Y, png.Z);
+		if (cap != null){
+			
+		  if(cap.getCapacitor_ID()== this.getValuefromKey("CapacitorID",itemStack)&&  this.getValuefromKey("CapacitorID",itemStack) != 0 )
+		  {
+			  if(cap.getTransmitRange()>= PointXYZ.distance(tem.getMaschinePoint(),cap.getMaschinePoint())){
+              return cap;}return null;
+		   }
+		}
+	  }else{
+		  
+		  int Cap_ID =this.getValuefromKey("CapacitorID",itemStack);
+		  if(Cap_ID!=0)
+		  {
+			  TileEntityCapacitor cap =  Linkgrid.getWorldMap(png.getPointWorld()).getCapacitor().get(Cap_ID);
+			  if (cap != null){
+				  
+				  ((ItemCard)this).setInformation(itemStack, cap.getMaschinePoint(), "CapacitorID", Cap_ID);
+				  if(cap.getTransmitRange()>= PointXYZ.distance(tem.getMaschinePoint(),cap.getMaschinePoint())){
+				  return cap;}return null;
+			  }
+		  }
+	
+	  }
+	  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+		  ((ItemCard)itemStack.getItem()).setinvalid(itemStack);
+		  
+	}
+	}	
+	}
+	return null;
+		
+	}
+	
 
 
+	@Override
+	public int getAvailablePower(ItemStack itemStack, TileEntityMachines tem,World world) {
+		
+		TileEntityCapacitor cap = getLinkedCapacitor(itemStack,tem,world);
+		
+		if(cap != null)
+		{
+			return cap.getForcePower();
+		}
+		
+		return 0;
+	}
+
+	@Override
+	public int getMaximumPower(ItemStack itemStack, TileEntityMachines tem,World world) {
+		
+		TileEntityCapacitor cap = getLinkedCapacitor(itemStack,tem,world);
+		
+		if(cap != null)
+		{
+			return cap.getMaxForcePower();
+		}
+		
+		return 0;
+
+	}
+
+	@Override
+	public boolean consumePower(ItemStack itemStack, int powerAmount,
+			boolean simulation, TileEntityMachines tem,World world) {
+		
+		TileEntityCapacitor cap = getLinkedCapacitor(itemStack,tem,world);
+		
+		if(cap != null)
+		{
+		if(simulation){
+			
+			if(cap.getForcePower() > powerAmount)
+				return true;
+		}
+		
+		cap.consumForcePower(powerAmount);
+		return true;
+		
+		}
+		return false;
+	}
+
+	@Override
+	public int getPowersourceID(ItemStack itemStack, TileEntityMachines tem,World world) {
+		TileEntityCapacitor cap = getLinkedCapacitor(itemStack,tem,world);
+		
+		if(cap != null)
+		{
+			return cap.getCapacitor_ID();
+		}
+		return 0;
+	}
 	
+	@Override
+	public int getPercentageCapacity(ItemStack itemStack,TileEntityMachines tem,World world) {
+		try{
+		return ((getAvailablePower(itemStack, tem,world)/1000)*100)/(getMaximumPower(itemStack, tem,world)/1000);
+		}catch(ArithmeticException ex){return 0;}
+	}
 	
+	@Override
+	public boolean isPowersourceItem(ItemStack itemStack) {
+		return false;
+	}
 			
 
 }

@@ -26,6 +26,7 @@ import java.util.Set;
 
 import net.minecraft.src.Item;
 
+import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.IModularProjector.Slots;
 import chb.mods.mffs.common.modules.ModuleBase;
 import chb.mods.mffs.common.modules.Module3DBase;
@@ -40,7 +41,6 @@ import chb.mods.mffs.common.options.ItemProjectorOptionSponge;
 import chb.mods.mffs.common.options.ItemProjectorOptionTouchDamage;
 import chb.mods.mffs.common.IModularProjector;
 import chb.mods.mffs.common.ModularForceFieldSystem;
-import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.TileEntityProjector;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 

@@ -37,6 +37,8 @@ public class GuiAreaDefenseStation extends GuiContainer {
 			TileEntityAreaDefenseStation tileentity) {
 		super(new ContainerAreaDefenseStation(player, tileentity));
 		DefenceStation = tileentity;
+		xSize = 256;
+		ySize = 216;
 	}
 @Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
@@ -53,7 +55,7 @@ public class GuiAreaDefenseStation extends GuiContainer {
 
 @Override
 protected void actionPerformed(GuiButton guibutton) {
-	NetworkHandlerClient.fireTileEntityEvent(DefenceStation, String.valueOf(guibutton.id));
+	NetworkHandlerClient.fireTileEntityEvent(DefenceStation,0, String.valueOf(guibutton.id));
 }
 
 public void initGui() {
@@ -66,107 +68,104 @@ public void initGui() {
 
 @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-		fontRenderer.drawString("MFFS Defence Station", -30, -17, 0x404040);
-		fontRenderer.drawString("scan mode: ", 120, -17, 0x404040);
+		fontRenderer.drawString("MFFS Defence Station", 10, 8, 0x404040);
+		fontRenderer.drawString("scan mode: ", 160, 8, 0x404040);
 		
 		switch(DefenceStation.getActionmode())
 		{
 		case 0:
-			fontRenderer.drawString("inform", 75, 30, 0x404040);
+			fontRenderer.drawString("inform", 115, 55, 0x404040);
 			
-			fontRenderer.drawString(" send Info", 55, 60, 0x404040);
-			fontRenderer.drawString(" to player ", 55, 70, 0x404040);
-			fontRenderer.drawString(" without (SR)", 55, 80, 0x404040);
-			fontRenderer.drawString(" Stay Right", 55, 90, 0x404040);
+			fontRenderer.drawString(" send Info", 95, 85, 0x404040);
+			fontRenderer.drawString(" to player ", 95, 95, 0x404040);
+			fontRenderer.drawString(" without (SR)", 95, 105, 0x404040);
+			fontRenderer.drawString(" Stay Right", 95, 115, 0x404040);
 			
 			
 		break;
 		case 1:
-			fontRenderer.drawString("kill", 75, 30, 0x404040);
+			fontRenderer.drawString("kill", 115, 55, 0x404040);
 			
-			fontRenderer.drawString(" kill player", 55, 60, 0x404040);
-			fontRenderer.drawString(" without (SR)", 55, 70, 0x404040);
-			fontRenderer.drawString(" gathers his", 55, 80, 0x404040);
-			fontRenderer.drawString(" equipment", 55, 90, 0x404040);
+			fontRenderer.drawString(" kill player", 95, 85, 0x404040);
+			fontRenderer.drawString(" without (SR)", 95, 95, 0x404040);
+			fontRenderer.drawString(" gathers his", 95, 105, 0x404040);
+			fontRenderer.drawString(" equipment", 95, 115, 0x404040);
 	
 		break;
 		case 2:
-			fontRenderer.drawString("search", 75, 30, 0x404040);
+			fontRenderer.drawString("search", 115, 55, 0x404040);
 			
-			fontRenderer.drawString("scans player", 55, 60, 0x404040);
-			fontRenderer.drawString("without (AAI)", 55, 70, 0x404040);
-			fontRenderer.drawString("and remove", 55, 80, 0x404040);
-			fontRenderer.drawString("banned items", 55, 90, 0x404040);
+			fontRenderer.drawString("scans player", 95, 85, 0x404040);
+			fontRenderer.drawString("without (AAI)", 95, 95, 0x404040);
+			fontRenderer.drawString("and remove", 95, 105, 0x404040);
+			fontRenderer.drawString("banned items", 95, 115, 0x404040);
 		break;
 		
 		case 3:
-			fontRenderer.drawString("NPC kill", 75, 30, 0x404040);
+			fontRenderer.drawString("NPC kill", 115, 55, 0x404040);
 			
-			fontRenderer.drawString("kill NPC", 55, 60, 0x404040);
-			fontRenderer.drawString("friendly ", 55, 70, 0x404040);
-			fontRenderer.drawString("or", 55, 80, 0x404040);
-			fontRenderer.drawString("hostile ", 55, 90, 0x404040);
+			fontRenderer.drawString("kill any NPC", 95, 85, 0x404040);
+			fontRenderer.drawString("friendly or", 95, 95, 0x404040);
+			fontRenderer.drawString("hostile", 95, 105, 0x404040);
 		break;
 		
 		case 4:
-			fontRenderer.drawString("NPC kill", 75, 30, 0x404040);
+			fontRenderer.drawString("NPC kill", 115, 55, 0x404040);
 			
-			fontRenderer.drawString("kill", 55, 60, 0x404040);
-			fontRenderer.drawString("only  ", 55, 70, 0x404040);
-			fontRenderer.drawString("hostile", 55, 80, 0x404040);
-			fontRenderer.drawString("NPC ", 55, 90, 0x404040);
+			fontRenderer.drawString("kill only", 95, 85, 0x404040);
+			fontRenderer.drawString("hostile NPCs", 95, 95, 0x404040);
+			
 		break;
 		
 		
 		case 5:
-			fontRenderer.drawString("NPC kill", 75, 30, 0x404040);
+			fontRenderer.drawString("NPC kill", 115, 55, 0x404040);
 			
-			fontRenderer.drawString("kill", 55, 60, 0x404040);
-			fontRenderer.drawString("only  ", 55, 70, 0x404040);
-			fontRenderer.drawString("friendly", 55, 80, 0x404040);
-			fontRenderer.drawString("NPC ", 55, 90, 0x404040);
+			fontRenderer.drawString("kill only", 95, 85, 0x404040);
+			fontRenderer.drawString("friendly NPCs", 95, 95, 0x404040);
+
 		break;
 		
 		}
 		
 		
-		fontRenderer.drawString("Action desc:", 55, 48, 0x00008B);
+		fontRenderer.drawString("Action desc:", 95, 73, 0x00008B);
 		
 		
-		fontRenderer.drawString("items", 165, 43, 0x228B22);
+		fontRenderer.drawString("items", 205, 68, 0x228B22);
 		
 		if(DefenceStation.getcontratyp()==0)
 		{
-			fontRenderer.drawString("allowed", 160, 57, 0x228B22);
+			fontRenderer.drawString("allowed", 200, 82, 0x228B22);
 		}
 		
 		if(DefenceStation.getcontratyp()==1)
 		{
-			fontRenderer.drawString("banned", 160, 57, 0xFF0000);
+			fontRenderer.drawString("banned", 200, 82, 0xFF0000);
 		}
 		
 		
-		if(DefenceStation.getLinkedCapacitor()!= null){
-		fontRenderer.drawString((new StringBuilder()).append("FE: ").append(DefenceStation.getCapacity()).append(" %").toString(), -5, 6, 0x404040);
+		if(DefenceStation.getPowerSourceID()!=0){
+			fontRenderer.drawString((new StringBuilder()).append("FE: ").append(DefenceStation.getCapacity()).append(" %").toString(), 35, 31, 0x404040);
 		}else{
-			fontRenderer.drawString("No Link/OOR", -5, 6, 0xFF0000);
+			fontRenderer.drawString("No Link/OOR", 35, 31, 0xFF0000);
 		}
 		if(DefenceStation.getSecStation_ID()!=0)
 		{
-			fontRenderer.drawString("linked", 80, 6, 0x228B22);
+			fontRenderer.drawString("linked", 120, 31, 0x228B22);
 		}
 		
 		
-		fontRenderer.drawString("warning", -5, 30, 0x00008B);
-		fontRenderer.drawString("perimeter: "+DefenceStation.getInfoDistance(), -28, 48, 0x404040);
+		fontRenderer.drawString("warning", 35, 55, 0x00008B);
+		fontRenderer.drawString("perimeter: "+DefenceStation.getInfoDistance(), 12, 73, 0x404040);
 		
 		
-		fontRenderer.drawString("action", -5, 66, 0xEE3B3B);
-		fontRenderer.drawString("perimeter: "+DefenceStation.getActionDistance(), -28, 86, 0x404040);
+		fontRenderer.drawString("action", 35, 91, 0xEE3B3B);
+		fontRenderer.drawString("perimeter: "+DefenceStation.getActionDistance(), 12, 111, 0x404040);
 		
 		
 		
-		fontRenderer.drawString("int.buffer: ", 140, 170, 0x404040);
+		fontRenderer.drawString("inventory ", 180, 195, 0x404040);
 		
 		
 	}

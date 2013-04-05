@@ -55,7 +55,7 @@ public class GuiConverter extends GuiContainer {
     }
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandlerClient.fireTileEntityEvent(Converter, String.valueOf(guibutton.id));
+		NetworkHandlerClient.fireTileEntityEvent(Converter,0, String.valueOf(guibutton.id));
 	}
 
     public void initGui() {
@@ -74,7 +74,7 @@ public class GuiConverter extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
     	fontRenderer.drawString("MFFS FE -> EU Converter", 5, 5, 0x404040);
-		if(Converter.getLinkedCapacitor()!= null){
+		if(Converter.getPowerSourceID()!=0){
 			fontRenderer.drawString((new StringBuilder()).append("FE: ").append(Converter.getLinkPower()).toString(), 10, 60, 0x404040);
 		}else{
 			fontRenderer.drawString("FE: No Link/OOR",  10, 60, 0x404040);

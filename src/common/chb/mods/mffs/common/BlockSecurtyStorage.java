@@ -23,6 +23,7 @@
 
 package chb.mods.mffs.common;
 
+import chb.mods.mffs.api.security.SecurityRight;
 import net.minecraft.src.BlockContainer;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
@@ -61,7 +62,7 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 		if(tileentity != null)
 		{
 			
-			if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world, "OSS"))
+			if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world, SecurityRight.OSS))
 			{
 				if (!world.isRemote)
 					entityplayer.openGui(ModularForceFieldSystem.instance, 0, world,i, j, k);

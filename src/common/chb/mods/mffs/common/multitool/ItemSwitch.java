@@ -18,9 +18,15 @@
     Thunderdark - initial implementation
 */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.common.multitool;
 
 
+import chb.mods.mffs.api.ISwitchabel;
+import chb.mods.mffs.api.security.SecurityRight;
+import chb.mods.mffs.common.ForceEnergyItems;
+import chb.mods.mffs.common.Functions;
+import chb.mods.mffs.common.ModularForceFieldSystem;
+import chb.mods.mffs.common.SecurityHelper;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.TileEntity;
@@ -28,7 +34,7 @@ import net.minecraft.src.World;
 
 public class ItemSwitch extends ItemMultitool {
 	
-	protected ItemSwitch(int id) {
+	public ItemSwitch(int id) {
 		super(id, 1);
 
 	}
@@ -50,22 +56,15 @@ public class ItemSwitch extends ItemMultitool {
 		if(tileentity instanceof ISwitchabel)
 		{
 			
-			  if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world,"EB"))
+			  if(SecurityHelper.isAccessGranted(tileentity, entityplayer, world,SecurityRight.EB))
 			  {
 
-					if(((ISwitchabel)tileentity).getswitchtyp() == 1)
+					if(((ISwitchabel)tileentity).isSwitchabel())
 					{
-						if(ForceEnergyItems.use(itemstack, 1000, false,entityplayer))
+						if(this.consumePower(itemstack, 1000, true))
 						{
-					     ForceEnergyItems.use(itemstack, 1000, true,entityplayer);
-
-							if(((ISwitchabel)tileentity).getOnOffSwitch())
-							{
-								((ISwitchabel)tileentity).setOnOffSwitch(false);
-							}else{
-								((ISwitchabel)tileentity).setOnOffSwitch(true);
-							}
-							
+							this.consumePower(itemstack, 1000, false);
+					     ((ISwitchabel)tileentity).toogleSwitchstate();
 						return true;
 						}else{
 							
@@ -74,7 +73,7 @@ public class ItemSwitch extends ItemMultitool {
 						}
 					}else{
 					
-						Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: Wrong Mode");
+						Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: Objekt not in Switch Enable Mode");
 						return false;
 					}
 
@@ -91,16 +90,7 @@ public class ItemSwitch extends ItemMultitool {
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
 		
-		
-		if(entityplayer.isSneaking())
-		{
-			int powerleft = this.getForceEnergy(itemstack);
-			ItemStack hand = entityplayer.inventory.getCurrentItem();
-			hand= new ItemStack(ModularForceFieldSystem.MFFSitemMFDidtool, 1);
-			ForceEnergyItems.charge(hand, powerleft,entityplayer);
-		return hand;
-		}
-		return itemstack;
+		return super.onItemRightClick(itemstack, world, entityplayer);
 	}
 
 

@@ -30,6 +30,13 @@ import chb.mods.mffs.common.modules.ItemProjectorModuleDeflector;
 import chb.mods.mffs.common.modules.ItemProjectorModuleSphere;
 import chb.mods.mffs.common.modules.ItemProjectorModuleTube;
 import chb.mods.mffs.common.modules.ItemProjectorModuleWall;
+import chb.mods.mffs.common.modules.ItemProjectorModulediagonallyWall;
+import chb.mods.mffs.common.multitool.ItemDebugger;
+import chb.mods.mffs.common.multitool.ItemFieldtransporter;
+import chb.mods.mffs.common.multitool.ItemManuelBook;
+import chb.mods.mffs.common.multitool.ItemPersonalIDWriter;
+import chb.mods.mffs.common.multitool.ItemSwitch;
+import chb.mods.mffs.common.multitool.ItemWrench;
 import chb.mods.mffs.common.options.ItemProjectorOptionBlockBreaker;
 import chb.mods.mffs.common.options.ItemProjectorOptionCamoflage;
 import chb.mods.mffs.common.options.ItemProjectorOptionDefenseStation;
@@ -63,8 +70,10 @@ import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.Property;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -84,8 +93,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.1.17c")
-@NetworkMod(versionBounds = "[2.2.8.1.17c]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.2.1a")
+@NetworkMod(versionBounds = "[2.2.8.2.1a]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 
 public class ModularForceFieldSystem {
 	
@@ -120,6 +129,7 @@ public class ModularForceFieldSystem {
 	public static Item MFFSitemcardempty;
 	public static Item MFFSitemfc;
 	public static Item MFFSItemIDCard;
+	public static Item MFFSAccessCard;
 	public static Item MFFSItemSecLinkCard;
 	public static Item MFFSitemManuelBook;
 
@@ -134,6 +144,7 @@ public class ModularForceFieldSystem {
 	public static Item MFFSProjectorTyptube;
 	public static Item MFFSProjectorTypcontainment;
 	public static Item MFFSProjectorTypAdvCube;
+	public static Item MFFSProjectorTypdiagowall;
 
 	public static Item MFFSProjectorOptionZapper;
 	public static Item MFFSProjectorOptionSubwater;
@@ -166,6 +177,7 @@ public class ModularForceFieldSystem {
 	public static Boolean ic2found = false;
 	public static Boolean uefound = false;
 	public static Boolean buildcraftfound = false;
+	public static boolean showZapperParticles;
 
 	public static int ForceciumWorkCylce;
 	public static int ForceciumCellWorkCylce;
@@ -198,18 +210,22 @@ public class ModularForceFieldSystem {
 		
 
 		MFFSconfig = new Configuration(event.getSuggestedConfigurationFile());
-		event.getModMetadata().version = Versioninfo.version();
+		event.getModMetadata().version = Versioninfo.curentversion();
 		try {
 			MFFSconfig.load();
 
 			MFFSTab = new MFFSCreativeTab(CreativeTabs.getNextID(), "MFFS");
+			
+			Property zapperParticles = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "renderZapperParticles", true);
+			zapperParticles.comment = "Set this to false to turn off the small smoke particles present around TouchDamage enabled ForceFields.";
+			showZapperParticles=zapperParticles.getBoolean(true);
 
 			MonazitOreworldamount = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "MonazitOreWorldGen", 4).getInt(4);
 			Admin = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "ForceFieldMaster", "nobody").value;
 			influencedbyothermods = MFFSconfig.get( Configuration.CATEGORY_GENERAL, "influencedbyothermods", true).getBoolean(true);
 			adventuremap = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "adventuremap", false).getBoolean(false);
 			forcefieldremoveonlywaterandlava = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldremoveonlywaterandlava", false).getBoolean(false);
-
+	
 			forcefieldtransportcost = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldtransportcost", 10000).getInt(10000);
 			forcefieldblockcost = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldblockcost", 1).getInt(1);
 			forcefieldblockcreatemodifier = MFFSconfig.get(Configuration.CATEGORY_GENERAL, "forcefieldblockcreatemodifier", 10).getInt(10);
@@ -260,6 +276,14 @@ public class ModularForceFieldSystem {
 			MFFSitemManuelBook = new ItemManuelBook(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemManuelBook", 11112)
 					.getInt(11112)).setItemName("itemManuelBook"); 
+			MFFSProjectorTypdiagowall = new ItemProjectorModulediagonallyWall(MFFSconfig
+					.getItem(Configuration.CATEGORY_ITEM,
+							"itemProjectorModulediagonallyWall", 11113).getInt(11113))
+					.setItemName("itemProjectorModulediagonallyWall");
+			
+			MFFSAccessCard= new ItemAccessCard(MFFSconfig.getItem(
+					Configuration.CATEGORY_ITEM, "itemAccessCard", 11114)
+					.getInt(11115)).setItemName("itemAccessCard");
 			
 			MFFSitemcardempty = new ItemCardEmpty(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemcardempty", 11115)
@@ -434,6 +458,9 @@ public class ModularForceFieldSystem {
 				"en_US", "MFFS Projector Focus Matrix");
 		LanguageRegistry.instance().addNameForObject(MFFSitemFieldTeleporter,
 				"en_US", "MFFS MultiTool <Field Teleporter>");
+		
+		LanguageRegistry.instance().addNameForObject(MFFSAccessCard,
+				"en_US", "MFFS Card <Access license> ");
 		LanguageRegistry.instance().addNameForObject(MFFSitemcardempty,
 				"en_US", "MFFS Card <blank> ");
 		LanguageRegistry.instance().addNameForObject(MFFSitemfc, "en_US",

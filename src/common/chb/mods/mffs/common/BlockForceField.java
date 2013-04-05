@@ -38,6 +38,7 @@ import net.minecraft.src.Slot;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import chb.mods.mffs.api.IForceFieldBlock;
+import chb.mods.mffs.api.security.SecurityRight;
 import chb.mods.mffs.common.WorldMap.ForceFieldWorld;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
@@ -242,10 +243,10 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 				passtrue = true;
 				break;
 				case 2:
-					passtrue = SecurityHelper.isAccessGranted(generator, ((EntityPlayer) entity), world,"FFB");
+					passtrue = SecurityHelper.isAccessGranted(generator, ((EntityPlayer) entity), world,SecurityRight.FFB);
 				break;
 				case 3:
-					passtrue = SecurityHelper.isAccessGranted(projector, ((EntityPlayer) entity), world,"FFB");
+					passtrue = SecurityHelper.isAccessGranted(projector, ((EntityPlayer) entity), world,SecurityRight.FFB);
 				break;
 				}
 			
@@ -345,7 +346,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock{
 	@Override
 	public void randomDisplayTick(World world, int i, int j, int k,
 			Random random) {
-		if (world.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) {
+		if (ModularForceFieldSystem.showZapperParticles && world.getBlockMetadata(i, j, k) == ForceFieldTyps.Zapper.ordinal()) {
 			double d = i + Math.random()+ 0.2D;
 			double d1 = j + Math.random() + 0.2D;
 			double d2 = k + Math.random() + 0.2D;

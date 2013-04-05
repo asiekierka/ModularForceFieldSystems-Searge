@@ -22,9 +22,9 @@ package chb.mods.mffs.common.options;
 
 import java.util.List;
 
+import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.Linkgrid;
 import chb.mods.mffs.common.ModularForceFieldSystem;
-import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.TileEntityCapacitor;
 import chb.mods.mffs.common.TileEntityProjector;
 import chb.mods.mffs.common.IModularProjector.Slots;

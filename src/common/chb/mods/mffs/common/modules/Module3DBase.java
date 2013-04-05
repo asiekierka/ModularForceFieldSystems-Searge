@@ -2,9 +2,9 @@ package chb.mods.mffs.common.modules;
 
 import java.util.Set;
 
+import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.ForceFieldTyps;
 import chb.mods.mffs.common.IModularProjector;
-import chb.mods.mffs.common.PointXYZ;
 
 public abstract class Module3DBase extends ModuleBase {
 

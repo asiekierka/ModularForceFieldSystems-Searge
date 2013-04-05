@@ -26,13 +26,15 @@ import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.asm.SideOnly;
 
 import chb.mods.mffs.api.IForceEnergyItems;
+import chb.mods.mffs.api.IPowerLinkItem;
 import net.minecraft.src.CreativeTabs;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
+import net.minecraft.src.World;
 
-public class ItemForcePowerCrystal extends ItemMFFSBase  implements IForceEnergyItems{
+public class ItemForcePowerCrystal extends ForceEnergyItems implements IPowerLinkItem{
 	public ItemForcePowerCrystal(int i) {
 		super(i);
 		setIconIndex(96);
@@ -56,64 +58,87 @@ public class ItemForcePowerCrystal extends ItemMFFSBase  implements IForceEnergy
 	return true;
 	}
 	@Override
-	public int getforceEnergyTransferMax() {
+	public int getPowerTransferrate() {
 		return 100000;
 	}
+	
+	@Override
+    public int getIconFromDamage(int dmg){
+    if (dmg== -1)
+     return 112;
+    return 112 + ((100-dmg)/20);
+    }
+	
 	@Override
 	public int getItemDamage(ItemStack itemStack) {
 		
-		if(getForceEnergy(itemStack) == 0)
+		if(getAvailablePower(itemStack) == 0)
 		return -1;
 		
 		
-		return 101-((getForceEnergy(itemStack)*100)/getMaxForceEnergy());
+		return 101-((getAvailablePower(itemStack)*100)/getMaximumPower(itemStack));
 		
 	}
 	@Override
-	public int getMaxForceEnergy() {
+	public int getMaximumPower(ItemStack itemStack){
 		return 5000000;
 	}
-	@Override
-	public void setForceEnergy(ItemStack itemStack, int ForceEnergy) {
-	       
-		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-	       nbtTagCompound.setInteger("ForceEnergy", ForceEnergy);
-		
-	}
+
 	
     @Override
     public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
     {
-        String tooltip = String.format( "%d FE/%d FE ",getForceEnergy(itemStack),getMaxForceEnergy());
+        String tooltip = String.format( "%d FE/%d FE ",getAvailablePower(itemStack),getMaximumPower(itemStack));
         info.add(tooltip);
     }
     
-	@Override
-	public int getForceEnergy(ItemStack itemstack) {
-    	
-		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
-    	if(nbtTagCompound != null)
-    	{
-    		return nbtTagCompound.getInteger("ForceEnergy");
-    	}
-       return 0;
-	}
+
 	
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int i, CreativeTabs tabs, List itemList)
 	{
 		ItemStack charged = new ItemStack(this, 1);
 		charged.setItemDamage(1);
-		setForceEnergy(charged, getMaxForceEnergy());
+		setAvailablePower(charged, getMaximumPower(null));
 		itemList.add(charged);
 		
 		ItemStack empty = new ItemStack(this, 1);
 		empty.setItemDamage(100);
-		setForceEnergy(empty, 0);
+		setAvailablePower(empty, 0);
 		itemList.add(empty);
 		
-		
+	}
+	@Override
+	public boolean isPowersourceItem(ItemStack itemStack) {
+		return true;
 	}
 	
+	@Override
+	public int getAvailablePower(ItemStack itemStack,
+			TileEntityMachines tem,World world) {
+		return getAvailablePower(itemStack);
+	}
+	
+	@Override
+	public int getMaximumPower(ItemStack itemStack,
+			TileEntityMachines tem,World world) {
+		return getMaximumPower(itemStack);
+	}
+	@Override
+	public boolean consumePower(ItemStack itemStack, int powerAmount,
+			boolean simulation, TileEntityMachines tem,World world) {
+		return consumePower(itemStack,powerAmount,simulation);
+	}
+	@Override
+	public int getPowersourceID(ItemStack itemStack,
+			TileEntityMachines tem,World world) {
+           return -1;
+	}
+	@Override
+	public int getPercentageCapacity(ItemStack itemStack, TileEntityMachines tem,World world) {
+		return ((getAvailablePower(itemStack)/1000)*100)/(getMaximumPower(itemStack)/1000);
+		
+	}
+
 	
 }

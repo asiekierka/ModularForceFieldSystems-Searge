@@ -23,6 +23,7 @@ package chb.mods.mffs.common;
 import buildcraft.api.transport.IExtractionHandler;
 import buildcraft.api.transport.IPipe;
 import buildcraft.api.transport.PipeManager;
+import chb.mods.mffs.api.security.SecurityRight;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
@@ -40,6 +41,7 @@ import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 import net.minecraft.src.NBTTagList;
 import net.minecraft.src.Packet;
+import net.minecraft.src.PlayerControllerMP;
 import net.minecraft.src.TileEntity;
 import net.minecraft.src.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -49,11 +51,11 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		INetworkHandlerListener,
 		INetworkHandlerEventListener {
 
+	private String stationname;
 	private String MainUser;
 	private boolean create;
 	private int SecurtyStation_ID;
 	private ItemStack inventory[];
-	private boolean rights[] = { false, false, false, false, false, false , false};
 
 	public TileEntityAdvSecurityStation() {
 
@@ -61,7 +63,23 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		SecurtyStation_ID = 0;
 		create = true;
 		MainUser = "";
+		stationname="No Name Staion";
 	}
+
+	
+	
+	public String getStationname() {
+		return stationname;
+	}
+
+
+
+	public void setStationname(String stationname) {
+		this.stationname = stationname;
+		NetworkHandlerServer.updateTileEntityField(this, "stationname");
+	}
+
+
 
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
@@ -139,6 +157,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		SecurtyStation_ID = nbttagcompound.getInteger("Secstation_ID");
+		stationname = nbttagcompound.getString("stationname");
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -156,6 +175,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		super.writeToNBT(nbttagcompound);
 
 		nbttagcompound.setInteger("Secstation_ID", SecurtyStation_ID);
+		nbttagcompound.setString("stationname", stationname);
 
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
@@ -220,9 +240,9 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 					setMainUser(name);
 				}
 
-				if (Card.getlegitimac(getStackInSlot(0), "CSR") != true) {
-					Card.setlegitimac(getStackInSlot(0), "CSR", true);
-				}
+				if (Card.hasRight(getStackInSlot(0), SecurityRight.CSR) != true) {
+					Card.setRight(getStackInSlot(0), SecurityRight.CSR, true);
+					}
 			} else {
 
 				setMainUser("");
@@ -231,32 +251,6 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 			setMainUser("");
 
-		}
-
-		if (getStackInSlot(1) != null) {
-			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
-				ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(1)
-						.getItem();
-
-				rights[0] = Card.getlegitimac(getStackInSlot(1), "FFB");
-				rights[1] = Card.getlegitimac(getStackInSlot(1), "EB");
-				rights[2] = Card.getlegitimac(getStackInSlot(1), "CSR");
-				rights[3] = Card.getlegitimac(getStackInSlot(1), "SR");
-				rights[4] = Card.getlegitimac(getStackInSlot(1), "OSS");
-				rights[5] = Card.getlegitimac(getStackInSlot(1), "RPB");
-				rights[6] = Card.getlegitimac(getStackInSlot(1), "AAI");
-				
-
-			}
-		} else {
-
-			rights[0] = false;
-			rights[1] = false;
-			rights[2] = false;
-			rights[3] = false;
-			rights[4] = false;
-			rights[5] = false;
-			rights[6] = false;
 		}
 
 	}
@@ -303,7 +297,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 	}
 
 
-	public boolean RemoteInventory(String username, String right) {
+	public boolean RemoteInventory(String username, SecurityRight right) {
 
 		for (int a = 39; a >= 1; a--) {
 			if (getStackInSlot(a) != null) {
@@ -312,7 +306,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 					
 					ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(a).getItem();
 					
-					boolean access  = Card.getlegitimac(getStackInSlot(a), right);
+					boolean access = ItemCardPersonalID.hasRight(getStackInSlot(a), right);
 					
 					if (username_invtory.equals(username)) {
 						if (access) {
@@ -328,7 +322,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		return false;
 	}
 
-	public boolean isAccessGranted(String username, String string) {
+	public boolean isAccessGranted(String username, SecurityRight sr) {
 		
 
 		if (!isActive())
@@ -339,8 +333,8 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 
 		if (this.MainUser.equals(username))
 			return true;
-
-		if (RemoteInventory(username, string))
+		
+		if (RemoteInventory(username, sr))
 			return true;
 
 		return false;
@@ -373,6 +367,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 		NetworkedFields.add("active");
 		NetworkedFields.add("SecurtyStation_ID");
 		NetworkedFields.add("MainUser");
+		NetworkedFields.add("stationname");
 
 		return NetworkedFields;
 	}
@@ -387,69 +382,44 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines implements
 	}
 
 
-	public boolean getLinkOption(String flag) {
-
-		if (flag.contains("(FFB)"))
-			return getRights(0);
-
-		if (flag.contains("(EB)"))
-			return getRights(1);
-
-		if (flag.contains("(CSR)"))
-			return getRights(2);
-
-		if (flag.contains("(SR)"))
-			return getRights(3);
-
-		if (flag.contains("(OSS)"))
-			return getRights(4);
-		
-		if (flag.contains("(RPB)"))
-			return getRights(5);
-		
-		if (flag.contains("(AAI)"))
-			return getRights(6);
-
-		return false;
-	}
-	
 
 	@Override
-	public void onNetworkHandlerEvent(String flag) {
+	public void onNetworkHandlerEvent(int key,String value) {
 		
+		switch(key){
+		case 0:
+			
+			if (getStackInSlot(1) != null) {
+				SecurityRight sr = SecurityRight.rights.get(value);
+				if (sr != null && getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
+					ItemCardPersonalID.setRight(getStackInSlot(1), sr, !ItemCardPersonalID.hasRight(getStackInSlot(1), sr));
 
-		if (getStackInSlot(1) != null) {
-			if (getStackInSlot(1).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
-				ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(1)
-						.getItem();
-
-				if (flag.contains("(FFB)"))
-					Card.setlegitimac(getStackInSlot(1), "FFB", !getRights(0));
-				if (flag.contains("(EB)"))
-					Card.setlegitimac(getStackInSlot(1), "EB", !getRights(1));
-				if (flag.contains("(CSR)"))
-					Card.setlegitimac(getStackInSlot(1), "CSR", !getRights(2));
-				if (flag.contains("(SR)"))
-					Card.setlegitimac(getStackInSlot(1), "SR", !getRights(3));
-				if (flag.contains("(OSS)"))
-					Card.setlegitimac(getStackInSlot(1), "OSS", !getRights(4));
-				if (flag.contains("(RPB)"))
-					Card.setlegitimac(getStackInSlot(1), "RPB", !getRights(5));
-				if (flag.contains("(AAI)"))
-					Card.setlegitimac(getStackInSlot(1), "AAI", !getRights(6));
-
+				}
 			}
+			
+		break;
+		case 1:
+			setStationname("");
+		break;
+		case 2:
+			if(stationname.length()<=20)
+			setStationname(getStationname()+value);
+		break;
+		case 3:
+			setStationname(stationname.substring(0, stationname.length()-1));
+			
+		break;	
+		
 		}
-
 	}
+	
+	public ItemStack getModCardStack(){
+     if (getStackInSlot(1) != null){
+      return getStackInSlot(1);
+     }
+      return null;
+    }
 
-	public boolean getRights(int a) {
-		return rights[a];
-	}
-
-	public void setRights(int a, boolean b) {
-		this.rights[a] = b;
-	}
 
 	@Override
 	public int getSlotStackLimit(int slt) {

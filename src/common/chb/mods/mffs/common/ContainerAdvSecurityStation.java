@@ -29,7 +29,6 @@ import net.minecraft.src.Slot;
 public class ContainerAdvSecurityStation extends Container {
 	private TileEntityAdvSecurityStation SecStation;
 	private EntityPlayer player;
-	private boolean rights[]= { false, false, false, false, false,false,false};
 
 	public ContainerAdvSecurityStation(EntityPlayer player,
 			TileEntityAdvSecurityStation tileentity) {
@@ -37,30 +36,28 @@ public class ContainerAdvSecurityStation extends Container {
 		this.player = player;
 
 		
-		addSlotToContainer(new SlotHelper(SecStation, 0, -27, 2)); // MasterCard
-		addSlotToContainer(new SlotHelper(SecStation, 1, -20, 60)); //  Coder Coder
+		addSlotToContainer(new SlotHelper(SecStation, 0, 13, 27)); // MasterCard
+		addSlotToContainer(new SlotHelper(SecStation, 1, 20, 85)); // Coder
 
 		int var3;
 		int var4;
 		
-		
 		for (var3 = 0; var3 < 9; ++var3) {
 			for (var4 = 0; var4 < 4; ++var4) {
 				this.addSlotToContainer(new SlotHelper(SecStation, (var4 + var3 * 4)+2,
-						136 + var4 * 18, 1 + var3 * 18));
+						176 + var4 * 18, 26 + var3 * 18));
 			}
 		}
-
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for ( var4 = 0; var4 < 9; ++var4) {
 				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						-32 + var4 * 18, 109 + var3 * 18));
+						8 + var4 * 18, 134 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, -32 + var3 * 18, 167));
+			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 192));
 		}
 	}
 
@@ -93,52 +90,45 @@ public class ContainerAdvSecurityStation extends Container {
 		return itemstack;
 	}
 	
+//	
+//	
+//	@Override
+//	public void updateCraftingResults() {
+//		super.updateCraftingResults();
+//
+//		for (int i = 0; i < crafters.size(); i++) {
+//			ICrafting icrafting = (ICrafting) crafters.get(i);
+//
+//
+//			for(int a = 0; a< 7 ;a++)
+//			{
+//			if (rights[a] != SecStation.getRights(a)) {
+//				if(SecStation.getRights(a))
+//				{
+//					icrafting.sendProgressBarUpdate(this, a, 1);
+//				}else{
+//					icrafting.sendProgressBarUpdate(this, a, 0);
+//				}
+//			}
+//
+//			}
+//			
+//		}
+//		
+//	for(int a = 0; a< 7 ;a++)
+//	{
+//		rights[a] = SecStation.getRights(a);
+//	}
+//	
+//	}
+//	
+//	@Override
+//	public void updateProgressBar(int i, int j) {
+//		
+//		if(j==1){SecStation.setRights(i,true);}
+//		else{SecStation.setRights(i,false);}
+//		
+//	}
 	
-	
-	@Override
-	public void updateCraftingResults() {
-		super.updateCraftingResults();
 
-		for (int i = 0; i < crafters.size(); i++) {
-			ICrafting icrafting = (ICrafting) crafters.get(i);
-
-
-			for(int a = 0; a< 7 ;a++)
-			{
-			if (rights[a] != SecStation.getRights(a)) {
-				if(SecStation.getRights(a))
-				{
-					icrafting.sendProgressBarUpdate(this, a, 1);
-				}else{
-					icrafting.sendProgressBarUpdate(this, a, 0);
-				}
-			}
-
-			}
-			
-		}
-		
-	for(int a = 0; a< 7 ;a++)
-	{
-		rights[a] = SecStation.getRights(a);
-	}
-	
-	}
-	
-	@Override
-	public void updateProgressBar(int i, int j) {
-		
-		if(j==1){SecStation.setRights(i,true);}
-		else{SecStation.setRights(i,false);}
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

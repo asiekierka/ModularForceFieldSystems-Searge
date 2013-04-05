@@ -20,43 +20,62 @@
 
 package chb.mods.mffs.common;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class Versioninfo {
-	      private static boolean create;
-		  private static String Major;
-		  private static String Minor;
-		  private static String Revision;
-		  private static String betabuild;
 
-		  public static final String version() {
-			    if (!create) {
-			    create();
-			    }
-			    return Major+"."+Minor+"."+Revision+"."+betabuild;
-			  }
-
-		  private static void create() {
+		  public static String curentversion() {
 		    InputStream inputstream = Versioninfo.class.getClassLoader().getResourceAsStream("versioninfo");
 		    Properties properties = new Properties();
 
 		    if (inputstream != null) {
 		      try {
 		        properties.load(inputstream);
-		        Major = properties.getProperty("mffs.version.major.number");
-		        Minor = properties.getProperty("mffs.version.minor.number");
-		        Revision = properties.getProperty("mffs.version.revision.number");
-		        betabuild = properties.getProperty("mffs.version.betabuild.number");
+		        String Major = properties.getProperty("mffs.version.major.number");
+		        String Minor = properties.getProperty("mffs.version.minor.number");
+		        String Revision = properties.getProperty("mffs.version.revision.number");
+		        String betabuild = properties.getProperty("mffs.version.betabuild.number");
+		        
+		        return Major+"."+Minor+"."+Revision+"."+betabuild;
+		        
 		      } catch (IOException ex) {
-		        FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, " Modual ForceField System V2 broken Installation detected!", ex);
-		        throw new RuntimeException(ex);
+		        FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, "[Modual ForceField System] cannot read local Version file!", ex);
 		      }
 		    }
-		    create = true;
+			return 0+"."+0+"."+0+"."+0;
 		  }
+
+		public static String newestversion() {
+			
+			Properties properties = new Properties();
+			 try {
+			
+			URL versionFile = new URL("https://raw.github.com/Thunderdark/ModularForceFieldSystem/master/src/common/versioninfo");
+			InputStreamReader inputstream = new InputStreamReader(versionFile.openStream());
+			
+			if (inputstream != null) {
+				
+		        properties.load(inputstream);
+		        String Major = properties.getProperty("mffs.version.major.number");
+		        String Minor = properties.getProperty("mffs.version.minor.number");
+		        String Revision = properties.getProperty("mffs.version.revision.number");
+		        String betabuild = properties.getProperty("mffs.version.betabuild.number");
+		        
+		        return Major+"."+Minor+"."+Revision+"."+betabuild;	
+			}
+			
+		     } catch (Exception ex) {
+			        FMLCommonHandler.instance().getFMLLogger().log(Level.SEVERE, "[Modual ForceField System] cannot read remote Version file!", ex);
+			 }
+			
+			 return 0+"."+0+"."+0+"."+0;
+		}
 		}

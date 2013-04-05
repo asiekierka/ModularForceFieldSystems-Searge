@@ -337,7 +337,7 @@ public static Packet requestInitialData(TileEntity tileEntity,boolean senddirekt
 }
 
 
-public static void fireTileEntityEvent(TileEntity tileEntity,String event){
+public static void fireTileEntityEvent(TileEntity tileEntity,int key ,String vaule){
 	
 	
 	if(tileEntity instanceof INetworkHandlerEventListener)
@@ -361,7 +361,8 @@ public static void fireTileEntityEvent(TileEntity tileEntity,String event){
 			dos.writeInt(z);
 			dos.writeInt(typ);
 			dos.writeInt(Dimension);
-			dos.writeUTF(event);
+			dos.writeInt(key);
+			dos.writeUTF(vaule);
 		
 			} catch (Exception e) {
 				if(DEBUG)

@@ -46,32 +46,32 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
+import chb.mods.mffs.api.IPowerLinkItem;
+import chb.mods.mffs.api.ISwitchabel;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
 
-public class TileEntityConverter extends TileEntityMachines implements
+public class TileEntityConverter extends TileEntityFEPoweredMachine implements
 		INetworkHandlerListener, INetworkHandlerEventListener,ISwitchabel,
 		IEnergySource {
 	private ItemStack inventory[];
 	private boolean create;
 	private int Converter_ID;
-	private int capacity;
-	private boolean linkGenerator;
 	private int SwitchTyp;
 	private boolean OnOffSwitch;
 	private int output;
 	private boolean addedToEnergyNet;
 	private boolean Industriecraftfound = true;
 	private int linkPower;
+	private int capacity;
 
 	public TileEntityConverter() {
 		inventory = new ItemStack[4];
 		create = true;
 		Converter_ID = 0;
-		capacity = 0;
-		linkGenerator = false;
 		SwitchTyp = 0;
+		capacity =0;
 		OnOffSwitch = false;
 		output = 1;
 		addedToEnergyNet = false;
@@ -109,13 +109,24 @@ public class TileEntityConverter extends TileEntityMachines implements
 	public void setswitchtyp(int a) {
 		SwitchTyp = a;
 	}
-
-	public int getCapacity() {
-		return capacity;
+	
+	@Override
+	public boolean isSwitchabel() {
+		if(SwitchTyp==1)
+			return true;
+		return false;
 	}
 
-	public void setCapacity(int Capacity) {
-		capacity = Capacity;
+	@Override
+	public boolean getSwitchstate() {
+		return OnOffSwitch;
+	}
+
+	@Override
+	public void toogleSwitchstate() {
+		if(OnOffSwitch){
+			OnOffSwitch=false;
+		}else{ OnOffSwitch =true;}
 	}
 
 
@@ -131,21 +142,13 @@ public class TileEntityConverter extends TileEntityMachines implements
 		this.create = create;
 	}
 	
-	
-	public TileEntityCapacitor getLinkedCapacitor()
-	{
-		return ItemCardPowerLink.getLinkedCapacitor(this, 0, worldObj);
+	public int getCapacity(){
+		return capacity;
 	}
-	
 
-	
-	public int getLinkCapacitor_ID(){
-		TileEntityCapacitor cap = getLinkedCapacitor();
-		if(cap != null)
-			return cap.getCapacitor_ID();
-		return 0;	
+	public void setCapacity(int Capacity){
+		this.capacity = Capacity;
 	}
-	
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
@@ -158,28 +161,23 @@ public class TileEntityConverter extends TileEntityMachines implements
 				}
 			}
 
-			if (this.isCreate() && this.getLinkCapacitor_ID() != 0) {
+			if (this.isCreate() /*&& this.getLinkCapacitor_ID() != 0*/) {
 				addtogrid();
 				setCreate(false);
 			}
 
-			if (getLinkCapacitor_ID() != 0) {
-
-				TileEntityCapacitor remotecap = getLinkedCapacitor();
-				if(remotecap != null)
-				{
-					setCapacity(remotecap.getCapacity());
-					setLinkPower(remotecap.getForcePower());
-				}else{
-					setCapacity(0);
-					setLinkPower(0);
-				}
+			
+			if(hasPowerSource())
+			{
+				setLinkPower(getAvailablePower());
+			}else{
 				
-			} else {
-				setCapacity(0);
 				setLinkPower(0);
 			}
+			
 
+
+			
 			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
 					yCoord, zCoord);
 			boolean powerindrekt = worldObj.isBlockIndirectlyGettingPowered(
@@ -188,11 +186,11 @@ public class TileEntityConverter extends TileEntityMachines implements
 			if (getswitchtyp() == 0)
 				setOnOffSwitch(powerdirekt || powerindrekt);
 
-			if (getOnOffSwitch() &&  getLinkedCapacitor()!= null
+			if (getOnOffSwitch() &&   hasPowerSource()
 					&& !isActive())
 				setActive(true);
 
-			if ((!getOnOffSwitch() || getLinkCapacitor_ID()==0) && isActive())
+			if ((!getOnOffSwitch() || !hasPowerSource()) && isActive())
 				setActive(false);
 
 			if (isActive())
@@ -331,7 +329,7 @@ public class TileEntityConverter extends TileEntityMachines implements
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 	@Override
-	public void onNetworkHandlerEvent(String event) {
+	public void onNetworkHandlerEvent(int key,String event) {
 		
 	
 		if (Integer.parseInt(event) == 0) {
@@ -387,18 +385,15 @@ public class TileEntityConverter extends TileEntityMachines implements
 	}
 
 	public void Emitpower() {
-		if (Industriecraftfound) {
+		if (Industriecraftfound && hasPowerSource()) {
 			
-			TileEntityCapacitor remotecap = getLinkedCapacitor();
-			if(remotecap != null)
+			if(usePower((ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000) * getOutput(), true))
 			{
-				if (remotecap.getForcePower() >= (ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000)* getOutput()) {
+				int a = EnergyNet.getForWorld(worldObj).emitEnergyFrom(((IEnergySource) (this)), getOutput());
+				usePower((ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000) * getOutput(), false);
 				
-					int a = EnergyNet.getForWorld(worldObj).emitEnergyFrom(((IEnergySource) (this)), getOutput());
-					remotecap.consumForcePower((ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000)* (getOutput()-a));
-					
-				}
 			}
+			
 						
 		}
 	}
@@ -447,7 +442,7 @@ public class TileEntityConverter extends TileEntityMachines implements
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
 		switch (Slot) {
 		case 0:
-			if (!(par1ItemStack.getItem() instanceof ItemCardPowerLink))
+			if (!(par1ItemStack.getItem() instanceof IPowerLinkItem))
 				return false;
 			break;
 		}
@@ -459,4 +454,15 @@ public class TileEntityConverter extends TileEntityMachines implements
 	public int getSlotStackLimit(int Slot){
 		return 1;
 	}
+
+	@Override
+	public ItemStack getPowerLinkStack() {
+		 return this.getStackInSlot(getPowerlinkSlot());
+	}
+
+	@Override
+	public int getPowerlinkSlot() {
+		return 0;
+	}
+	
 }

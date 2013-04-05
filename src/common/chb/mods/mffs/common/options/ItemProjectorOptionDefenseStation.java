@@ -22,10 +22,11 @@ package chb.mods.mffs.common.options;
 
 import java.util.List;
 
+import chb.mods.mffs.api.PointXYZ;
+import chb.mods.mffs.api.security.SecurityRight;
 import chb.mods.mffs.common.Functions;
 import chb.mods.mffs.common.Linkgrid;
 import chb.mods.mffs.common.ModularForceFieldSystem;
-import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.TileEntityAdvSecurityStation;
 import chb.mods.mffs.common.TileEntityCapacitor;
 import chb.mods.mffs.common.TileEntityProjector;
@@ -103,7 +104,7 @@ public class ItemProjectorOptionDefenseStation extends ItemProjectorOptionBase  
 
 									if(SecurityStation != null)
 									{
-									killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,"SR");
+									killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,SecurityRight.SR);
 									}
 									}
 								}
@@ -112,7 +113,7 @@ public class ItemProjectorOptionDefenseStation extends ItemProjectorOptionBase  
 									TileEntityAdvSecurityStation SecurityStation = projector.getLinkedSecurityStation();
 									if(SecurityStation != null)
 									{
-									killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,"SR");
+									killswitch = !SecurityStation.isAccessGranted(((EntityPlayer)entityLiving).username,SecurityRight.SR);
 									}
 								}
 

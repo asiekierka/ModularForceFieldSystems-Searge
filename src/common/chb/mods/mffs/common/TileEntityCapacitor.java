@@ -44,6 +44,7 @@ import net.minecraftforge.common.ISidedInventory;
 
 import chb.mods.mffs.api.IForceEnergyItems;
 import chb.mods.mffs.api.IForceEnergyCapacitor;
+import chb.mods.mffs.api.ISwitchabel;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.INetworkHandlerListener;
 import chb.mods.mffs.network.NetworkHandlerClient;
@@ -124,6 +125,26 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	   this.SwitchTyp = a;
 	}
 
+	
+	@Override
+	public boolean isSwitchabel() {
+		if(SwitchTyp==1)
+			return true;
+		return false;
+	}
+
+	@Override
+	public boolean getSwitchstate() {
+		return OnOffSwitch;
+	}
+
+	@Override
+	public void toogleSwitchstate() {
+		if(OnOffSwitch){
+			OnOffSwitch=false;
+		}else{ OnOffSwitch =true;}
+	}
+	
 	@Override
 	public int getCapacity(){
 		return capacity;
@@ -238,10 +259,10 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 				{
 				case 3:
 				
-				if(ForceEnergyItem.getForceEnergy(getStackInSlot(2)) < ForceEnergyItem.getMaxForceEnergy())
+				if(ForceEnergyItem.getAvailablePower(getStackInSlot(2)) < ForceEnergyItem.getMaximumPower(null))
 				{
-					int maxtransfer = ForceEnergyItem.getforceEnergyTransferMax();
-					int freeeamount = ForceEnergyItem.getMaxForceEnergy() - ForceEnergyItem.getForceEnergy(getStackInSlot(2));
+					int maxtransfer = ForceEnergyItem.getPowerTransferrate();
+					int freeeamount = ForceEnergyItem.getMaximumPower(null) - ForceEnergyItem.getAvailablePower(getStackInSlot(2));
 
 					if(this.getForcePower() > 0)
 					{
@@ -249,19 +270,19 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 					  {
 						    if(freeeamount > maxtransfer)
 						    {
-						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+maxtransfer);
+						    	ForceEnergyItem.setAvailablePower(getStackInSlot(2), ForceEnergyItem.getAvailablePower(getStackInSlot(2))+maxtransfer);
 				                this.setForcePower(this.getForcePower() - maxtransfer);
 						    }else{
-						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
+						    	ForceEnergyItem.setAvailablePower(getStackInSlot(2), ForceEnergyItem.getAvailablePower(getStackInSlot(2))+freeeamount);
 				                this.setForcePower(this.getForcePower() - freeeamount);
 						    }
 					  }else{
 						    if(freeeamount > this.getForcePower())
 						    {
-						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+this.getForcePower());
+						    	ForceEnergyItem.setAvailablePower(getStackInSlot(2), ForceEnergyItem.getAvailablePower(getStackInSlot(2))+this.getForcePower());
 				                this.setForcePower(this.getForcePower() - this.getForcePower());
 						    }else{
-						    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))+freeeamount);
+						    	ForceEnergyItem.setAvailablePower(getStackInSlot(2), ForceEnergyItem.getAvailablePower(getStackInSlot(2))+freeeamount);
 				                this.setForcePower(this.getForcePower() - freeeamount);
 						    }
 					  }
@@ -273,29 +294,29 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 				break;
 				case 4:
 					
-					if(ForceEnergyItem.getForceEnergy(getStackInSlot(2)) > 0)
+					if(ForceEnergyItem.getAvailablePower(getStackInSlot(2)) > 0)
 					{
 						
-						int maxtransfer = ForceEnergyItem.getforceEnergyTransferMax();
+						int maxtransfer = ForceEnergyItem.getPowerTransferrate();
 						int freeeamount = this.getMaxForcePower() - this.getForcePower();
-						int amountleft = ForceEnergyItem.getForceEnergy(getStackInSlot(2));
+						int amountleft = ForceEnergyItem.getAvailablePower(getStackInSlot(2));
 						
 
 							if(freeeamount >= amountleft)
 							{
 								if(amountleft >= maxtransfer)
 								{
-							    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-maxtransfer);
+							    	ForceEnergyItem.setAvailablePower(getStackInSlot(2), ForceEnergyItem.getAvailablePower(getStackInSlot(2))-maxtransfer);
 					                this.setForcePower(this.getForcePower() + maxtransfer);	
 								}else{
 					
-							    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-amountleft);
+							    	ForceEnergyItem.setAvailablePower(getStackInSlot(2), ForceEnergyItem.getAvailablePower(getStackInSlot(2))-amountleft);
 					                this.setForcePower(this.getForcePower() + amountleft);
 								}
 								
 						     }else{
 						    	
-							    	ForceEnergyItem.setForceEnergy(getStackInSlot(2), ForceEnergyItem.getForceEnergy(getStackInSlot(2))-freeeamount);
+							    	ForceEnergyItem.setAvailablePower(getStackInSlot(2), ForceEnergyItem.getAvailablePower(getStackInSlot(2))-freeeamount);
 					                this.setForcePower(this.getForcePower() + freeeamount);
 						    	 
 				
@@ -558,7 +579,7 @@ INetworkHandlerEventListener,INetworkHandlerListener,ISwitchabel{
 	}
 
 	@Override
-	public void onNetworkHandlerEvent(String event) {
+	public void onNetworkHandlerEvent(int key,String event) {
 		
 		
 		switch(Integer.parseInt(event))

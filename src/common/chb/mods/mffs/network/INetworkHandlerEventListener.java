@@ -26,5 +26,5 @@ import net.minecraft.src.EntityPlayer;
 
 public interface INetworkHandlerEventListener {
 
-public void onNetworkHandlerEvent(String name);
+public void onNetworkHandlerEvent(int key,String value);
 }

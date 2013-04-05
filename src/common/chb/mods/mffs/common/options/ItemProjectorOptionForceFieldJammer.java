@@ -23,8 +23,8 @@ package chb.mods.mffs.common.options;
 import java.util.List;
 import java.util.Map;
 
+import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.Linkgrid;
-import chb.mods.mffs.common.PointXYZ;
 import chb.mods.mffs.common.TileEntityProjector;
 
 import net.minecraft.src.CreativeTabs;

@@ -21,20 +21,15 @@
 
  */
 
-package chb.mods.mffs.common;
+package chb.mods.mffs.api.security;
 
-import net.minecraft.src.ItemStack;
+import net.minecraft.src.World;
+import chb.mods.mffs.api.PointXYZ;
 
-public interface IForceEnergyItems {
-	
-	int getforceEnergyTransferMax();
+public interface ISecurityProvider {
 
-	int getItemDamage(ItemStack itemStack);
-
-	int getMaxForceEnergy();
-
-	void setForceEnergy(ItemStack itemStack, int ForceEnergy);
-
-	int getForceEnergy(ItemStack itemstack);
+	public boolean keyHasRights(String key, SecurityRight sr);
+	public PointXYZ getPosition();
+	public World getWorldObj();
 	
 }

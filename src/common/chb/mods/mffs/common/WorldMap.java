@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import chb.mods.mffs.api.PointXYZ;
+
 import net.minecraft.src.World;
 
 public final class WorldMap {

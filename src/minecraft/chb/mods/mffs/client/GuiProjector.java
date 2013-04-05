@@ -66,7 +66,7 @@ public class GuiProjector extends GuiContainer {
 				drawTexturedModalRect(w + 155, k + 43, 177, 143, 16, 16);
 			}
 
-			if (ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 1 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 2 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 6|| ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 7) {
+			if (ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 1 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 2 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 6|| ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 7 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 8) {
 				drawTexturedModalRect(w + 137, k + 8, 177, 143, 16, 16);
 
 				drawTexturedModalRect(w + 137, k + 42, 177, 143, 16, 16);
@@ -83,7 +83,7 @@ public class GuiProjector extends GuiContainer {
 	}
 
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandlerClient.fireTileEntityEvent(projector, String.valueOf(guibutton.id));
+		NetworkHandlerClient.fireTileEntityEvent(projector,0, String.valueOf(guibutton.id));
 	}
 
 	public void initGui() {

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import chb.mods.mffs.api.PointXYZ;
+
 public class ForceFieldBlockStack {
 	private PointXYZ png;
 	private boolean sync;

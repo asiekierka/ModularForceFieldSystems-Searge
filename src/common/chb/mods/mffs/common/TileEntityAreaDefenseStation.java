@@ -20,6 +20,10 @@
 
 package chb.mods.mffs.common;
 
+import chb.mods.mffs.api.IPowerLinkItem;
+import chb.mods.mffs.api.ISwitchabel;
+import chb.mods.mffs.api.PointXYZ;
+import chb.mods.mffs.api.security.SecurityRight;
 import chb.mods.mffs.common.IModularProjector.Slots;
 import chb.mods.mffs.common.options.ItemProjectorOptionDefenseStation;
 import chb.mods.mffs.common.options.ItemProjectorOptionMobDefence;
@@ -58,11 +62,10 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 
-public class TileEntityAreaDefenseStation extends TileEntityMachines implements
+public class TileEntityAreaDefenseStation extends TileEntityFEPoweredMachine implements
 ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel {
 	private ItemStack Inventory[];
 	private int Defstation_ID;
-	private int linkPower;
 	private int capacity;
 	private boolean create;
 	private int distance;
@@ -82,7 +85,6 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 		Inventory = new ItemStack[36];
 		Defstation_ID = 0;
-		linkPower = 0;
 		capacity = 0;
 		create = true;
 		SwitchTyp = 0;
@@ -139,6 +141,25 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		SwitchTyp = a;
 	}
 	
+	@Override
+	public boolean isSwitchabel() {
+		if(SwitchTyp==1)
+			return true;
+		return false;
+	}
+
+	@Override
+	public boolean getSwitchstate() {
+		return OnOffSwitch;
+	}
+
+	@Override
+	public void toogleSwitchstate() {
+		if(OnOffSwitch){
+			OnOffSwitch=false;
+		}else{ OnOffSwitch =true;}
+	}
+	
 	public int getCapacity(){
 		return capacity;
 	}
@@ -157,17 +178,6 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	}
 
 
-	public int getLinkPower() {
-		return linkPower;
-	}
-
-	public void setLinkPower(int linkPower) {
-		this.linkPower = linkPower;
-	}
-	
-
-
-	
 	
 	public int getActionDistance() {
 	if (getStackInSlot(3) != null) {
@@ -207,19 +217,6 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		return 0;	
 	}
 	
-	
-	public TileEntityCapacitor getLinkedCapacitor()
-	{
-		return ItemCardPowerLink.getLinkedCapacitor(this, 0, worldObj);
-	}
-	
-	
-	public int getLinkCapacitor_ID(){
-		TileEntityCapacitor cap = getLinkedCapacitor();
-		if(cap != null)
-			return cap.getCapacitor_ID();
-		return 0;	
-	}
 
 
 	// End Getter AND Setter
@@ -333,9 +330,9 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			if(!warnlist.contains(player))
 			{
 				warnlist.add(player);
-				if(!sec.isAccessGranted(player.username, "SR"))
+				if(!sec.isAccessGranted(player.username, SecurityRight.SR))
 				{
-				player.addChatMessage("!!! [Area Defence] Warning you now in my Scanning range !!!");
+				player.addChatMessage("!!! [Security Station]["+sec.getStationname()+"] Warning you now in me Scanning range!!!");
 				player.attackEntityFrom(DamageSource.generic,1);
 				}
 
@@ -474,20 +471,19 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		if(Living instanceof EntityPlayer)
 			return;
 		
-		TileEntityCapacitor cap = this.getLinkedCapacitor();
 		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
 		
-		if(cap!=null)
+		if(hasPowerSource())
 		{
 		
 		if(sec!=null)
 		{
-		if(cap.getForcePower() > ModularForceFieldSystem.DefenceStationKillForceEnergy)
+		if(this.usePower(ModularForceFieldSystem.DefenceStationKillForceEnergy, true));
 		{
 		switch(getActionmode())
 		{
 		case 3: //all
-			cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
+			usePower(ModularForceFieldSystem.DefenceStationKillForceEnergy, false);
 			Living.setEntityHealth(0);
 			NPClist.remove(Living);
 			break;
@@ -495,7 +491,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			if(Living instanceof EntityMob || Living instanceof EntitySlime || Living instanceof EntityGhast){
 				Living.setEntityHealth(0);
 				NPClist.remove(Living);
-				cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
+				usePower(ModularForceFieldSystem.DefenceStationKillForceEnergy, false);
 			}
 			
 			break;
@@ -504,7 +500,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			if(!(Living instanceof EntityMob) && !(Living instanceof EntitySlime) && !(Living instanceof EntityGhast)){
 				Living.setEntityHealth(0);	
 				NPClist.remove(Living);
-				cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
+				usePower(ModularForceFieldSystem.DefenceStationKillForceEnergy, false);
 			}
 			break;
 		}
@@ -515,11 +511,9 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 	public void DefenceAction(EntityPlayer player){
 		
-	
-		TileEntityCapacitor cap = this.getLinkedCapacitor();
 		TileEntityAdvSecurityStation sec = 	getLinkedSecurityStation();
 		
-		if(cap!=null)
+		if(hasPowerSource())
 		{
 		
 		if(sec!=null)
@@ -528,7 +522,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		switch(getActionmode())
 		{
 		case 0: // Inform
-			if(!sec.isAccessGranted(player.username, "SR"))
+			if(!sec.isAccessGranted(player.username, SecurityRight.SR))
 			{
 				player.addChatMessage("!!! [Area Defence]  get out immediately you have no right to be here!!!");
 			}
@@ -536,9 +530,9 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		break;
 		case 1: // kill
 			
-				if(cap.getForcePower() > ModularForceFieldSystem.DefenceStationKillForceEnergy)
+				if(usePower(ModularForceFieldSystem.DefenceStationKillForceEnergy, true))
 				{
-					if(!sec.isAccessGranted(player.username, "SR"))
+					if(!sec.isAccessGranted(player.username, SecurityRight.SR))
 					{
 						player.addChatMessage("!!! [Area Defence] you have been warned BYE BYE!!!");
 					
@@ -560,7 +554,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 						
 						actionlist.remove(player);
 						player.setEntityHealth(0);
-						cap.consumForcePower(ModularForceFieldSystem.DefenceStationKillForceEnergy);
+						usePower(ModularForceFieldSystem.DefenceStationKillForceEnergy, false);
 					}
 					
 				}
@@ -571,9 +565,9 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		case 2: // search
 			
 			
-			if(cap.getForcePower() > ModularForceFieldSystem.DefenceStationSearchForceEnergy)
+			if(usePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy, true))
 			{
-				if(!sec.isAccessGranted(player.username, "AAI"))
+				if(!sec.isAccessGranted(player.username, SecurityRight.AAI))
 				{
 					
 				   player.addChatMessage("!!! [Area Defence] You  are searched for illegal goods!!!");
@@ -601,7 +595,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 								{	
 									StacksToInventory(this,player.inventory.armorInventory[i],true);
 									player.inventory.armorInventory[i]=null;
-							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
+									usePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy, false);
 								}
 							}
 						}
@@ -615,7 +609,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 								{	
 									StacksToInventory(this,player.inventory.mainInventory[i],true);
 									player.inventory.mainInventory[i]=null;
-							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
+									usePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy, false);
 								}
 							}
 						}
@@ -632,7 +626,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 								{	
 									StacksToInventory(this,player.inventory.armorInventory[i],true);
 									player.inventory.armorInventory[i]=null;
-							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
+									usePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy, false);
 								}
 							}
 						}
@@ -645,7 +639,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 								{	
 									StacksToInventory(this,player.inventory.mainInventory[i],true);
 									player.inventory.mainInventory[i]=null;
-							        cap.consumForcePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy);
+									usePower(ModularForceFieldSystem.DefenceStationSearchForceEnergy, false);
 								}
 							}
 						}
@@ -667,28 +661,21 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
-			if (this.isCreate() && this.getLinkCapacitor_ID() != 0) {
+			if (this.isCreate() /*&& this.getLinkCapacitor_ID() != 0*/) {
 				addtogrid();
 				this.setCreate(false);
 			}
 
-			if (getLinkCapacitor_ID() != 0) {
-
-				TileEntityCapacitor remotecap = getLinkedCapacitor();
-				if(remotecap != null)
-				{
-					setCapacity(remotecap.getCapacity());
-					setLinkPower(remotecap.getForcePower());
-				}else{
-					setCapacity(0);
-					setLinkPower(0);
-				}
-				
-			} else {
-				setCapacity(0);
-				setLinkPower(0);
-			}
-
+//			if(hasPowerSource())
+//			{
+//				if(getMaximumPower()>0)
+//				setCapacity(((getAvailablePower()/1000)*100)/(getMaximumPower()/1000));
+//			}else{
+//				
+//				if(this.getCapacity()!=0)
+//				setCapacity(0);
+//			}
+			
 			
 			boolean powerdirekt = worldObj.isBlockGettingPowered(xCoord,
 					yCoord, zCoord);
@@ -698,11 +685,11 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 			if (getswitchtyp() == 0)
 				setOnOffSwitch(powerdirekt || powerindrekt);
 
-			if (getOnOffSwitch() &&  getLinkedCapacitor()!= null && getLinkedSecurityStation()!=null
+			if (getOnOffSwitch() &&  hasPowerSource() && getLinkedSecurityStation()!=null
 					&& !isActive())
 				setActive(true);
 
-			if ((!getOnOffSwitch() || getLinkedCapacitor()==null || getLinkedSecurityStation()==null) && isActive())
+			if ((!getOnOffSwitch() ||  !hasPowerSource() || getLinkedSecurityStation()==null) && isActive())
 				setActive(false);
 
 
@@ -803,7 +790,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 	}
 
 	@Override
-	public void onNetworkHandlerEvent(String event) {
+	public void onNetworkHandlerEvent(int key,String event) {
 		
 		if(!this.isActive()){
 		
@@ -864,7 +851,7 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		switch(Slot)
 		{
 		case 0:
-		     if(par1ItemStack.getItem() instanceof ItemCardPowerLink)
+		     if(par1ItemStack.getItem() instanceof IPowerLinkItem)
 	        	return true;
 		break;
 		case 1:
@@ -908,4 +895,15 @@ ISidedInventory,INetworkHandlerListener,INetworkHandlerEventListener,ISwitchabel
 		
 		return 64;
 	}
+
+	@Override
+	public ItemStack getPowerLinkStack() {
+		 return this.getStackInSlot(getPowerlinkSlot());
+	}
+
+	@Override
+	public int getPowerlinkSlot() {
+		return 0;
+	}
+
 }
