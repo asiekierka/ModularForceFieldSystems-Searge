@@ -32,7 +32,6 @@ import net.minecraftforge.common.ForgeDirection;
 import chb.mods.mffs.api.IForceEnergyItems;
 import chb.mods.mffs.api.IForceEnergyStorageBlock;
 import chb.mods.mffs.api.IPowerLinkItem;
-import chb.mods.mffs.api.ISwitchabel;
 import chb.mods.mffs.common.Linkgrid;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.container.ContainerCapacitor;
@@ -40,7 +39,6 @@ import chb.mods.mffs.common.item.ItemCapacitorUpgradeCapacity;
 import chb.mods.mffs.common.item.ItemCapacitorUpgradeRange;
 import chb.mods.mffs.common.item.ItemCardSecurityLink;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
-import chb.mods.mffs.network.client.NetworkHandlerClient;
 import chb.mods.mffs.network.server.NetworkHandlerServer;
 import dan200.computer.api.IComputerAccess;
 import dan200.computer.api.IPeripheral;
@@ -102,6 +100,7 @@ INetworkHandlerEventListener,IForceEnergyStorageBlock,IPeripheral{
 		}
 	}
 
+	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerCapacitor(inventoryplayer.player, this);
 	}
@@ -128,10 +127,12 @@ INetworkHandlerEventListener,IForceEnergyStorageBlock,IPeripheral{
 	}
 
 
+	@Override
 	public int getSizeInventory() {
 		return inventory.length;
 	}
 	
+	@Override
 	public TileEntityAdvSecurityStation getLinkedSecurityStation()
 	{
 		return ItemCardSecurityLink.getLinkedSecurityStation(this, 4, worldObj);
@@ -273,6 +274,7 @@ INetworkHandlerEventListener,IForceEnergyStorageBlock,IPeripheral{
 
 	}
 
+	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a,this);
@@ -286,6 +288,7 @@ INetworkHandlerEventListener,IForceEnergyStorageBlock,IPeripheral{
 		super.invalidate();
 	}
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 
@@ -305,6 +308,7 @@ INetworkHandlerEventListener,IForceEnergyStorageBlock,IPeripheral{
 		}
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
@@ -325,6 +329,7 @@ INetworkHandlerEventListener,IForceEnergyStorageBlock,IPeripheral{
 	}
 
 
+	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 
@@ -441,11 +446,13 @@ INetworkHandlerEventListener,IForceEnergyStorageBlock,IPeripheral{
 		
 	}
 
+	@Override
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
 
 
+	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {
@@ -463,6 +470,7 @@ INetworkHandlerEventListener,IForceEnergyStorageBlock,IPeripheral{
 		}
 	}
 
+	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
@@ -470,6 +478,7 @@ INetworkHandlerEventListener,IForceEnergyStorageBlock,IPeripheral{
 		}
 	}
 
+	@Override
 	public String getInvName() {
 		return "Generator";
 	}

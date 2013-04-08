@@ -1,13 +1,8 @@
 package chb.mods.mffs.network.client;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
-import com.google.common.collect.MapMaker;
-
-import net.minecraft.world.World;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;

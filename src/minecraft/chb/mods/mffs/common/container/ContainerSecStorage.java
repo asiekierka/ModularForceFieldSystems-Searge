@@ -64,6 +64,7 @@ public class ContainerSecStorage extends Container {
     	return player;
     }
 
+	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return SecStorage.isUseableByPlayer(entityplayer);
 	}

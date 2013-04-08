@@ -4,11 +4,11 @@ package chb.mods.mffs.common.event;
 import net.minecraftforge.event.ForgeSubscribe;
 import chb.mods.mffs.common.ForceFieldOptions;
 
-import com.pahimar.ee3.event.ActionRequestEvent;
+//import com.pahimar.ee3.event.ActionRequestEvent;
 
 
 public class EE3Event {
-
+/*
     @ForgeSubscribe
     public void onModActionEvent(ActionRequestEvent event) {
 
@@ -19,5 +19,5 @@ public class EE3Event {
     	}
     	event.setCanceled(blockprotected);    	
     }
-    
+//*/
 }

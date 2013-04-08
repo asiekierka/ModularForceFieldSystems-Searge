@@ -43,8 +43,6 @@ import chb.mods.mffs.common.item.ItemCardPersonalID;
 import chb.mods.mffs.common.item.ItemCardPowerLink;
 import chb.mods.mffs.common.item.ItemCardSecurityLink;
 import chb.mods.mffs.common.multitool.ItemDebugger;
-import chb.mods.mffs.network.INetworkHandlerEventListener;
-import chb.mods.mffs.network.client.NetworkHandlerClient;
 import chb.mods.mffs.network.server.NetworkHandlerServer;
 
 public class TileEntityAdvSecurityStation extends TileEntityMachines {
@@ -60,6 +58,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 	}
 	
 
+	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a);
@@ -98,6 +97,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		}
 	}
 
+	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerAdvSecurityStation(inventoryplayer.player, this);
 	}
@@ -109,6 +109,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		super.invalidate();
 	}
 	
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		
@@ -125,6 +126,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		}
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		
@@ -141,6 +143,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
 
+	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 
@@ -204,18 +207,22 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 	}
 
 
+	@Override
 	public int getSizeInventory() {
 		return inventory.length;
 	}
 
+	@Override
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
 
+	@Override
 	public int getInventoryStackLimit() {
 		return 1;
 	}
 
+	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {
@@ -233,6 +240,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		}
 	}
 
+	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
@@ -240,6 +248,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		}
 	}
 
+	@Override
 	public String getInvName() {
 		return "Secstation";
 	}

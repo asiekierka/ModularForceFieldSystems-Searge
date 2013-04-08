@@ -123,10 +123,12 @@ public class GuiProjector extends GuiContainer {
 		}
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		NetworkHandlerClient.fireTileEntityEvent(projector,guibutton.id,"");
 	}
 
+	@Override
 	public void initGui() {
 		controlList.add(new GraphicButton(1, (width / 2) + 4, (height / 2) - 37,projector,1));
 		controlList.add(new GraphicButton(0, (width / 2) + 67, (height / 2) -88,projector,0));

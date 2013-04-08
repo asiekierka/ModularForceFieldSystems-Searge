@@ -86,6 +86,7 @@ public class NEI_MFFS_Config implements IConfigureNEI {
 	public String getName() {
 		return "MFFS";
 	}
+	@Override
 	public String getVersion(){
 		return Versioninfo.curentversion();
 	}

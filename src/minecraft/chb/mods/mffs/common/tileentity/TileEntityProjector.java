@@ -40,7 +40,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import chb.mods.mffs.api.IPowerLinkItem;
-import chb.mods.mffs.api.ISwitchabel;
 import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.ForceFieldBlockStack;
 import chb.mods.mffs.common.ForceFieldTyps;
@@ -67,8 +66,6 @@ import chb.mods.mffs.common.options.ItemProjectorOptionFieldFusion;
 import chb.mods.mffs.common.options.ItemProjectorOptionForceFieldJammer;
 import chb.mods.mffs.common.options.ItemProjectorOptionMobDefence;
 import chb.mods.mffs.common.options.ItemProjectorOptionTouchDamage;
-import chb.mods.mffs.network.INetworkHandlerEventListener;
-import chb.mods.mffs.network.client.NetworkHandlerClient;
 import chb.mods.mffs.network.server.NetworkHandlerServer;
 
 public class TileEntityProjector extends TileEntityFEPoweredMachine implements IModularProjector{
@@ -207,6 +204,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements I
 		return burnout;
 	}
 
+	@Override
 	public void setBurnedOut(boolean b) {
 		burnout = b;
 		NetworkHandlerServer.updateTileEntityField(this, "burnout");
@@ -218,6 +216,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements I
 
 	// Start NBT Read/ Save
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 
@@ -239,6 +238,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements I
 		}
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
@@ -264,6 +264,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements I
 
 	// Start Slot / Upgrades System
 
+	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.ProjektorItemStacks.length; a++) {
 			dropplugins(a,this);
@@ -505,6 +506,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements I
 
 	// Stop Slot / Upgrades System
 
+	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
@@ -1088,6 +1090,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements I
 	}
 	
 	
+	@Override
 	public TileEntityAdvSecurityStation getLinkedSecurityStation()
 	{
 		TileEntityAdvSecurityStation sec =ItemCardSecurityLink.getLinkedSecurityStation(this, 12, worldObj);

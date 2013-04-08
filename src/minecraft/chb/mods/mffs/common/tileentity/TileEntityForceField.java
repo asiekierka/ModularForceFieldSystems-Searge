@@ -27,7 +27,6 @@ import net.minecraft.tileentity.TileEntity;
 import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.ForceFieldBlockStack;
 import chb.mods.mffs.common.Linkgrid;
-import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.WorldMap;
 import chb.mods.mffs.network.client.ForceFieldClientUpdatehandler;
 import chb.mods.mffs.network.server.ForceFieldServerUpdatehandler;
@@ -89,6 +88,7 @@ public void setTicker(int ticker) {
 	}
 
 
+	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			if (this.getTicker() >= 20) {

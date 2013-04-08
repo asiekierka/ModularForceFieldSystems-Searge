@@ -45,6 +45,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 	}
 	
 
+	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a, this);
@@ -52,6 +53,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 	}
 	
 	
+	@Override
 	public TileEntityAdvSecurityStation getLinkedSecurityStation(){
 		return ItemCardSecurityLink.getLinkedSecurityStation(this, 0, worldObj);
 	}
@@ -106,6 +108,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 
 
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
@@ -121,6 +124,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		}
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		NBTTagList nbttaglist = new NBTTagList();
@@ -137,19 +141,23 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 	}
 
 
+	@Override
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
 
+	@Override
 	public String getInvName() {
 		return "SecStation";
 	}
 	
 
+	@Override
 	public int getSizeInventory() {
 		return inventory.length;
 	}
 
+    @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.inventory[par1] = par2ItemStack;
@@ -162,6 +170,7 @@ public class TileEntitySecStorage extends TileEntityMachines implements
         this.onInventoryChanged();
     }
 
+	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {

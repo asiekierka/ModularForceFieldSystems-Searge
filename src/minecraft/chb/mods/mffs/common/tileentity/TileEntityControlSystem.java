@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -69,6 +68,7 @@ ISidedInventory {
 		super.invalidate();
 	}
 	
+	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a, this);
@@ -100,16 +100,19 @@ ISidedInventory {
 		return remote;
 	}
 	
+	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerControlSystem(inventoryplayer.player, this);
 	}
 	
 	
+	@Override
 	public TileEntityAdvSecurityStation getLinkedSecurityStation(){
 		return ItemCardSecurityLink.getLinkedSecurityStation(this, 0, worldObj);
 	}
 	
 	
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
@@ -125,6 +128,7 @@ ISidedInventory {
 		}
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		NBTTagList nbttaglist = new NBTTagList();

@@ -36,10 +36,12 @@ public class ItemProjectorFocusMatrix extends ItemMFFSBase  {
 		setMaxStackSize(64);
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/chb/mods/mffs/sprites/items.png";
 	}
 
+	@Override
 	public boolean isRepairable() {
 		return false;
 	}

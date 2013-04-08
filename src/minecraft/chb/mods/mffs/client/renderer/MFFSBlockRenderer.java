@@ -27,7 +27,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.ForgeHooksClient;
 import chb.mods.mffs.common.ForceFieldTyps;
 import chb.mods.mffs.common.ModularForceFieldSystem;
-import chb.mods.mffs.common.block.BlockMFFSBase;
 import chb.mods.mffs.common.tileentity.TileEntityForceField;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 

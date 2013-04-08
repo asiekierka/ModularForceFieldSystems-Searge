@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Configuration;
@@ -35,10 +34,9 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 
-import org.modstats.ModstatInfo;
-import org.modstats.Modstats;
+//import org.modstats.ModstatInfo;
+//import org.modstats.Modstats;
 
-import thermalexpansion.api.crafting.CraftingManagers;
 import chb.mods.mffs.common.block.BlockAdvSecurtyStation;
 import chb.mods.mffs.common.block.BlockAreaDefenseStation;
 import chb.mods.mffs.common.block.BlockCapacitor;
@@ -99,7 +97,6 @@ import chb.mods.mffs.network.server.NetworkHandlerServer;
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -118,7 +115,7 @@ import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.2.8.3.7",dependencies = "after:ThermalExpansion")
 @NetworkMod(versionBounds = "[2.2.8.3.7]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
-@ModstatInfo(prefix="mffs")
+//@ModstatInfo(prefix="mffs")
 
 public class ModularForceFieldSystem {
 	
@@ -251,7 +248,7 @@ public class ModularForceFieldSystem {
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(proxy);
 		
-		Modstats.instance().getReporter().registerMod(this);
+//		Modstats.instance().getReporter().registerMod(this);
 		
 		if(ee3found)
 		MinecraftForge.EVENT_BUS.register(new EE3Event());

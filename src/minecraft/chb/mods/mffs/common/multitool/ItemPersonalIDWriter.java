@@ -44,6 +44,7 @@ public class ItemPersonalIDWriter extends ItemMultitool{
 		super(i,2);
 	}
 
+    @Override
     public boolean onLeftClickEntity(ItemStack itemstack, EntityPlayer entityplayer, Entity entity)
     {
     	if(entity instanceof EntityPlayer)

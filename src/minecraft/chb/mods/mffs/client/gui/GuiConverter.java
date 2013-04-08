@@ -121,10 +121,12 @@ public class GuiConverter extends GuiContainer {
 	}
 	
 
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		NetworkHandlerClient.fireTileEntityEvent(Converter,guibutton.id, "null");
 	}
 
+    @Override
     public void initGui() {
     	controlList.add(new GraphicButton(0, (width / 2) + 107, (height / 2) -104,Converter,0));
     	

@@ -3,7 +3,6 @@ package chb.mods.mffs.network.server;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 

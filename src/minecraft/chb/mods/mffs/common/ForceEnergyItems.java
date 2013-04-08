@@ -36,6 +36,7 @@ public abstract class ForceEnergyItems extends ItemMFFSBase implements IForceEne
 	}
 
 
+	@Override
 	public  boolean consumePower(ItemStack itemStack, int amount,boolean simulation)
 	{
 		if (itemStack.getItem() instanceof IForceEnergyItems) {
@@ -71,6 +72,7 @@ public abstract class ForceEnergyItems extends ItemMFFSBase implements IForceEne
 	}
 	
 
+	@Override
 	public void setAvailablePower(ItemStack itemStack, int  ForceEnergy)
     {
 		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
@@ -78,6 +80,7 @@ public abstract class ForceEnergyItems extends ItemMFFSBase implements IForceEne
     }
 
    
+    @Override
     public  int getAvailablePower(ItemStack itemstack)
     {
    

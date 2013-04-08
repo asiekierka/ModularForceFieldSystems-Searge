@@ -34,6 +34,7 @@ public abstract class TileEntityFEPoweredMachine extends TileEntityMachines {
 	
 	
 	
+	@Override
 	public int getPercentageCapacity(){
 		ItemStack linkCard = getPowerLinkStack();
 		if (hasPowerSource()){
@@ -43,6 +44,7 @@ public abstract class TileEntityFEPoweredMachine extends TileEntityMachines {
 	}
 	
 	
+	@Override
 	public boolean hasPowerSource(){
 		ItemStack linkCard = getPowerLinkStack();
 		if (linkCard != null && linkCard.getItem() instanceof IPowerLinkItem)

@@ -61,6 +61,7 @@ public class ItemProjectorModuleTube extends Module3DBase {
 	
 
 	
+	@Override
 	public void calculateField(IModularProjector projector, Set<PointXYZ> ffLocs, Set<PointXYZ> ffInterior) {
 		
 		

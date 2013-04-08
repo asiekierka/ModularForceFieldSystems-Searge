@@ -24,7 +24,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -43,14 +42,9 @@ import chb.mods.mffs.common.item.ItemCardSecurityLink;
 import chb.mods.mffs.common.modules.ModuleBase;
 import chb.mods.mffs.common.multitool.ItemMultitool;
 import chb.mods.mffs.common.tileentity.TileEntityAdvSecurityStation;
-import chb.mods.mffs.common.tileentity.TileEntityAreaDefenseStation;
-import chb.mods.mffs.common.tileentity.TileEntityCapacitor;
 import chb.mods.mffs.common.tileentity.TileEntityControlSystem;
-import chb.mods.mffs.common.tileentity.TileEntityConverter;
-import chb.mods.mffs.common.tileentity.TileEntityExtractor;
 import chb.mods.mffs.common.tileentity.TileEntityMachines;
 import chb.mods.mffs.common.tileentity.TileEntityProjector;
-import chb.mods.mffs.common.tileentity.TileEntitySecStorage;
 
 public abstract class BlockMFFSBase extends BlockContainer {
 	private int blockid;

@@ -82,10 +82,12 @@ public class GuiExtractor extends GuiContainer {
 		}
 	}
 	
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		NetworkHandlerClient.fireTileEntityEvent(Extractor,guibutton.id,"");
 	}
 
+	@Override
 	public void initGui() {
 		controlList.add(new GraphicButton(0, (width / 2) + 60, (height / 2) - 88,Extractor,0));
 		super.initGui();

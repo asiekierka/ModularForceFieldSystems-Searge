@@ -101,6 +101,7 @@ protected void actionPerformed(GuiButton guibutton) {
 	NetworkHandlerClient.fireTileEntityEvent(DefenceStation,guibutton.id, "");
 }
 
+@Override
 public void initGui() {
 	controlList.add(new GraphicButton(0, (width / 2) + 107, (height / 2) -104,DefenceStation,0));
 	controlList.add(new GraphicButton(100, (width / 2) + 47, (height / 2)- 38,DefenceStation,1));

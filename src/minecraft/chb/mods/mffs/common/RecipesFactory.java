@@ -27,7 +27,7 @@ import ic2.api.Items;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import basiccomponents.common.BasicComponents;
+//import basiccomponents.common.BasicComponents;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 
@@ -161,10 +161,9 @@ public final class RecipesFactory {
 				'w',ModularForceFieldSystem.MFFSProjectorTypkube,
 				'x', new ItemStack(ModularForceFieldSystem.MFFSitemForcePowerCrystal, 1, -1),       //MFFs Stuff z--
 				'y', ModularForceFieldSystem.MFFSitemFocusmatix,
-				'z', ModularForceFieldSystem.MFFSItemIDCard,
+				'z', ModularForceFieldSystem.MFFSItemIDCard
 				
-				
-				
+/*				,
 				'A', BasicComponents.itemSteelIngot,
 				'B', BasicComponents.itemBronzePlate,
 				'C', BasicComponents.itemSteelPlate,
@@ -179,7 +178,7 @@ public final class RecipesFactory {
 				'M', BasicComponents.electricFurnace,
 				'N', BasicComponents.itemCopperIngot,
 				'O', BasicComponents.itemWrench
-				
+//*/				
 
 				);	
 				return true;	

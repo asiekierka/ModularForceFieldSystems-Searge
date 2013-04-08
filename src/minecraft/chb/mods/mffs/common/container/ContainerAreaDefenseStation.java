@@ -125,6 +125,7 @@ public class ContainerAreaDefenseStation extends Container {
 		capacity = defstation.getPercentageCapacity();
 	}
 
+	@Override
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 
@@ -143,6 +144,7 @@ public class ContainerAreaDefenseStation extends Container {
 		}
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return defstation.isUseableByPlayer(entityplayer);
 	}

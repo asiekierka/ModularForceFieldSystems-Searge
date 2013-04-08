@@ -37,10 +37,12 @@ public class ItemCapacitorUpgradeRange extends ItemMFFSBase  {
 		setMaxStackSize(9);
 	}
 
+	@Override
 	public String getTextureFile() {
 		return "/chb/mods/mffs/sprites/items.png";
 	}
 
+	@Override
 	public boolean isRepairable() {
 		return false;
 	}

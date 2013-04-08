@@ -41,7 +41,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ISidedInventory;
 import chb.mods.mffs.api.IPowerLinkItem;
-import chb.mods.mffs.api.ISwitchabel;
 import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.InventoryHelper;
 import chb.mods.mffs.common.Linkgrid;
@@ -51,8 +50,6 @@ import chb.mods.mffs.common.SecurityRight;
 import chb.mods.mffs.common.container.ContainerAreaDefenseStation;
 import chb.mods.mffs.common.item.ItemCardSecurityLink;
 import chb.mods.mffs.common.item.ItemProjectorFieldModulatorDistance;
-import chb.mods.mffs.network.INetworkHandlerEventListener;
-import chb.mods.mffs.network.client.NetworkHandlerClient;
 
 public class TileEntityAreaDefenseStation extends TileEntityFEPoweredMachine implements
 ISidedInventory {
@@ -149,6 +146,7 @@ ISidedInventory {
 		return false;
 	}
 	
+	@Override
 	public TileEntityAdvSecurityStation getLinkedSecurityStation()
 	{
 		return ItemCardSecurityLink.getLinkedSecurityStation(this, 1, worldObj);
@@ -201,6 +199,7 @@ ISidedInventory {
 	}
 
 
+	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.Inventory.length; a++) {
 			dropplugins(a,this);
@@ -579,6 +578,7 @@ ISidedInventory {
 	}
 	
 
+	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 

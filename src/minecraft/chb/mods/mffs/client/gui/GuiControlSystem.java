@@ -103,6 +103,7 @@ public class GuiControlSystem extends GuiContainer {
 
 
     
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		if(guibutton.id==103){
 		NetworkHandlerClient.fireTileEntityEvent(ControlSystem,guibutton.id,player.username);
@@ -111,6 +112,7 @@ public class GuiControlSystem extends GuiContainer {
 		}
 	}
 
+	@Override
 	public void initGui() {
 
 		controlList.add(new GraphicButton(100, (width / 2) -115, (height / 2) - 45,ControlSystem,1));

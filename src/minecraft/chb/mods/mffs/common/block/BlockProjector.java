@@ -68,6 +68,7 @@ public class BlockProjector extends BlockMFFSBase {
 		
 	}
 
+	@Override
 	public void randomDisplayTick(World world, int i, int j, int k,
 			Random random) {
 		TileEntityProjector tileentity = (TileEntityProjector) world

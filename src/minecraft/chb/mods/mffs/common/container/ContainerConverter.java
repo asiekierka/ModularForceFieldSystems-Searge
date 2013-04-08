@@ -116,6 +116,7 @@ public class ContainerConverter extends Container {
         UE_Output= Convertor.getUE_Output();
     }
 
+    @Override
     public void updateProgressBar(int i, int j) {
         switch(i) {
         case 0:
@@ -159,6 +160,7 @@ public class ContainerConverter extends Container {
     	return player;
     }
 
+	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return Convertor.isUseableByPlayer(entityplayer);
 	}

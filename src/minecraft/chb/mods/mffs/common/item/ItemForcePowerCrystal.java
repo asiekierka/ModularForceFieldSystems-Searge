@@ -62,6 +62,7 @@ public class ItemForcePowerCrystal extends ItemMFFSBase implements IPowerLinkIte
 	return true;
 	}
 	
+	@Override
 	public int getPowerTransferrate() {
 		return 100000;
 	}
@@ -74,12 +75,14 @@ public class ItemForcePowerCrystal extends ItemMFFSBase implements IPowerLinkIte
     }
 	
 	
+	@Override
 	public int getItemDamage(ItemStack itemStack) {
 		
 		return 101-((getAvailablePower(itemStack,null,null)*100)/getMaximumPower(itemStack));
 		
 	}
 	
+	@Override
 	public int getMaximumPower(ItemStack itemStack){
 		return 5000000;
 	}
@@ -94,6 +97,7 @@ public class ItemForcePowerCrystal extends ItemMFFSBase implements IPowerLinkIte
     
 
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int i, CreativeTabs tabs, List itemList)
 	{
@@ -177,6 +181,7 @@ public class ItemForcePowerCrystal extends ItemMFFSBase implements IPowerLinkIte
 	}
 	
 
+	@Override
 	public void setAvailablePower(ItemStack itemStack, int  ForceEnergy)
     {
 		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);

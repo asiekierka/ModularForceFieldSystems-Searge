@@ -71,6 +71,7 @@ public class ContainerAdvSecurityStation extends Container {
     	return player;
     }
 
+	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return SecStation.isUseableByPlayer(entityplayer);
 	}

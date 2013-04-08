@@ -34,6 +34,7 @@ public class ItemProjectorOptionSponge extends ItemProjectorOptionBase implement
 	}
 
 
+	@Override
 	public  void checkInteriorBlock(PointXYZ png ,World world,TileEntityProjector Projector) {
 		if (world.getBlockMaterial(png.X, png.Y, png.Z).isLiquid()) {
 			if (!ModularForceFieldSystem.forcefieldremoveonlywaterandlava) {

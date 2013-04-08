@@ -138,6 +138,7 @@ public abstract class TileEntityMachines extends TileEntity implements INetworkH
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 	
+	@Override
 	public void updateEntity() {
 		
 		if (!worldObj.isRemote) 	
@@ -265,6 +266,7 @@ public abstract class TileEntityMachines extends TileEntity implements INetworkH
 
 	public abstract Container getContainer(InventoryPlayer inventoryplayer);
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		Side = nbttagcompound.getInteger("side");
@@ -275,6 +277,7 @@ public abstract class TileEntityMachines extends TileEntity implements INetworkH
 		SwitchModi =nbttagcompound.getShort("SwitchModi");
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		

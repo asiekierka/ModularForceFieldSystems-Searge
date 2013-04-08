@@ -55,8 +55,6 @@ import chb.mods.mffs.common.item.ItemCapacitorUpgradeCapacity;
 import chb.mods.mffs.common.item.ItemExtractorUpgradeBooster;
 import chb.mods.mffs.common.item.ItemForcicium;
 import chb.mods.mffs.common.item.ItemForcicumCell;
-import chb.mods.mffs.network.INetworkHandlerEventListener;
-import chb.mods.mffs.network.client.NetworkHandlerClient;
 import chb.mods.mffs.network.server.NetworkHandlerServer;
 import dan200.computer.api.IComputerAccess;
 import dan200.computer.api.IPeripheral;
@@ -189,12 +187,14 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements I
 	}
 
 
+	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a,this);
 		}
 	}
 
+	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
 			return false;
@@ -326,14 +326,17 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements I
 		
 	}
 
+	@Override
 	public  short getmaxSwitchModi(){
 		return 3;
 	}
 	
+	@Override
 	public  short getminSwitchModi(){
 		return 1;
 	}
 	
+	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			
@@ -431,6 +434,7 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements I
 		return new ContainerForceEnergyExtractor(inventoryplayer.player,this);
 	}
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 
@@ -451,6 +455,7 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements I
 		}
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
@@ -471,19 +476,23 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements I
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
 
+	@Override
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
 
+	@Override
 	public String getInvName() {
 		return "Extractor";
 	}
 
 
+	@Override
 	public int getSizeInventory() {
 		return inventory.length;
 	}
 
+	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
@@ -491,6 +500,7 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements I
 		}
 	}
 
+	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {
