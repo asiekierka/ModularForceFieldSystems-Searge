@@ -113,8 +113,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.3.0.0.0", dependencies = "after:ThermalExpansion")
-@NetworkMod(versionBounds = "[2.3.0.0.0]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
+@Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.3.0.0.1", dependencies = "after:ThermalExpansion")
+@NetworkMod(versionBounds = "[2.3.0.0.1]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
 @ModstatInfo(prefix = "mffs")
 public class ModularForceFieldSystem {
 
@@ -256,9 +256,8 @@ public class ModularForceFieldSystem {
 			MFFSTab = new MFFSCreativeTab(CreativeTabs.getNextID(), "MFFS");
 
 			Property prop_VersionremoteUrl = MFFSconfig
-					.get(Configuration.CATEGORY_GENERAL,
-							"VersionremoteUrl",
-							"https://raw.github.com/Minalien/ModularForceFieldSystem/master/src/minecraft/versioninfo");
+					.get(Configuration.CATEGORY_GENERAL, "VersionremoteUrl",
+							"https://bitbucket.org/SeargeDP/modularforcefieldsystem/downloads/versioninfo");
 			prop_VersionremoteUrl.comment = "URL to MFFS VersionInfo file";
 			VersionremoteUrl = prop_VersionremoteUrl.getString();
 
