@@ -90,9 +90,7 @@ public class ItemProjectorOptionFieldFusion extends ItemProjectorOptionBase
 						if (world.getBlockId(ffpng.X, ffpng.Y, ffpng.Z) == ModularForceFieldSystem.MFFSFieldblock.blockID) {
 							world.removeBlockTileEntity(ffpng.X, ffpng.Y,
 									ffpng.Z);
-							world.setBlock(ffpng.X, ffpng.Y, ffpng.Z, 0);
-							world.notifyBlockChange(ffpng.X, ffpng.Y, ffpng.Z,
-									0);
+							world.setBlock(ffpng.X, ffpng.Y, ffpng.Z, 0, 0, 2);
 						}
 					}
 				}

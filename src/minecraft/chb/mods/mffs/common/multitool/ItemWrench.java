@@ -98,9 +98,7 @@ public class ItemWrench extends ItemMultitool implements IToolWrench,
 				if (((IWrenchable) tileentity).wrenchCanRemove(player)) {
 					world.spawnEntityInWorld(new EntityItem(world, x, y, z,
 							((IWrenchable) tileentity).getWrenchDrop(player)));
-					world.setBlock(x, y, z, 0);
-					world.notifyBlockChange(x, y, z, 0);
-					// world.setBlockWithNotify(x, y, z, 0);
+					world.setBlock(x, y, z, 0, 0, 2);
 					this.consumePower(stack, 25000, false);
 
 				}
@@ -154,8 +152,7 @@ public class ItemWrench extends ItemMultitool implements IToolWrench,
 										.getBlockId(tileentity.xCoord,
 												tileentity.yCoord,
 												tileentity.zCoord)])));
-						world.setBlock(x, y, z, 0);
-						world.notifyBlockChange(x, y, z, 0);
+						world.setBlock(x, y, z, 0, 0, 2);
 						// world.setBlockWithNotify(x, y, z, 0);
 						this.consumePower(stack, 1000, false);
 					}

@@ -42,8 +42,7 @@ public class ItemProjectorOptionSponge extends ItemProjectorOptionBase
 			TileEntityProjector Projector) {
 		if (world.getBlockMaterial(png.X, png.Y, png.Z).isLiquid()) {
 			if (!ModularForceFieldSystem.forcefieldremoveonlywaterandlava) {
-				world.setBlock(png.X, png.Y, png.Z, 0);
-				world.notifyBlockChange(png.X, png.Y, png.Z, 0);
+				world.setBlock(png.X, png.Y, png.Z, 0, 0, 2);
 			} else if (world.getBlockId(png.X, png.Y, png.Z) == 8
 					|| world.getBlockId(png.X, png.Y, png.Z) == 9
 					|| world.getBlockId(png.X, png.Y, png.Z) == 10
@@ -52,8 +51,7 @@ public class ItemProjectorOptionSponge extends ItemProjectorOptionBase
 			)
 
 			{
-				world.setBlock(png.X, png.Y, png.Z, 0);
-				world.notifyBlockChange(png.X, png.Y, png.Z, 0);
+				world.setBlock(png.X, png.Y, png.Z, 0, 0, 2);
 			}
 		}
 	}

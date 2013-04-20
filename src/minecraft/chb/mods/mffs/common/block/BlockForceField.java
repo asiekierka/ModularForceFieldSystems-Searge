@@ -55,7 +55,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 	public int posy;
 	public int posz;
 
-	private Icon[] icons = new Icon[4];
+	private final Icon[] icons = new Icon[4];
 
 	public BlockForceField(int i) {
 		super(i, Material.glass);
@@ -244,16 +244,14 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 					j + 1 - f, k + 1 - f);
 		}
 
-		return AxisAlignedBB.getBoundingBox(i, j, k,
-				i + 1, j + 1, k + 1);
+		return AxisAlignedBB.getBoundingBox(i, j, k, i + 1, j + 1, k + 1);
 
 	}
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i,
 			int j, int k) {
-		return AxisAlignedBB.getBoundingBox(i, j, k,
-				i + 0, j + 0, k + 0);
+		return AxisAlignedBB.getBoundingBox(i, j, k, i + 0, j + 0, k + 0);
 	}
 
 	@Override
@@ -465,8 +463,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 
 		if (ffworldmap == null || ffworldmap.isEmpty()) {
 			world.removeBlockTileEntity(x, y, z);
-			world.setBlock(x, y, z, 0);
-			world.notifyBlockChange(x, y, z, 0);
+			world.setBlock(x, y, z, 0, 0, 2);
 		}
 	}
 
@@ -489,8 +486,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 	@Override
 	public void weakenForceField(World world, int x, int y, int z) {
 		if (ModularForceFieldSystem.influencedbyothermods) {
-			world.setBlock(x, y, z, 0);
-			world.notifyBlockChange(x, y, z, 0);
+			world.setBlock(x, y, z, 0, 0, 2);
 		}
 	}
 }

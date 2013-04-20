@@ -72,7 +72,8 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 		IModularProjector {
 	private ItemStack ProjektorItemStacks[];
 
-	private int[] focusmatrix = { 0, 0, 0, 0 }; // Up 7,Down 8,Right 9,Left 10
+	private final int[] focusmatrix = { 0, 0, 0, 0 }; // Up 7,Down 8,Right
+														// 9,Left 10
 	private String ForceFieldTexturids = "-76/-76/-76/-76/-76/-76";
 	private String ForceFieldTexturfile = "/terrain.png";
 	private int ForcefieldCamoblockid;
@@ -549,8 +550,12 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 				if (isActive() != true) {
 					setActive(true);
 					switchdelay = 0;
-					if (calculateField(true)) {
-						FieldGenerate(true);
+					try {
+						if (calculateField(true)) {
+							FieldGenerate(true);
+						}
+					} catch (ArrayIndexOutOfBoundsException ex) {
+						System.out.println("Found.");
 					}
 					worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				}
@@ -591,6 +596,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 			this.setTicker((short) (this.getTicker() + 1));
 		}
 		switchdelay++;
+
 		super.updateEntity();
 	}
 
@@ -712,7 +718,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 
 		for (PointXYZ pnt : field_def) {
 
-			if (blockcounter == ModularForceFieldSystem.forcefieldmaxblockpeerTick) {
+			if (blockcounter >= ModularForceFieldSystem.forcefieldmaxblockpeerTick) {
 				break;
 			}
 			ForceFieldBlockStack ffb = WorldMap.getForceFieldWorld(worldObj)
@@ -745,11 +751,8 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 									ArrayList<ItemStack> stacks = Functions
 											.getItemStackFromBlock(worldObj,
 													png.X, png.Y, png.Z);
-									worldObj.setBlock(png.X, png.Y, png.Z, 0);
-									worldObj.notifyBlockChange(png.X, png.Y,
-											png.Z, 0);
-									// worldObj.setBlockWithNotify(png.X,png.Y,png.Z,
-									// 0);
+									worldObj.setBlock(png.X, png.Y, png.Z, 0,
+											0, 2);
 
 									if (ProjectorTyp.TypfromItem(get_type()).Blockdropper
 											&& stacks != null) {
@@ -779,13 +782,10 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 											png.X,
 											png.Y,
 											png.Z,
-											ModularForceFieldSystem.MFFSFieldblock.blockID);
-									worldObj.setBlockMetadataWithNotify(png.X,
-											png.Y, png.Z, ffb.getTyp(), 2);
-									// worldObj.setBlockAndMetadataWithNotify(png.X,png.Y,png.Z,
-									// ModularForceFieldSystem.MFFSFieldblock.blockID,
-									// ffb.getTyp());
-									blockcounter++; // Count create blocks...
+											ModularForceFieldSystem.MFFSFieldblock.blockID,
+											ffb.getTyp(), 2);
+									blockcounter++; // Count create
+													// blocks...
 								}
 								ffb.setSync(true);
 							}
@@ -808,8 +808,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 					if (ffworldmap.isSync()) {
 						PointXYZ png = ffworldmap.getPoint();
 						worldObj.removeBlockTileEntity(png.X, png.Y, png.Z);
-						worldObj.setBlock(png.X, png.Y, png.Z, 0);
-						worldObj.notifyBlockChange(png.X, png.Y, png.Z, 0);
+						worldObj.setBlock(png.X, png.Y, png.Z, 0, 0, 2);
 						// worldObj.setBlockWithNotify(png.X,png.Y,png.Z, 0);
 					}
 

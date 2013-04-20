@@ -14,7 +14,6 @@ public final class ForceFieldClientUpdatehandler implements
 
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-
 		StringBuilder str = new StringBuilder();
 
 		while (!ForceFieldClientUpdatehandler.queue.isEmpty()) {
