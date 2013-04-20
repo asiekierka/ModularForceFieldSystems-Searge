@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.container;
 
@@ -29,144 +29,152 @@ import chb.mods.mffs.common.SlotHelper;
 import chb.mods.mffs.common.tileentity.TileEntityConverter;
 
 public class ContainerConverter extends Container {
-    private int linkPower;
-    private int capacity;
+	private int linkPower;
+	private int capacity;
 	private EntityPlayer player;
 	private TileEntityConverter Convertor;
-	
+
 	private int IC_Outputpacketsize;
 	private int IC_Outputpacketamount;
 	private int IC_Output;
-	
+
 	private int UE_Outputvoltage;
-	private int UE_Outputamp; 
+	private int UE_Outputamp;
 	private int UE_Output;
-	
+
 	public ContainerConverter(EntityPlayer player,
 			TileEntityConverter tileentity) {
 		Convertor = tileentity;
 		this.player = player;
-        linkPower = -1;
-        capacity = -1;
-        IC_Outputpacketamount = -1;
-        IC_Outputpacketsize = -1;
-        IC_Output = -1;
-    	UE_Outputvoltage= -1;
-    	UE_Outputamp= -1;
-        UE_Output= -1;
-        
-		addSlotToContainer(new SlotHelper(Convertor, 0, 44, 28)); //Power link
+		linkPower = -1;
+		capacity = -1;
+		IC_Outputpacketamount = -1;
+		IC_Outputpacketsize = -1;
+		IC_Output = -1;
+		UE_Outputvoltage = -1;
+		UE_Outputamp = -1;
+		UE_Output = -1;
+
+		addSlotToContainer(new SlotHelper(Convertor, 0, 44, 28)); // Power link
 
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (int var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						50 + var4 * 18, 133 + var3 * 18));
+				this.addSlotToContainer(new Slot(player.inventory, var4 + var3
+						* 9 + 9, 50 + var4 * 18, 133 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, 50 + var3 * 18,191));
+			this.addSlotToContainer(new Slot(player.inventory, var3,
+					50 + var3 * 18, 191));
 		}
 	}
 
 	@Override
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
 
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
 
-            if(linkPower != Convertor.getLinkPower()) {
-            	icrafting.sendProgressBarUpdate(this, 0, Convertor.getLinkPower() & 0xffff);
-            	icrafting.sendProgressBarUpdate(this, 1,Convertor.getLinkPower() >>> 16);
-            }
+			if (linkPower != Convertor.getLinkPower()) {
+				icrafting.sendProgressBarUpdate(this, 0,
+						Convertor.getLinkPower() & 0xffff);
+				icrafting.sendProgressBarUpdate(this, 1,
+						Convertor.getLinkPower() >>> 16);
+			}
 
-			if (capacity != Convertor.getPercentageCapacity()) 
-				icrafting.sendProgressBarUpdate(this, 3,Convertor.getPercentageCapacity());
-			
-			if (IC_Outputpacketamount != Convertor.getIC_Outputpacketamount()) 
-				icrafting.sendProgressBarUpdate(this, 5,Convertor.getIC_Outputpacketamount());
-			
-			if (IC_Outputpacketsize != Convertor.getIC_Outputpacketsize()) 
-				icrafting.sendProgressBarUpdate(this, 4,Convertor.getIC_Outputpacketsize());
-			
-			if (IC_Output != Convertor.getIC_Output()) 
-				icrafting.sendProgressBarUpdate(this, 6,Convertor.getIC_Output());
-			
-			if (UE_Output != Convertor.getUE_Output()) 
-				icrafting.sendProgressBarUpdate(this, 7,Convertor.getUE_Output());
-			
-			if (UE_Outputvoltage != Convertor.getUE_Outputvoltage()) 
-				icrafting.sendProgressBarUpdate(this, 8,Convertor.getUE_Outputvoltage());
-			
-			if (UE_Outputamp != Convertor.getUE_Outputamp()) 
-				icrafting.sendProgressBarUpdate(this, 9,Convertor.getUE_Outputamp());
-			
-        }
+			if (capacity != Convertor.getPercentageCapacity())
+				icrafting.sendProgressBarUpdate(this, 3,
+						Convertor.getPercentageCapacity());
 
-        linkPower = Convertor.getLinkPower();
-        capacity = Convertor.getPercentageCapacity();
-        IC_Outputpacketamount = Convertor.getIC_Outputpacketamount();
-        IC_Outputpacketsize = Convertor.getIC_Outputpacketsize();
-        IC_Output = Convertor.getIC_Output();
-    	UE_Outputvoltage= Convertor.getUE_Outputvoltage();
-    	UE_Outputamp=Convertor.getUE_Outputamp();
-        UE_Output= Convertor.getUE_Output();
-    }
+			if (IC_Outputpacketamount != Convertor.getIC_Outputpacketamount())
+				icrafting.sendProgressBarUpdate(this, 5,
+						Convertor.getIC_Outputpacketamount());
 
-    @Override
-    public void updateProgressBar(int i, int j) {
-        switch(i) {
-        case 0:
-            Convertor.setLinkPower(Convertor.getLinkPower() & 0xffff0000 | j);
-            break;
-        case 1:
-            Convertor.setLinkPower(Convertor.getLinkPower() & 0xffff | j << 16);
-            break;
+			if (IC_Outputpacketsize != Convertor.getIC_Outputpacketsize())
+				icrafting.sendProgressBarUpdate(this, 4,
+						Convertor.getIC_Outputpacketsize());
+
+			if (IC_Output != Convertor.getIC_Output())
+				icrafting.sendProgressBarUpdate(this, 6,
+						Convertor.getIC_Output());
+
+			if (UE_Output != Convertor.getUE_Output())
+				icrafting.sendProgressBarUpdate(this, 7,
+						Convertor.getUE_Output());
+
+			if (UE_Outputvoltage != Convertor.getUE_Outputvoltage())
+				icrafting.sendProgressBarUpdate(this, 8,
+						Convertor.getUE_Outputvoltage());
+
+			if (UE_Outputamp != Convertor.getUE_Outputamp())
+				icrafting.sendProgressBarUpdate(this, 9,
+						Convertor.getUE_Outputamp());
+
+		}
+
+		linkPower = Convertor.getLinkPower();
+		capacity = Convertor.getPercentageCapacity();
+		IC_Outputpacketamount = Convertor.getIC_Outputpacketamount();
+		IC_Outputpacketsize = Convertor.getIC_Outputpacketsize();
+		IC_Output = Convertor.getIC_Output();
+		UE_Outputvoltage = Convertor.getUE_Outputvoltage();
+		UE_Outputamp = Convertor.getUE_Outputamp();
+		UE_Output = Convertor.getUE_Output();
+	}
+
+	public void updateProgressBar(int i, int j) {
+		switch (i) {
+		case 0:
+			Convertor.setLinkPower(Convertor.getLinkPower() & 0xffff0000 | j);
+			break;
+		case 1:
+			Convertor.setLinkPower(Convertor.getLinkPower() & 0xffff | j << 16);
+			break;
 		case 3:
 			Convertor.setCapacity(j);
 			break;
-			
+
 		case 4:
 			Convertor.setIC_Outputpacketsize(j);
 			break;
-			
+
 		case 5:
 			Convertor.setIC_Outputpacketamount(j);
 			break;
-			
+
 		case 6:
 			Convertor.setIC_Output(j);
 			break;
-			
+
 		case 7:
-			Convertor.setUE_Output( j);
-			break;	
-			
+			Convertor.setUE_Output(j);
+			break;
+
 		case 8:
 			Convertor.setUE_Outputvoltage(j);
-			break;	
-			
+			break;
+
 		case 9:
-			Convertor.setUE_Outputamp( j);
-			break;	
-			
-        }
-    }
+			Convertor.setUE_Outputamp(j);
+			break;
 
-    public EntityPlayer getPlayer() {
-    	return player;
-    }
+		}
+	}
 
-	@Override
+	public EntityPlayer getPlayer() {
+		return player;
+	}
+
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return Convertor.isUseableByPlayer(entityplayer);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p, int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {

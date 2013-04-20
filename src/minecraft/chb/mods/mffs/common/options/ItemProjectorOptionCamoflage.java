@@ -16,16 +16,19 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.options;
 
-
+import net.minecraft.client.renderer.texture.IconRegister;
 
 public class ItemProjectorOptionCamoflage extends ItemProjectorOptionBase {
 	public ItemProjectorOptionCamoflage(int i) {
 		super(i);
-		setIconIndex(42);
 	}
 
+	@Override
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("mffs:options/Camoflage");
+	}
 }

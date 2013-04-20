@@ -16,35 +16,33 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.block;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.tileentity.TileEntityAdvSecurityStation;
-
-
 
 public class BlockAdvSecurtyStation extends BlockMFFSBase {
 	public BlockAdvSecurtyStation(int i) {
 		super(i);
 	}
-	@Override
-	public String getTextureFile() {
-		
-		if(ModularForceFieldSystem.graphicstyle==1)
-		return "/chb/mods/mffs/sprites/AdvSecurtyStation_ue.png";
-		
-		return "/chb/mods/mffs/sprites/AdvSecurtyStation.png";
-	}
 
+	@Override
+	public void registerIcons(IconRegister iconRegister) {
+		icons[0] = icons[1] = iconRegister
+				.registerIcon("mffs:AdvSecStation/Inactive");
+		icons[2] = icons[3] = iconRegister
+				.registerIcon("mffs:AdvSecStation/Active");
+
+		blockIcon = icons[0];
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityAdvSecurityStation();
 	}
-
 
 }

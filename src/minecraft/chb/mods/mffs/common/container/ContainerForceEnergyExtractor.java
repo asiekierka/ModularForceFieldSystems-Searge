@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.container;
 
@@ -43,36 +43,40 @@ public class ContainerForceEnergyExtractor extends Container {
 		workdone = -1;
 		ForceEnergybuffer = -1;
 
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 0, 82, 26)); //Forcicum
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 1, 145, 40)); //Powerlink
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 2, 20, 66));  //Cap upgrade
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 3, 39, 66)); //Boost upgrade
-		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 4, 112, 26)); //Forcicum cell
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 0, 82, 26)); // Forcicum
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 1, 145, 40)); // Powerlink
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 2, 20, 66)); // Cap
+																				// upgrade
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 3, 39, 66)); // Boost
+																				// upgrade
+		addSlotToContainer(new SlotHelper(ForceEnergyExtractor, 4, 112, 26)); // Forcicum
+																				// cell
 
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (int var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						8 + var4 * 18, 104 + var3 * 18));
+				this.addSlotToContainer(new Slot(player.inventory, var4 + var3
+						* 9 + 9, 8 + var4 * 18, 104 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 162));
+			this.addSlotToContainer(new Slot(player.inventory, var3,
+					8 + var3 * 18, 162));
 		}
 	}
 
-    public EntityPlayer getPlayer() {
-    	return player;
-    }
+	public EntityPlayer getPlayer() {
+		return player;
+	}
 
-	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return ForceEnergyExtractor.isUseableByPlayer(entityplayer);
 	}
+
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p, int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
@@ -92,7 +96,6 @@ public class ContainerForceEnergyExtractor extends Container {
 		return itemstack;
 	}
 
-	@Override
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 		case 0:
@@ -104,14 +107,14 @@ public class ContainerForceEnergyExtractor extends Container {
 			break;
 
 		case 2:
-			ForceEnergyExtractor.setForceEnergybuffer((ForceEnergyExtractor.getForceEnergybuffer() & 0xffff0000)
-							| j);
+			ForceEnergyExtractor.setForceEnergybuffer((ForceEnergyExtractor
+					.getForceEnergybuffer() & 0xffff0000) | j);
 			break;
 		case 3:
-			ForceEnergyExtractor.setForceEnergybuffer((ForceEnergyExtractor.getForceEnergybuffer() & 0xffff)
-							| (j << 16));
+			ForceEnergyExtractor.setForceEnergybuffer((ForceEnergyExtractor
+					.getForceEnergybuffer() & 0xffff) | (j << 16));
 			break;
-       }
+		}
 	}
 
 	@Override
@@ -130,7 +133,8 @@ public class ContainerForceEnergyExtractor extends Container {
 						ForceEnergyExtractor.getWorkCylce());
 			}
 
-			if (ForceEnergybuffer != ForceEnergyExtractor.getForceEnergybuffer()) {
+			if (ForceEnergybuffer != ForceEnergyExtractor
+					.getForceEnergybuffer()) {
 				icrafting.sendProgressBarUpdate(this, 2,
 						ForceEnergyExtractor.getForceEnergybuffer() & 0xffff);
 				icrafting.sendProgressBarUpdate(this, 3,

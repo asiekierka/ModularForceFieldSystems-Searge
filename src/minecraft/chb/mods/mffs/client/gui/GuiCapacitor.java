@@ -16,12 +16,9 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.client.gui;
-
-
-
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -38,69 +35,70 @@ public class GuiCapacitor extends GuiContainer {
 	private TileEntityCapacitor Core;
 	private boolean editMode = false;
 
-	public GuiCapacitor(EntityPlayer player,
-			TileEntityCapacitor tileentity) {
+	public GuiCapacitor(EntityPlayer player, TileEntityCapacitor tileentity) {
 		super(new ContainerCapacitor(player, tileentity));
 		Core = tileentity;
-        this.xSize = 176;
-        this.ySize = 207;
+		this.xSize = 176;
+		this.ySize = 207;
 	}
-	
+
 	@Override
-    protected void keyTyped(char c, int i) {
-		
+	protected void keyTyped(char c, int i) {
+
 		if (i != 1 && editMode) {
 			if (c == 13) {
-			editMode = false;
-			return;
+				editMode = false;
+				return;
 			}
-			
-			if(i ==14)
-			NetworkHandlerClient.fireTileEntityEvent(Core, 12,"");
-			
-			if(i !=54 && i !=42 && i !=58 && i !=14)
-			NetworkHandlerClient.fireTileEntityEvent(Core, 11,String.valueOf(c));
-			
-		}else {
+
+			if (i == 14)
+				NetworkHandlerClient.fireTileEntityEvent(Core, 12, "");
+
+			if (i != 54 && i != 42 && i != 58 && i != 14)
+				NetworkHandlerClient.fireTileEntityEvent(Core, 11,
+						String.valueOf(c));
+
+		} else {
 			super.keyTyped(c, i);
 		}
 	}
-	
+
 	@Override
 	protected void mouseClicked(int i, int j, int k) {
 		super.mouseClicked(i, j, k);
-		
+
 		int xMin = (width - xSize) / 2;
 		int yMin = (height - ySize) / 2;
 
 		int x = i - xMin;
 		int y = j - yMin;
-		
-		if (editMode){
+
+		if (editMode) {
 			editMode = false;
-		}else if(x >= 5 && y >= 4 && x <= 135 && y <= 18){
-			NetworkHandlerClient.fireTileEntityEvent(Core, 10,"null");
+		} else if (x >= 5 && y >= 4 && x <= 135 && y <= 18) {
+			NetworkHandlerClient.fireTileEntityEvent(Core, 10, "null");
 			editMode = true;
 		}
 	}
-	
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int textur = mc.renderEngine
-				.getTexture("/chb/mods/mffs/sprites/GuiCapacitor.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(textur);
+		mc.renderEngine.bindTexture("/mods/mffs/textures/gui/GuiCapacitor.png");
 		int w = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
 		int i1 = (79 * Core.getPercentageStorageCapacity() / 100);
-		drawTexturedModalRect(w + 8, k + 112, 176, 0, i1+1, 79);
+		drawTexturedModalRect(w + 8, k + 112, 176, 0, i1 + 1, 79);
 	}
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRenderer.drawString("Force Energy Capacitor", 8, 25, 0x404040);
 		fontRenderer.drawString(Core.getDeviceName(), 8, 8, 0x404040);
-		fontRenderer.drawString("FE: "+String.valueOf(Core.getStorageAvailablePower()), 8, 100, 0x404040);
+		fontRenderer.drawString(
+				"FE: " + String.valueOf(Core.getStorageAvailablePower()), 8,
+				100, 0x404040);
 		fontRenderer.drawString("Power Uplink: ", 8, 80, 0x404040);
 
 		fontRenderer.drawString("transmit range:", 8, 60, 0x404040);
@@ -115,15 +113,15 @@ public class GuiCapacitor extends GuiContainer {
 				0x404040);
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandlerClient.fireTileEntityEvent(Core,guibutton.id, "");
+		NetworkHandlerClient.fireTileEntityEvent(Core, guibutton.id, "");
 	}
 
-	@Override
 	public void initGui() {
-		controlList.add(new GraphicButton(0, (width / 2) + 65, (height / 2) - 100,Core,0));
-		controlList.add(new GraphicButton(1, (width / 2) + 20, (height / 2) - 28,Core,1));
+		buttonList.add(new GraphicButton(0, (width / 2) + 65,
+				(height / 2) - 100, Core, 0));
+		buttonList.add(new GraphicButton(1, (width / 2) + 20,
+				(height / 2) - 28, Core, 1));
 
 		super.initGui();
 	}

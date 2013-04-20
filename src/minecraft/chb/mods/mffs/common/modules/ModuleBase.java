@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.modules;
 
@@ -40,83 +40,83 @@ import chb.mods.mffs.common.SecurityRight;
 import chb.mods.mffs.common.tileentity.TileEntityProjector;
 
 public abstract class ModuleBase extends Item {
-	
+
 	private static List<ModuleBase> instances = new ArrayList<ModuleBase>();
-	public static List<ModuleBase> get_instances(){
+
+	public static List<ModuleBase> get_instances() {
 		return instances;
 	}
-	
+
 	public ModuleBase(int i) {
 		super(i);
 		setMaxStackSize(8);
 		instances.add(this);
 		setCreativeTab(ModularForceFieldSystem.MFFSTab);
 	}
-	
-	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
-	}
+
 	@Override
 	public boolean isRepairable() {
 		return false;
 	}
-	
+
 	public abstract boolean supportsDistance();
+
 	public abstract boolean supportsStrength();
+
 	public abstract boolean supportsMatrix();
 
-	
 	/**
-	 * Assume that Y+ (up) is the direction that the projector is facing.
-	 * Return points local to the projector.
-	 * e.g. (0,1,0) would be right in front of the projector
+	 * Assume that Y+ (up) is the direction that the projector is facing. Return
+	 * points local to the projector. e.g. (0,1,0) would be right in front of
+	 * the projector
+	 * 
 	 * @param projector
 	 * @return Set of PointXYZ.
 	 */
-	public abstract void calculateField(IModularProjector projector, Set<PointXYZ> fieldPoints);
-	
-		
+	public abstract void calculateField(IModularProjector projector,
+			Set<PointXYZ> fieldPoints);
+
 	@Override
-	 public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int side, float hitX, float hitY, float hitZ)
-	{
+	public boolean onItemUseFirst(ItemStack itemstack,
+			EntityPlayer entityplayer, World world, int i, int j, int k,
+			int side, float hitX, float hitY, float hitZ) {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
 		if (!world.isRemote) {
 			if (tileEntity instanceof IModularProjector) {
-				if(!SecurityHelper.isAccessGranted(tileEntity, entityplayer, world,SecurityRight.EB))
-				{return false;}
+				if (!SecurityHelper.isAccessGranted(tileEntity, entityplayer,
+						world, SecurityRight.EB)) {
+					return false;
+				}
 
-				if(((IModularProjector)tileEntity).getStackInSlot(1)==null)
-				{
-					((IModularProjector)tileEntity).setInventorySlotContents(1, itemstack.splitStack(1));
-					Functions.ChattoPlayer(entityplayer, "[Projector] Success: <Projector Module "+ ProjectorTyp.TypfromItem(((IModularProjector)tileEntity).getStackInSlot(1).getItem()).displayName+"> installed");
+				if (((IModularProjector) tileEntity).getStackInSlot(1) == null) {
+					((IModularProjector) tileEntity).setInventorySlotContents(
+							1, itemstack.splitStack(1));
+					Functions
+							.ChattoPlayer(
+									entityplayer,
+									"[Projector] Success: <Projector Module "
+											+ ProjectorTyp
+													.TypfromItem(((IModularProjector) tileEntity)
+															.getStackInSlot(1)
+															.getItem()).displayName
+											+ "> installed");
 					((TileEntityProjector) tileEntity).checkslots();
 					return true;
-				}
-				else
-				{
-					Functions.ChattoPlayer(entityplayer, "[Projector] Fail: Slot is not empty");
+				} else {
+					Functions.ChattoPlayer(entityplayer,
+							"[Projector] Fail: Slot is not empty");
 					return false;
 				}
 			}
 		}
 		return false;
 	}
-	
 
-	
-	public String getProjectorTextureFile(){
-		return "/chb/mods/mffs/sprites/blocks.png";
-	}
-	
-
-
-	public ForceFieldTyps getForceFieldTyps(){
+	public ForceFieldTyps getForceFieldTyps() {
 		return ForceFieldTyps.Default;
 	}
 
 	public abstract boolean supportsOption(Item item);
-		
 
 }

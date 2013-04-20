@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.container;
 
@@ -31,11 +31,11 @@ import chb.mods.mffs.common.tileentity.TileEntityAreaDefenseStation;
 public class ContainerAreaDefenseStation extends Container {
 	private TileEntityAreaDefenseStation defstation;
 
-    private int capacity;
-    private int SwitchTyp;
-    private int contratyp;
-    private int actionmode;
-    private int scanmode;
+	private int capacity;
+	private int SwitchTyp;
+	private int contratyp;
+	private int actionmode;
+	private int scanmode;
 	private EntityPlayer player;
 
 	public ContainerAreaDefenseStation(EntityPlayer player,
@@ -49,48 +49,50 @@ public class ContainerAreaDefenseStation extends Container {
 		defstation = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new SlotHelper(defstation, 0, 13, 27)); //Power Link
-		addSlotToContainer(new SlotHelper(defstation, 1, 97, 27)); //Security Link
+		addSlotToContainer(new SlotHelper(defstation, 0, 13, 27)); // Power Link
+		addSlotToContainer(new SlotHelper(defstation, 1, 97, 27)); // Security
+																	// Link
 
-		addSlotToContainer(new SlotHelper(defstation, 2, 14, 51)); //Distance mod
-		addSlotToContainer(new SlotHelper(defstation, 3, 14, 88)); //Distance mod
+		addSlotToContainer(new SlotHelper(defstation, 2, 14, 51)); // Distance
+																	// mod
+		addSlotToContainer(new SlotHelper(defstation, 3, 14, 88)); // Distance
+																	// mod
 
 		int var3;
 		int var4;
-		
+
 		// illegal items 5+
 		for (var3 = 0; var3 < 2; ++var3) {
 			for (var4 = 0; var4 < 4; ++var4) {
-				this.addSlotToContainer(new SlotHelper(defstation, (var4 + var3 * 4)+5,
-						176 + var4 * 18, 26 + var3 * 18));
+				this.addSlotToContainer(new SlotHelper(defstation,
+						(var4 + var3 * 4) + 5, 176 + var4 * 18, 26 + var3 * 18));
 			}
 		}
-		
-		//itembuffer 15+
+
+		// itembuffer 15+
 		for (var3 = 0; var3 < 5; ++var3) {
 			for (var4 = 0; var4 < 4; ++var4) {
-				this.addSlotToContainer(new SlotHelper(defstation, (var4 + var3 * 4)+15,
-						176 + var4 * 18, 98 + var3 * 18));
+				this.addSlotToContainer(new SlotHelper(defstation,
+						(var4 + var3 * 4) + 15, 176 + var4 * 18, 98 + var3 * 18));
 			}
 		}
-		
-		
 
 		for (var3 = 0; var3 < 3; ++var3) {
-			for ( var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						8 + var4 * 18, 134 + var3 * 18));
+			for (var4 = 0; var4 < 9; ++var4) {
+				this.addSlotToContainer(new Slot(player.inventory, var4 + var3
+						* 9 + 9, 8 + var4 * 18, 134 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 192));
+			this.addSlotToContainer(new Slot(player.inventory, var3,
+					8 + var3 * 18, 192));
 		}
 	}
 
-    public EntityPlayer getPlayer() {
-    	return player;
-    }
+	public EntityPlayer getPlayer() {
+		return player;
+	}
 
 	@Override
 	public void detectAndSendChanges() {
@@ -98,7 +100,6 @@ public class ContainerAreaDefenseStation extends Container {
 
 		for (int i = 0; i < crafters.size(); i++) {
 			ICrafting icrafting = (ICrafting) crafters.get(i);
-            
 
 			if (contratyp != defstation.getcontratyp()) {
 				icrafting.sendProgressBarUpdate(this, 1,
@@ -112,20 +113,19 @@ public class ContainerAreaDefenseStation extends Container {
 				icrafting.sendProgressBarUpdate(this, 3,
 						defstation.getScanmode());
 			}
-			
+
 			if (capacity != defstation.getPercentageCapacity()) {
 				icrafting.sendProgressBarUpdate(this, 4,
 						defstation.getPercentageCapacity());
 			}
 		}
-		
+
 		scanmode = defstation.getScanmode();
 		actionmode = defstation.getActionmode();
 		contratyp = defstation.getcontratyp();
 		capacity = defstation.getPercentageCapacity();
 	}
 
-	@Override
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 
@@ -144,13 +144,12 @@ public class ContainerAreaDefenseStation extends Container {
 		}
 	}
 
-	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return defstation.isUseableByPlayer(entityplayer);
 	}
-	
+
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p, int i) {
 		return null;
 	}
 

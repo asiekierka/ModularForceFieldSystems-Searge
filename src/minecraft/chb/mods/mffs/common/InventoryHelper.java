@@ -21,7 +21,6 @@
 
  */
 
-
 package chb.mods.mffs.common;
 
 import java.util.ArrayList;
@@ -33,42 +32,39 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import chb.mods.mffs.common.tileentity.TileEntitySecStorage;
 
-
-
 public class InventoryHelper {
-	
-	public static IInventory findAttachedInventory(World worldObj, int x, int y, int z){
+
+	public static IInventory findAttachedInventory(World worldObj, int x,
+			int y, int z) {
 		List<TileEntity> tes = new ArrayList<TileEntity>();
-		
-		tes.add(worldObj.getBlockTileEntity(x+1, y, z));
-		tes.add(worldObj.getBlockTileEntity(x-1, y, z));
-		tes.add(worldObj.getBlockTileEntity(x, y+1, z));
-		tes.add(worldObj.getBlockTileEntity(x, y-1, z));
-		tes.add(worldObj.getBlockTileEntity(x, y, z+1));
-		tes.add(worldObj.getBlockTileEntity(x, y, z-1));
-		
+
+		tes.add(worldObj.getBlockTileEntity(x + 1, y, z));
+		tes.add(worldObj.getBlockTileEntity(x - 1, y, z));
+		tes.add(worldObj.getBlockTileEntity(x, y + 1, z));
+		tes.add(worldObj.getBlockTileEntity(x, y - 1, z));
+		tes.add(worldObj.getBlockTileEntity(x, y, z + 1));
+		tes.add(worldObj.getBlockTileEntity(x, y, z - 1));
+
 		IInventory inv = null;
-		
+
 		for (TileEntity te : tes) {
 			if (te instanceof IInventory)
-				if (inv == null || inv.getSizeInventory() < ((IInventory)te).getSizeInventory()) //Find the largest
-					inv = (IInventory)te;
+				if (inv == null
+						|| inv.getSizeInventory() < ((IInventory) te)
+								.getSizeInventory()) // Find the largest
+					inv = (IInventory) te;
 		}
 		return inv;
 	}
-	
-	
-	
-	
-	
-	
-	public static boolean addStacksToInventory(IInventory inventory, ArrayList<ItemStack> itemstacks) {
-		
-		int count= 0;
-		
-		if(inventory instanceof TileEntitySecStorage )
-		   count = 1;
-			
+
+	public static boolean addStacksToInventory(IInventory inventory,
+			ArrayList<ItemStack> itemstacks) {
+
+		int count = 0;
+
+		if (inventory instanceof TileEntitySecStorage)
+			count = 1;
+
 		for (int a = count; a <= inventory.getSizeInventory() - 1; a++) {
 			ItemStack inventorystack = inventory.getStackInSlot(a);
 
@@ -100,5 +96,5 @@ public class InventoryHelper {
 		}
 		return false;
 	}
-	
+
 }

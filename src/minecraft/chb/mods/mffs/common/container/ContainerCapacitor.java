@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.container;
 
@@ -42,32 +42,38 @@ public class ContainerCapacitor extends Container {
 		forcepower = -1;
 		linketprojektor = -1;
 		capacity = -1;
-		Powerlinkmode =-1;
+		Powerlinkmode = -1;
 		generatorentity = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new SlotHelper(generatorentity, 4, 154, 88)); //Security Link
-		addSlotToContainer(new SlotHelper(generatorentity, 0, 154, 47)); //Capacity upgrade
-		addSlotToContainer(new SlotHelper(generatorentity, 1, 154, 67)); //Range upgrade
-		addSlotToContainer(new SlotHelper(generatorentity, 2, 87, 76)); //Force Energy/ext. Powerlink
+		addSlotToContainer(new SlotHelper(generatorentity, 4, 154, 88)); // Security
+																			// Link
+		addSlotToContainer(new SlotHelper(generatorentity, 0, 154, 47)); // Capacity
+																			// upgrade
+		addSlotToContainer(new SlotHelper(generatorentity, 1, 154, 67)); // Range
+																			// upgrade
+		addSlotToContainer(new SlotHelper(generatorentity, 2, 87, 76)); // Force
+																		// Energy/ext.
+																		// Powerlink
 
 		int var3;
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (int var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						8 + var4 * 18, 125 + var3 * 18));
+				this.addSlotToContainer(new Slot(player.inventory, var4 + var3
+						* 9 + 9, 8 + var4 * 18, 125 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 183));
+			this.addSlotToContainer(new Slot(player.inventory, var3,
+					8 + var3 * 18, 183));
 		}
 	}
 
-    public EntityPlayer getPlayer() {
-    	return player;
-    }
+	public EntityPlayer getPlayer() {
+		return player;
+	}
 
 	@Override
 	public void detectAndSendChanges() {
@@ -103,7 +109,6 @@ public class ContainerCapacitor extends Container {
 		Powerlinkmode = generatorentity.getPowerlinkmode();
 	}
 
-	@Override
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 		case 1:
@@ -112,12 +117,12 @@ public class ContainerCapacitor extends Container {
 			break;
 
 		case 2:
-			generatorentity.setForcePower((generatorentity.getStorageAvailablePower() & 0xffff0000)
-							| j);
+			generatorentity.setForcePower((generatorentity
+					.getStorageAvailablePower() & 0xffff0000) | j);
 			break;
 		case 3:
-			generatorentity.setForcePower((generatorentity.getStorageAvailablePower() & 0xffff)
-							| (j << 16));
+			generatorentity.setForcePower((generatorentity
+					.getStorageAvailablePower() & 0xffff) | (j << 16));
 			break;
 
 		case 4:
@@ -130,13 +135,12 @@ public class ContainerCapacitor extends Container {
 		}
 	}
 
-	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return generatorentity.isUseableByPlayer(entityplayer);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p, int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {

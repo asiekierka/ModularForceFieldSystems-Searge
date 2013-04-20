@@ -16,7 +16,7 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.api;
 
@@ -25,10 +25,9 @@ import net.minecraft.entity.player.EntityPlayer;
 public interface IMFFS_Wrench {
 
 	int getSide();
-	
-	void setSide(int Side);
-	
-	boolean wrenchCanManipulate(EntityPlayer entityPlayer,int side);
-	
-}
 
+	void setSide(int Side);
+
+	boolean wrenchCanManipulate(EntityPlayer entityPlayer, int side);
+
+}

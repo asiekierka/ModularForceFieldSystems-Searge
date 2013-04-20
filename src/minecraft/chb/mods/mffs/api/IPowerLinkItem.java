@@ -27,25 +27,29 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import chb.mods.mffs.common.tileentity.TileEntityMachines;
 
-
-
 public interface IPowerLinkItem {
-	
-	public int getPercentageCapacity(ItemStack itemStack,TileEntityMachines tem,World world);
-	
-	public int getAvailablePower(ItemStack itemStack,TileEntityMachines tem,World world);
-	
-	public int getMaximumPower(ItemStack itemStack,TileEntityMachines tem,World world);
-	
-	public boolean consumePower(ItemStack itemStack, int powerAmount,boolean simulation,TileEntityMachines tem,World world);
-	
-	public boolean insertPower(ItemStack itemStack, int powerAmount,boolean simulation,TileEntityMachines tem,World world);
-	
-	public int getPowersourceID(ItemStack itemStack,TileEntityMachines tem,World world);
-	
-	public int getfreeStorageAmount(ItemStack itemStack,TileEntityMachines tem,World world);
-	
+
+	public int getPercentageCapacity(ItemStack itemStack,
+			TileEntityMachines tem, World world);
+
+	public int getAvailablePower(ItemStack itemStack, TileEntityMachines tem,
+			World world);
+
+	public int getMaximumPower(ItemStack itemStack, TileEntityMachines tem,
+			World world);
+
+	public boolean consumePower(ItemStack itemStack, int powerAmount,
+			boolean simulation, TileEntityMachines tem, World world);
+
+	public boolean insertPower(ItemStack itemStack, int powerAmount,
+			boolean simulation, TileEntityMachines tem, World world);
+
+	public int getPowersourceID(ItemStack itemStack, TileEntityMachines tem,
+			World world);
+
+	public int getfreeStorageAmount(ItemStack itemStack,
+			TileEntityMachines tem, World world);
+
 	public boolean isPowersourceItem();
-	
-	
+
 }

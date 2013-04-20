@@ -16,38 +16,37 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.block;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.tileentity.TileEntityExtractor;
 
-
-
 public class BlockExtractor extends BlockMFFSBase {
-
 
 	public BlockExtractor(int i) {
 		super(i);
 	}
 
 	@Override
-	public String getTextureFile() {
-		if(ModularForceFieldSystem.graphicstyle==1)
-		return "/chb/mods/mffs/sprites/Extractor_ue.png";
-		
-		return "/chb/mods/mffs/sprites/Extractor.png";
-	}
+	public void registerIcons(IconRegister iconRegister) {
+		icons[0] = iconRegister.registerIcon("mffs:Extractor/SideInactive");
+		icons[1] = iconRegister.registerIcon("mffs:Extractor/FaceInactive");
+		icons[2] = iconRegister.registerIcon("mffs:Extractor/SideActive");
+		icons[3] = iconRegister.registerIcon("mffs:Extractor/FaceActive");
 
+		blockIcon = icons[0];
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 
-          return new TileEntityExtractor();
-		
+		return new TileEntityExtractor();
+
 	}
-	
+
 }

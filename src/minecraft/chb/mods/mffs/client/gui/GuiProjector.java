@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.client.gui;
 
@@ -37,58 +37,56 @@ public class GuiProjector extends GuiContainer {
 	private TileEntityProjector projector;
 	private boolean editMode = false;
 
-	public GuiProjector(EntityPlayer player,
-			TileEntityProjector tileentity) {
+	public GuiProjector(EntityPlayer player, TileEntityProjector tileentity) {
 		super(new ContainerProjector(player, tileentity));
 		projector = tileentity;
-        this.xSize = 176;
-        this.ySize = 186;
+		this.xSize = 176;
+		this.ySize = 186;
 	}
-	
+
 	@Override
-    protected void keyTyped(char c, int i) {
-		
+	protected void keyTyped(char c, int i) {
+
 		if (i != 1 && editMode) {
 			if (c == 13) {
-			editMode = false;
-			return;
+				editMode = false;
+				return;
 			}
-			
-			if(i ==14)
-			NetworkHandlerClient.fireTileEntityEvent(projector, 12,"");
-			
-			if(i !=54 && i !=42 && i !=58 && i !=14)
-			NetworkHandlerClient.fireTileEntityEvent(projector, 11,String.valueOf(c));
-			
-		}else {
+
+			if (i == 14)
+				NetworkHandlerClient.fireTileEntityEvent(projector, 12, "");
+
+			if (i != 54 && i != 42 && i != 58 && i != 14)
+				NetworkHandlerClient.fireTileEntityEvent(projector, 11,
+						String.valueOf(c));
+
+		} else {
 			super.keyTyped(c, i);
 		}
 	}
-	
+
 	@Override
 	protected void mouseClicked(int i, int j, int k) {
 		super.mouseClicked(i, j, k);
-		
+
 		int xMin = (width - xSize) / 2;
 		int yMin = (height - ySize) / 2;
 
 		int x = i - xMin;
 		int y = j - yMin;
-		
-		if (editMode){
+
+		if (editMode) {
 			editMode = false;
-		}else if(x >= 10 && y >= 5 && x <= 141 && y <= 19){
-			NetworkHandlerClient.fireTileEntityEvent(projector, 10,"null");
+		} else if (x >= 10 && y >= 5 && x <= 141 && y <= 19) {
+			NetworkHandlerClient.fireTileEntityEvent(projector, 10, "null");
 			editMode = true;
 		}
 	}
-	
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-		int textur = mc.renderEngine
-				.getTexture("/chb/mods/mffs/sprites/GuiProjector.png");
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(textur);
+		mc.renderEngine.bindTexture("/mods/mffs/textures/gui/GuiProjector.png");
 
 		int w = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
@@ -98,16 +96,21 @@ public class GuiProjector extends GuiContainer {
 		drawTexturedModalRect(w + 8, k + 91, 176, 0, i1 + 1, 79);
 
 		if (projector.hasValidTypeMod()) {
-			
-			if ( ProjectorTyp.TypfromItem(projector.get_type()).ProTyp != 7){
+
+			if (ProjectorTyp.TypfromItem(projector.get_type()).ProTyp != 7) {
 				drawTexturedModalRect(w + 119, k + 63, 177, 143, 16, 16);
 			}
 
-			if (ProjectorTyp.TypfromItem(projector.get_type()).ProTyp != 4   && ProjectorTyp.TypfromItem(projector.get_type()).ProTyp != 2 ) {
+			if (ProjectorTyp.TypfromItem(projector.get_type()).ProTyp != 4
+					&& ProjectorTyp.TypfromItem(projector.get_type()).ProTyp != 2) {
 				drawTexturedModalRect(w + 155, k + 63, 177, 143, 16, 16);
 			}
 
-			if (ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 1 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 2 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 6|| ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 7 || ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 8) {
+			if (ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 1
+					|| ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 2
+					|| ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 6
+					|| ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 7
+					|| ProjectorTyp.TypfromItem(projector.get_type()).ProTyp == 8) {
 				drawTexturedModalRect(w + 137, k + 28, 177, 143, 16, 16);
 
 				drawTexturedModalRect(w + 137, k + 62, 177, 143, 16, 16);
@@ -117,21 +120,24 @@ public class GuiProjector extends GuiContainer {
 				drawTexturedModalRect(w + 120, k + 45, 177, 143, 16, 16);
 			}
 
-			if (projector.hasOption(ModularForceFieldSystem.MFFSProjectorOptionCamouflage,true)) {
+			if (projector
+					.hasOption(
+							ModularForceFieldSystem.MFFSProjectorOptionCamouflage,
+							true)) {
 				drawTexturedModalRect(w + 137, k + 45, 177, 143, 16, 16); // center
 			}
 		}
 	}
 
-	@Override
 	protected void actionPerformed(GuiButton guibutton) {
-		NetworkHandlerClient.fireTileEntityEvent(projector,guibutton.id,"");
+		NetworkHandlerClient.fireTileEntityEvent(projector, guibutton.id, "");
 	}
 
-	@Override
 	public void initGui() {
-		controlList.add(new GraphicButton(1, (width / 2) + 4, (height / 2) - 37,projector,1));
-		controlList.add(new GraphicButton(0, (width / 2) + 67, (height / 2) -88,projector,0));
+		buttonList.add(new GraphicButton(1, (width / 2) + 4, (height / 2) - 37,
+				projector, 1));
+		buttonList.add(new GraphicButton(0, (width / 2) + 67,
+				(height / 2) - 88, projector, 0));
 
 		super.initGui();
 	}
@@ -142,10 +148,11 @@ public class GuiProjector extends GuiContainer {
 		fontRenderer.drawString("MFFS Projector", 12, 24, 0x404040);
 		fontRenderer.drawString("Typ-Mode", 34, 44, 0x404040);
 		fontRenderer.drawString("PowerLink", 34, 66, 0x404040);
-		if(projector.hasPowerSource()){
-			fontRenderer.drawString(String.valueOf(projector.getLinkPower()), 30, 80,0x404040);
-		}else{
-			fontRenderer.drawString("No Link/OOR", 30, 80,0x404040);	
+		if (projector.hasPowerSource()) {
+			fontRenderer.drawString(String.valueOf(projector.getLinkPower()),
+					30, 80, 0x404040);
+		} else {
+			fontRenderer.drawString("No Link/OOR", 30, 80, 0x404040);
 		}
 	}
 }

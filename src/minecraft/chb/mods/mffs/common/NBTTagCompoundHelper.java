@@ -16,14 +16,12 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-
 
 public class NBTTagCompoundHelper {
 
@@ -38,5 +36,5 @@ public class NBTTagCompoundHelper {
 		}
 		return null;
 	}
-	
+
 }

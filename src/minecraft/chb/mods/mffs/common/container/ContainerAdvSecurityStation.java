@@ -16,7 +16,7 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.container;
 
@@ -27,8 +27,6 @@ import net.minecraft.item.ItemStack;
 import chb.mods.mffs.common.SlotHelper;
 import chb.mods.mffs.common.tileentity.TileEntityAdvSecurityStation;
 
-
-
 public class ContainerAdvSecurityStation extends Container {
 	private TileEntityAdvSecurityStation SecStation;
 	private EntityPlayer player;
@@ -38,46 +36,46 @@ public class ContainerAdvSecurityStation extends Container {
 		SecStation = tileentity;
 		this.player = player;
 
-		
 		addSlotToContainer(new SlotHelper(SecStation, 0, 177, 33)); // MasterCard
 		addSlotToContainer(new SlotHelper(SecStation, 1, 15, 30)); // Coder
 
 		addSlotToContainer(new SlotHelper(SecStation, 39, 88, 102)); // Copymaster
 		addSlotToContainer(new SlotHelper(SecStation, 38, 146, 102)); // Copytarget
-		
+
 		int var3;
 		int var4;
-		
+
 		for (var3 = 0; var3 < 8; ++var3) {
 			for (var4 = 0; var4 < 4; ++var4) {
-				this.addSlotToContainer(new SlotHelper(SecStation, (var4 + var3 * 4)+2,
-						176 + var4 * 18, 62 + var3 * 18));
+				this.addSlotToContainer(new SlotHelper(SecStation,
+						(var4 + var3 * 4) + 2, 176 + var4 * 18, 62 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 3; ++var3) {
-			for ( var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						8 + var4 * 18, 134 + var3 * 18));
+			for (var4 = 0; var4 < 9; ++var4) {
+				this.addSlotToContainer(new Slot(player.inventory, var4 + var3
+						* 9 + 9, 8 + var4 * 18, 134 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 192));
+			this.addSlotToContainer(new Slot(player.inventory, var3,
+					8 + var3 * 18, 192));
 		}
 	}
 
-    public EntityPlayer getPlayer() {
-    	return player;
-    }
+	public EntityPlayer getPlayer() {
+		return player;
+	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return SecStation.isUseableByPlayer(entityplayer);
 	}
-	
+
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p, int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
@@ -96,6 +94,5 @@ public class ContainerAdvSecurityStation extends Container {
 		}
 		return itemstack;
 	}
-		
 
 }

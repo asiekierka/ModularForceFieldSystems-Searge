@@ -16,12 +16,13 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.item;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,17 +33,15 @@ import org.lwjgl.input.Keyboard;
 import chb.mods.mffs.common.NBTTagCompoundHelper;
 import chb.mods.mffs.common.SecurityRight;
 
-
-
-public class ItemCardPersonalID extends Item{
+public class ItemCardPersonalID extends Item {
 	public ItemCardPersonalID(int i) {
 		super(i);
-		setIconIndex(18);
 		setMaxStackSize(1);
 	}
+
 	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("mffs:PersonalIDCard");
 	}
 
 	@Override
@@ -51,63 +50,65 @@ public class ItemCardPersonalID extends Item{
 	}
 
 	@Override
-	public boolean isDamageable()
-	{
-	return true;
+	public boolean isDamageable() {
+		return true;
 	}
-	
-    public static boolean hasRight(ItemStack itemStack, SecurityRight sr){
-    	NBTTagCompound itemTag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-    	NBTTagCompound rightsTag = itemTag.getCompoundTag("rights");
-    	
-    	if (itemTag.hasKey(sr.rightKey)){ //Update and delete old keys
-    		setRight(itemStack, sr, itemTag.getBoolean(sr.rightKey));
-    		itemTag.removeTag(sr.rightKey);
-    	}
-    	return rightsTag.getBoolean(sr.rightKey);
-    }
-    
-    public static void setRight(ItemStack itemStack, SecurityRight sr, boolean value){
-    	NBTTagCompound rightsTag = NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getCompoundTag("rights");
-    	rightsTag.setBoolean(sr.rightKey, value);
-    	NBTTagCompoundHelper.getTAGfromItemstack(itemStack).setCompoundTag("rights", rightsTag);
-    }
-		
 
-    public static  void setOwner(ItemStack itemStack, String username)
-    {
-       NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemStack);
-       nbtTagCompound.setString("name", username);
-    }
+	public static boolean hasRight(ItemStack itemStack, SecurityRight sr) {
+		NBTTagCompound itemTag = NBTTagCompoundHelper
+				.getTAGfromItemstack(itemStack);
+		NBTTagCompound rightsTag = itemTag.getCompoundTag("rights");
 
+		if (itemTag.hasKey(sr.rightKey)) { // Update and delete old keys
+			setRight(itemStack, sr, itemTag.getBoolean(sr.rightKey));
+			itemTag.removeTag(sr.rightKey);
+		}
+		return rightsTag.getBoolean(sr.rightKey);
+	}
 
-    public String getUsername(ItemStack itemstack)
-    {
-    	NBTTagCompound nbtTagCompound = NBTTagCompoundHelper.getTAGfromItemstack(itemstack);
-    	if(nbtTagCompound != null)
-    	{
-    		return nbtTagCompound.getString("name") ;
-    	}
-       return "nobody";
-    }
+	public static void setRight(ItemStack itemStack, SecurityRight sr,
+			boolean value) {
+		NBTTagCompound rightsTag = NBTTagCompoundHelper.getTAGfromItemstack(
+				itemStack).getCompoundTag("rights");
+		rightsTag.setBoolean(sr.rightKey, value);
+		NBTTagCompoundHelper.getTAGfromItemstack(itemStack).setCompoundTag(
+				"rights", rightsTag);
+	}
 
-    @Override
-    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
-    {
-        String tooltip = String.format("Owner: %s ", NBTTagCompoundHelper.getTAGfromItemstack(itemStack).getString("name") );
-        info.add(tooltip);
-        
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            info.add("Rights:");
-            for (SecurityRight sr : SecurityRight.rights.values()) {
-            	
-            	if (hasRight(itemStack,sr)){
-            		info.add("-" + sr.name);
-            	}
-            	
+	public static void setOwner(ItemStack itemStack, String username) {
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper
+				.getTAGfromItemstack(itemStack);
+		nbtTagCompound.setString("name", username);
+	}
+
+	public String getUsername(ItemStack itemstack) {
+		NBTTagCompound nbtTagCompound = NBTTagCompoundHelper
+				.getTAGfromItemstack(itemstack);
+		if (nbtTagCompound != null) {
+			return nbtTagCompound.getString("name");
+		}
+		return "nobody";
+	}
+
+	@Override
+	public void addInformation(ItemStack itemStack, EntityPlayer player,
+			List info, boolean b) {
+		String tooltip = String.format("Owner: %s ", NBTTagCompoundHelper
+				.getTAGfromItemstack(itemStack).getString("name"));
+		info.add(tooltip);
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
+				|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+			info.add("Rights:");
+			for (SecurityRight sr : SecurityRight.rights.values()) {
+
+				if (hasRight(itemStack, sr)) {
+					info.add("-" + sr.name);
+				}
+
 			}
-        }else{
-        	info.add("Rights: (Hold Shift)");
-        }
-    }
+		} else {
+			info.add("Rights: (Hold Shift)");
+		}
+	}
 }

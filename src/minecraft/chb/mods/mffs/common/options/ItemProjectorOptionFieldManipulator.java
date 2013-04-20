@@ -16,18 +16,20 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.options;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 
-
-
-public class ItemProjectorOptionFieldManipulator extends ItemProjectorOptionBase  {
+public class ItemProjectorOptionFieldManipulator extends
+		ItemProjectorOptionBase {
 	public ItemProjectorOptionFieldManipulator(int i) {
 		super(i);
-		setIconIndex(34);
 	}
 
-	
+	@Override
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("mffs:options/FieldManipulator");
+	}
 }

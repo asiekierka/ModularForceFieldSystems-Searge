@@ -16,35 +16,149 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.block;
 
-
 import java.util.Random;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import chb.mods.mffs.common.ModularForceFieldSystem;
+import net.minecraftforge.common.ForgeDirection;
+import chb.mods.mffs.common.tileentity.TileEntityMachines;
 import chb.mods.mffs.common.tileentity.TileEntityProjector;
-
-
 
 public class BlockProjector extends BlockMFFSBase {
 	public BlockProjector(int i) {
 		super(i);
-		setRequiresSelfNotify();
+	}
+
+	public Icon[] activeFaceIcons = new Icon[9];
+	public Icon[] activeSideIcons = new Icon[9];
+	public Icon[] inactiveFaceIcons = new Icon[9];
+	public Icon[] inactiveSideIcons = new Icon[9];
+
+	@Override
+	public void registerIcons(IconRegister iconRegister) {
+		activeFaceIcons[0] = iconRegister
+				.registerIcon("mffs:Projector/Empty/FaceActive");
+		activeSideIcons[0] = iconRegister
+				.registerIcon("mffs:Projector/Empty/SideActive");
+		inactiveFaceIcons[0] = iconRegister
+				.registerIcon("mffs:Projector/Empty/FaceInactive");
+		inactiveSideIcons[0] = iconRegister
+				.registerIcon("mffs:Projector/Empty/SideInactive");
+
+		activeFaceIcons[1] = iconRegister
+				.registerIcon("mffs:Projector/Wall/FaceActive");
+		activeSideIcons[1] = iconRegister
+				.registerIcon("mffs:Projector/Wall/SideActive");
+		inactiveFaceIcons[1] = iconRegister
+				.registerIcon("mffs:Projector/Wall/FaceInactive");
+		inactiveSideIcons[1] = iconRegister
+				.registerIcon("mffs:Projector/Wall/SideInactive");
+
+		activeFaceIcons[2] = iconRegister
+				.registerIcon("mffs:Projector/Deflector/FaceActive");
+		activeSideIcons[2] = iconRegister
+				.registerIcon("mffs:Projector/Deflector/SideActive");
+		inactiveFaceIcons[2] = iconRegister
+				.registerIcon("mffs:Projector/Deflector/FaceInactive");
+		inactiveSideIcons[2] = iconRegister
+				.registerIcon("mffs:Projector/Deflector/SideInactive");
+
+		activeFaceIcons[3] = iconRegister
+				.registerIcon("mffs:Projector/Tube/FaceActive");
+		activeSideIcons[3] = iconRegister
+				.registerIcon("mffs:Projector/Tube/SideActive");
+		inactiveFaceIcons[3] = iconRegister
+				.registerIcon("mffs:Projector/Tube/FaceInactive");
+		inactiveSideIcons[3] = iconRegister
+				.registerIcon("mffs:Projector/Tube/SideInactive");
+
+		activeFaceIcons[4] = iconRegister
+				.registerIcon("mffs:Projector/Cube/FaceActive");
+		activeSideIcons[4] = iconRegister
+				.registerIcon("mffs:Projector/Cube/SideActive");
+		inactiveFaceIcons[4] = iconRegister
+				.registerIcon("mffs:Projector/Cube/FaceInactive");
+		inactiveSideIcons[4] = iconRegister
+				.registerIcon("mffs:Projector/Cube/SideInactive");
+
+		activeFaceIcons[5] = iconRegister
+				.registerIcon("mffs:Projector/Sphere/FaceActive");
+		activeSideIcons[5] = iconRegister
+				.registerIcon("mffs:Projector/Sphere/SideActive");
+		inactiveFaceIcons[5] = iconRegister
+				.registerIcon("mffs:Projector/Sphere/FaceInactive");
+		inactiveSideIcons[5] = iconRegister
+				.registerIcon("mffs:Projector/Sphere/SideInactive");
+
+		activeFaceIcons[6] = iconRegister
+				.registerIcon("mffs:Projector/Containment/FaceActive");
+		activeSideIcons[6] = iconRegister
+				.registerIcon("mffs:Projector/Containment/SideActive");
+		inactiveFaceIcons[6] = iconRegister
+				.registerIcon("mffs:Projector/Containment/FaceInactive");
+		inactiveSideIcons[6] = iconRegister
+				.registerIcon("mffs:Projector/Containment/SideInactive");
+
+		activeFaceIcons[7] = iconRegister
+				.registerIcon("mffs:Projector/AdvCube/FaceActive");
+		activeSideIcons[7] = iconRegister
+				.registerIcon("mffs:Projector/AdvCube/SideActive");
+		inactiveFaceIcons[7] = iconRegister
+				.registerIcon("mffs:Projector/AdvCube/FaceInactive");
+		inactiveSideIcons[7] = iconRegister
+				.registerIcon("mffs:Projector/AdvCube/SideInactive");
+
+		activeFaceIcons[8] = iconRegister
+				.registerIcon("mffs:Projector/DiagWall/FaceActive");
+		activeSideIcons[8] = iconRegister
+				.registerIcon("mffs:Projector/DiagWall/SideActive");
+		inactiveFaceIcons[8] = iconRegister
+				.registerIcon("mffs:Projector/DiagWall/FaceInactive");
+		inactiveSideIcons[8] = iconRegister
+				.registerIcon("mffs:Projector/DiagWall/SideInactive");
+
+		blockIcon = inactiveFaceIcons[0];
 	}
 
 	@Override
-	public String getTextureFile() {
-		if(ModularForceFieldSystem.graphicstyle==1)
-		return "/chb/mods/mffs/sprites/projector_ue.png";
-		
-		return "/chb/mods/mffs/sprites/projector.png";
-	}
+	public Icon getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k,
+			int l) {
 
+		int typ = 0;
+
+		TileEntity tileentity = iblockaccess.getBlockTileEntity(i, j, k);
+
+		int facing = (tileentity instanceof TileEntityMachines) ? ((TileEntityMachines) tileentity)
+				.getSide() : 1;
+
+		ForgeDirection blockfacing = ForgeDirection.getOrientation(l);
+		ForgeDirection TileEntityfacing = ForgeDirection.getOrientation(facing);
+
+		if (tileentity instanceof TileEntityProjector)
+			typ = ((TileEntityProjector) tileentity).getProjektor_Typ();
+
+		if (isActive(iblockaccess, i, j, k)) {
+			if (blockfacing.equals(TileEntityfacing))
+				return activeFaceIcons[typ];
+
+			return activeSideIcons[typ];
+
+		} else {
+
+			if (blockfacing.equals(TileEntityfacing))
+				return inactiveFaceIcons[typ];
+
+			return inactiveSideIcons[typ];
+		}
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world) {
@@ -54,21 +168,20 @@ public class BlockProjector extends BlockMFFSBase {
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k,
 			EntityPlayer entityplayer, int par6, float par7, float par8,
-			float par9){
-		
-		TileEntityProjector tileentity = (TileEntityProjector) world.getBlockTileEntity(i, j, k);
-		
-		if(tileentity.isBurnout())
-		{
+			float par9) {
+
+		TileEntityProjector tileentity = (TileEntityProjector) world
+				.getBlockTileEntity(i, j, k);
+
+		if (tileentity.isBurnout()) {
 			return false;
 		}
 
-		return super.onBlockActivated(world, i, j, k, entityplayer, par6, par7, par8, par9);
+		return super.onBlockActivated(world, i, j, k, entityplayer, par6, par7,
+				par8, par9);
 
-		
 	}
 
-	@Override
 	public void randomDisplayTick(World world, int i, int j, int k,
 			Random random) {
 		TileEntityProjector tileentity = (TileEntityProjector) world

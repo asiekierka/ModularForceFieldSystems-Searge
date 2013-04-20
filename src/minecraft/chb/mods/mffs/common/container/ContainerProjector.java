@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.container;
 
@@ -46,7 +46,8 @@ public class ContainerProjector extends Container {
 		capacity = -1;
 
 		addSlotToContainer(new SlotHelper(projectorentity, 0, 11, 61)); // Linkcard
-		addSlotToContainer(new SlotHelper(projectorentity, 1, 11, 38)); // Typ Slot
+		addSlotToContainer(new SlotHelper(projectorentity, 1, 11, 38)); // Typ
+																		// Slot
 
 		addSlotToContainer(new SlotHelper(projectorentity, 2, 120, 82)); // OptionSlot
 		addSlotToContainer(new SlotHelper(projectorentity, 3, 138, 82)); // OptionSlot
@@ -55,10 +56,14 @@ public class ContainerProjector extends Container {
 		addSlotToContainer(new SlotHelper(projectorentity, 6, 155, 64)); // StreghtSlot
 		addSlotToContainer(new SlotHelper(projectorentity, 5, 119, 64)); // DistancetSlot
 
-		addSlotToContainer(new SlotHelper(projectorentity, 7, 137, 28)); // Focus up
-		addSlotToContainer(new SlotHelper(projectorentity, 8, 137, 62)); // Focus down
-		addSlotToContainer(new SlotHelper(projectorentity, 9, 154, 45)); // Focus right
-		addSlotToContainer(new SlotHelper(projectorentity, 10, 120, 45)); // Focus left
+		addSlotToContainer(new SlotHelper(projectorentity, 7, 137, 28)); // Focus
+																			// up
+		addSlotToContainer(new SlotHelper(projectorentity, 8, 137, 62)); // Focus
+																			// down
+		addSlotToContainer(new SlotHelper(projectorentity, 9, 154, 45)); // Focus
+																			// right
+		addSlotToContainer(new SlotHelper(projectorentity, 10, 120, 45)); // Focus
+																			// left
 
 		addSlotToContainer(new SlotHelper(projectorentity, 11, 137, 45)); // Centerslot
 
@@ -68,26 +73,27 @@ public class ContainerProjector extends Container {
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (int var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						8 + var4 * 18, 104 + var3 * 18));
+				this.addSlotToContainer(new Slot(player.inventory, var4 + var3
+						* 9 + 9, 8 + var4 * 18, 104 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 162));
+			this.addSlotToContainer(new Slot(player.inventory, var3,
+					8 + var3 * 18, 162));
 		}
 	}
 
-    public EntityPlayer getPlayer() {
-    	return player;
-    }
+	public EntityPlayer getPlayer() {
+		return player;
+	}
 
-	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return projectorentity.isUseableByPlayer(entityplayer);
 	}
+
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p, int i) {
 		ItemStack itemstack = null;
 		Slot slot = (Slot) inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
@@ -134,10 +140,9 @@ public class ContainerProjector extends Container {
 
 		linkPower = projectorentity.getLinkPower();
 		accesstyp = projectorentity.getaccesstyp();
-		capacity =  projectorentity.getPercentageCapacity();
+		capacity = projectorentity.getPercentageCapacity();
 	}
 
-	@Override
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 		case 0:

@@ -20,6 +20,7 @@
 
 package chb.mods.mffs.common.item;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -39,101 +40,115 @@ import chb.mods.mffs.common.tileentity.TileEntityControlSystem;
 import chb.mods.mffs.common.tileentity.TileEntityProjector;
 import chb.mods.mffs.common.tileentity.TileEntitySecStorage;
 
-public class ItemCardSecurityLink extends ItemCard  {
+public class ItemCardSecurityLink extends ItemCard {
 
 	public ItemCardSecurityLink(int i) {
 		super(i);
-		setIconIndex(19);
-	
 	}
-	
-	
-    @Override
-    public void onUpdate(ItemStack itemStack, World world, Entity entity, int par4, boolean par5)
-    {
-    	super.onUpdate(itemStack, world, entity, par4, par5);
-    	
-    	if(Tick>600)
-    	{
-    		int Sec_ID =this.getValuefromKey("Secstation_ID",itemStack);
-    		if(Sec_ID!=0)
-    		{
-    			TileEntityAdvSecurityStation sec = Linkgrid.getWorldMap(world).getSecStation().get(Sec_ID);
-    			if(sec !=null)
-    			{
-    				if(!sec.getDeviceName().equals(this.getforAreaname(itemStack)))
-    				{
-    				  	this.setforArea(itemStack, sec.getDeviceName());
-    				}
-    			}
-    		}
-    		
-    		Tick=0;
-    	}
-    	Tick++;
-    }
-	
-	public static TileEntityAdvSecurityStation getLinkedSecurityStation(ISidedInventory inventiory,int slot,World world)
-	{
-
-		if (inventiory.getStackInSlot(slot) != null)
-		{
-
-			if(inventiory.getStackInSlot(slot).getItem() instanceof ItemCardSecurityLink)
-			{
-				ItemCardSecurityLink card = (ItemCardSecurityLink) inventiory.getStackInSlot(slot).getItem();
-				PointXYZ png = card.getCardTargetPoint(inventiory.getStackInSlot(slot));
-				if(png != null)
-				{
-					if(png.dimensionId != world.provider.dimensionId) return null;
-					
-				if(world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityAdvSecurityStation)
-				{
-				TileEntityAdvSecurityStation sec = (TileEntityAdvSecurityStation) world.getBlockTileEntity(png.X, png.Y, png.Z);
-				if (sec != null){
-					
-				  if(sec.getDeviceID()== card.getValuefromKey("Secstation_ID",inventiory.getStackInSlot(slot))&&  card.getValuefromKey("Secstation_ID",inventiory.getStackInSlot(slot)) != 0 )
-				  {
-					  
-	    			if(!sec.getDeviceName().equals(card.getforAreaname(inventiory.getStackInSlot(slot))))
-	    			{
-	    				card.setforArea(inventiory.getStackInSlot(slot), sec.getDeviceName());
-	    			} 
-                    return sec;
-				   }
-				}
-			  }else{
-				  
-				  int Sec_ID =card.getValuefromKey("Secstation_ID",inventiory.getStackInSlot(slot));
-				  if(Sec_ID!=0)
-				  {
-					  TileEntityAdvSecurityStation sec =  Linkgrid.getWorldMap(world).getSecStation().get(Sec_ID);
-					  if (sec != null){
-						  
-						  ((ItemCard)card).setInformation(inventiory.getStackInSlot(slot), sec.getMaschinePoint(), "Secstation_ID", Sec_ID);
-						  return sec;
-					  }
-				  }
-			
-			  }
-			  if(world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
-				  inventiory.setInventorySlotContents(slot, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty));
-			}
-		   }
-		}
-		
-		return null;
-	}
-	
-	
 
 	@Override
-	public boolean onItemUseFirst(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int side, float hitX, float hitY, float hitZ) {
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("mffs:SecurityLinkCard");
+	}
+
+	@Override
+	public void onUpdate(ItemStack itemStack, World world, Entity entity,
+			int par4, boolean par5) {
+		super.onUpdate(itemStack, world, entity, par4, par5);
+
+		if (Tick > 600) {
+			int Sec_ID = this.getValuefromKey("Secstation_ID", itemStack);
+			if (Sec_ID != 0) {
+				TileEntityAdvSecurityStation sec = Linkgrid.getWorldMap(world)
+						.getSecStation().get(Sec_ID);
+				if (sec != null) {
+					if (!sec.getDeviceName().equals(
+							this.getforAreaname(itemStack))) {
+						this.setforArea(itemStack, sec.getDeviceName());
+					}
+				}
+			}
+
+			Tick = 0;
+		}
+		Tick++;
+	}
+
+	public static TileEntityAdvSecurityStation getLinkedSecurityStation(
+			ISidedInventory inventiory, int slot, World world) {
+
+		if (inventiory.getStackInSlot(slot) != null) {
+
+			if (inventiory.getStackInSlot(slot).getItem() instanceof ItemCardSecurityLink) {
+				ItemCardSecurityLink card = (ItemCardSecurityLink) inventiory
+						.getStackInSlot(slot).getItem();
+				PointXYZ png = card.getCardTargetPoint(inventiory
+						.getStackInSlot(slot));
+				if (png != null) {
+					if (png.dimensionId != world.provider.dimensionId)
+						return null;
+
+					if (world.getBlockTileEntity(png.X, png.Y, png.Z) instanceof TileEntityAdvSecurityStation) {
+						TileEntityAdvSecurityStation sec = (TileEntityAdvSecurityStation) world
+								.getBlockTileEntity(png.X, png.Y, png.Z);
+						if (sec != null) {
+
+							if (sec.getDeviceID() == card.getValuefromKey(
+									"Secstation_ID",
+									inventiory.getStackInSlot(slot))
+									&& card.getValuefromKey("Secstation_ID",
+											inventiory.getStackInSlot(slot)) != 0) {
+
+								if (!sec.getDeviceName().equals(
+										card.getforAreaname(inventiory
+												.getStackInSlot(slot)))) {
+									card.setforArea(
+											inventiory.getStackInSlot(slot),
+											sec.getDeviceName());
+								}
+								return sec;
+							}
+						}
+					} else {
+
+						int Sec_ID = card.getValuefromKey("Secstation_ID",
+								inventiory.getStackInSlot(slot));
+						if (Sec_ID != 0) {
+							TileEntityAdvSecurityStation sec = Linkgrid
+									.getWorldMap(world).getSecStation()
+									.get(Sec_ID);
+							if (sec != null) {
+
+								((ItemCard) card).setInformation(
+										inventiory.getStackInSlot(slot),
+										sec.getMaschinePoint(),
+										"Secstation_ID", Sec_ID);
+								return sec;
+							}
+						}
+
+					}
+					if (world.getChunkFromBlockCoords(png.X, png.Z).isChunkLoaded)
+						inventiory
+								.setInventorySlotContents(
+										slot,
+										new ItemStack(
+												ModularForceFieldSystem.MFFSitemcardempty));
+				}
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean onItemUseFirst(ItemStack itemstack,
+			EntityPlayer entityplayer, World world, int i, int j, int k,
+			int side, float hitX, float hitY, float hitZ) {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 
 		if (!world.isRemote) {
-			
-			
+
 			if (tileEntity instanceof TileEntityControlSystem) {
 
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
@@ -144,8 +159,7 @@ public class ItemCardSecurityLink extends ItemCard  {
 
 				}
 			}
-			
-			
+
 			if (tileEntity instanceof TileEntityCapacitor) {
 
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
@@ -165,7 +179,7 @@ public class ItemCardSecurityLink extends ItemCard  {
 							tileEntity, 1, "<Security Station Link>");
 				}
 			}
-			
+
 			if (tileEntity instanceof TileEntitySecStorage) {
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,
 						world, SecurityRight.EB)) {
@@ -174,7 +188,6 @@ public class ItemCardSecurityLink extends ItemCard  {
 							tileEntity, 0, "<Security Station Link>");
 				}
 			}
-			
 
 			if (tileEntity instanceof TileEntityProjector) {
 				if (SecurityHelper.isAccessGranted(tileEntity, entityplayer,

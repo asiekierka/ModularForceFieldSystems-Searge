@@ -2,6 +2,7 @@ package chb.mods.mffs.common.item;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -9,22 +10,19 @@ import chb.mods.mffs.api.IForceEnergyItems;
 import chb.mods.mffs.api.IPowerLinkItem;
 import chb.mods.mffs.common.tileentity.TileEntityMachines;
 
-
-public class ItemCardPower extends ItemMFFSBase implements IPowerLinkItem,IForceEnergyItems{
+public class ItemCardPower extends ItemMFFSBase implements IPowerLinkItem,
+		IForceEnergyItems {
 
 	public ItemCardPower(int id) {
 		super(id);
 		setMaxStackSize(1);
-		setIconIndex(21);
 	}
-	
-	
-	
-	
+
 	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("mffs:PowerCard");
 	}
+
 	@Override
 	public boolean isRepairable() {
 		return false;
@@ -76,33 +74,26 @@ public class ItemCardPower extends ItemMFFSBase implements IPowerLinkItem,IForce
 	public boolean isPowersourceItem() {
 		return true;
 	}
-	
-    @Override
-    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
-    {
 
-            info.add("Admin Card to Power Maschines");
-            info.add("or use to infinit charge Capactior");
-    }
+	@Override
+	public void addInformation(ItemStack itemStack, EntityPlayer player,
+			List info, boolean b) {
 
+		info.add("Admin Card to Power Maschines");
+		info.add("or use to infinit charge Capactior");
+	}
 
-
-    
-    // ForceEnergyItems ->  PowerLinkItem compatibility
+	// ForceEnergyItems -> PowerLinkItem compatibility
 
 	@Override
 	public int getAvailablePower(ItemStack itemStack) {
-		return getAvailablePower(itemStack,null,null);
+		return getAvailablePower(itemStack, null, null);
 	}
-
-
-
 
 	@Override
 	public int getMaximumPower(ItemStack itemStack) {
-		return getMaximumPower(itemStack,null,null);
+		return getMaximumPower(itemStack, null, null);
 	}
-
 
 	@Override
 	public boolean consumePower(ItemStack itemStack, int powerAmount,
@@ -110,22 +101,18 @@ public class ItemCardPower extends ItemMFFSBase implements IPowerLinkItem,IForce
 		return true;
 	}
 
-
-
 	@Override
-	public void setAvailablePower(ItemStack itemStack, int amount) {}
-
+	public void setAvailablePower(ItemStack itemStack, int amount) {
+	}
 
 	@Override
 	public int getPowerTransferrate() {
 		return 1000000;
 	}
 
-
 	@Override
 	public int getItemDamage(ItemStack stackInSlot) {
 		return 0;
 	}
-
 
 }

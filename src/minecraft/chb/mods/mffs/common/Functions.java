@@ -16,7 +16,7 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common;
 
@@ -29,17 +29,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-
-
-
 public class Functions {
-	public static Block getBlock(int x,int y,int z,World world)
-	{
-		return Block.blocksList[world.getBlockId(x,y,z)];
+	public static Block getBlock(int x, int y, int z, World world) {
+		return Block.blocksList[world.getBlockId(x, y, z)];
 	}
 
-
-	
 	public static ArrayList<ItemStack> getItemStackFromBlock(World world,
 			int i, int j, int k) {
 		Block block = Block.blocksList[world.getBlockId(i, j, k)];
@@ -52,38 +46,33 @@ public class Functions {
 		return block.getBlockDropped(world, i, j, k, meta, 0);
 	}
 
-
 	public static void ChattoPlayer(EntityPlayer player, String Message) {
 		player.addChatMessage(Message);
 	}
 
-
-	
-	
-	public static boolean setIteminSlot(ItemStack itemstack, EntityPlayer entityplayer,TileEntity tileEntity,int Slot, String Cardname)
-	{
-		if(((IInventory)tileEntity).getStackInSlot(Slot)==null)
-		{
-			((IInventory)tileEntity).setInventorySlotContents(Slot,itemstack);
+	public static boolean setIteminSlot(ItemStack itemstack,
+			EntityPlayer entityplayer, TileEntity tileEntity, int Slot,
+			String Cardname) {
+		if (((IInventory) tileEntity).getStackInSlot(Slot) == null) {
+			((IInventory) tileEntity).setInventorySlotContents(Slot, itemstack);
 			entityplayer.inventory.mainInventory[entityplayer.inventory.currentItem] = null;
-			Functions.ChattoPlayer(entityplayer, "Success: "+Cardname+" Card installed");
-			((IInventory)tileEntity).onInventoryChanged();
+			Functions.ChattoPlayer(entityplayer, "Success: " + Cardname
+					+ " Card installed");
+			((IInventory) tileEntity).onInventoryChanged();
 			return true;
-		}
-		else
-		{
-			if(((IInventory)tileEntity).getStackInSlot(Slot).getItem()==ModularForceFieldSystem.MFFSitemcardempty)
-			{
+		} else {
+			if (((IInventory) tileEntity).getStackInSlot(Slot).getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
 				ItemStack itemstackcopy = itemstack.copy();
-				((IInventory)tileEntity).setInventorySlotContents(Slot,itemstackcopy);
-				Functions.ChattoPlayer(entityplayer, "Success: "+Cardname+" Card data copied ");
-				((IInventory)tileEntity).onInventoryChanged();
+				((IInventory) tileEntity).setInventorySlotContents(Slot,
+						itemstackcopy);
+				Functions.ChattoPlayer(entityplayer, "Success: " + Cardname
+						+ " Card data copied ");
+				((IInventory) tileEntity).onInventoryChanged();
 				return true;
 			}
 			Functions.ChattoPlayer(entityplayer, "Fail: Slot is not empty");
 			return false;
 		}
 	}
-		
-	
+
 }

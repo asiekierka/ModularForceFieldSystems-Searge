@@ -16,20 +16,16 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.api;
 
 import net.minecraft.world.World;
 
-
-
-	public interface IForceFieldBlock
-	{
-		/**
-		 * Destroys the force field block and requires force power from the capacity to replenish it.
-		 */
-		public void weakenForceField(World world, int x, int y, int z);
-	}
-
-
+public interface IForceFieldBlock {
+	/**
+	 * Destroys the force field block and requires force power from the capacity
+	 * to replenish it.
+	 */
+	public void weakenForceField(World world, int x, int y, int z);
+}

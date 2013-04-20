@@ -17,7 +17,7 @@
     Contributors:
     Thunderdark - initial implementation
     Matchlighter
-*/
+ */
 
 package chb.mods.mffs.client.gui;
 
@@ -51,122 +51,138 @@ public class GuiAdvSecurityStation extends GuiContainer {
 		xSize = 256;
 		ySize = 216;
 	}
-	
+
 	@Override
-    protected void keyTyped(char c, int i) {
-		
+	protected void keyTyped(char c, int i) {
+
 		if (i != 1 && editMode) {
 			if (c == 13) {
-			editMode = false;
-			return;
+				editMode = false;
+				return;
 			}
-			
-			if(i ==14)
-			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 12,"");
-			
-			if(i !=54 && i !=42 && i !=58 && i !=14)
-			NetworkHandlerClient.fireTileEntityEvent(tileEntity,11,String.valueOf(c));
-			
-		}else {
+
+			if (i == 14)
+				NetworkHandlerClient.fireTileEntityEvent(tileEntity, 12, "");
+
+			if (i != 54 && i != 42 && i != 58 && i != 14)
+				NetworkHandlerClient.fireTileEntityEvent(tileEntity, 11,
+						String.valueOf(c));
+
+		} else {
 			super.keyTyped(c, i);
 		}
-	
+
 	}
-	
-	
+
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
-		int textur = mc.renderEngine.getTexture("/chb/mods/mffs/sprites/GuiAdvSecstation.png");
+	protected void drawGuiContainerBackgroundLayer(float f, int mouseX,
+			int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(textur);
+		mc.renderEngine
+				.bindTexture("/mods/mffs/textures/gui/GuiAdvSecstation.png");
 		int w = (width - xSize) / 2;
 		int k = (height - ySize) / 2;
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
-		
+
 		hoverSR = null;
 		int scale = 18;
-		int ct=0;
-		
-		ItemStack modCard = tileEntity.getModCardStack();
-		if (modCard != null){
-			if (modCard.getItem() instanceof ItemCardPersonalID){
-			List<String> srKeys = new ArrayList<String>();
-			srKeys.addAll(SecurityRight.rights.keySet());
-			java.util.Collections.sort(srKeys);
-			for (String srKey : srKeys) {
-				SecurityRight sr = SecurityRight.rights.get(srKey);
-				
-				int x = ct%7 * (scale+2) + 18;
-				int y = ct/7 * (scale+2) + 54;
-				
-				if (ItemCardPersonalID.hasRight(modCard, sr)) {
-					drawSprite(this.guiLeft+x, this.guiTop+y, 0, 0, sr);
-				} else {
-					drawSprite(this.guiLeft+x, this.guiTop+y, 0, scale, sr);
-				}
-				if ((mouseX >= x + guiLeft && mouseX <= x + guiLeft + scale) && (mouseY >= guiTop + y && mouseY <= guiTop + y + scale)) {
-					hoverSR = sr;
-				}
+		int ct = 0;
 
-				ct++;
+		ItemStack modCard = tileEntity.getModCardStack();
+		if (modCard != null) {
+			if (modCard.getItem() instanceof ItemCardPersonalID) {
+				List<String> srKeys = new ArrayList<String>();
+				srKeys.addAll(SecurityRight.rights.keySet());
+				java.util.Collections.sort(srKeys);
+				for (String srKey : srKeys) {
+					SecurityRight sr = SecurityRight.rights.get(srKey);
+
+					int x = ct % 7 * (scale + 2) + 18;
+					int y = ct / 7 * (scale + 2) + 54;
+
+					if (ItemCardPersonalID.hasRight(modCard, sr)) {
+						drawSprite(this.guiLeft + x, this.guiTop + y, 0, 0, sr);
+					} else {
+						drawSprite(this.guiLeft + x, this.guiTop + y, 0, scale,
+								sr);
+					}
+					if ((mouseX >= x + guiLeft && mouseX <= x + guiLeft + scale)
+							&& (mouseY >= guiTop + y && mouseY <= guiTop + y
+									+ scale)) {
+						hoverSR = sr;
+					}
+
+					ct++;
+				}
 			}
-		}	
-	  }
+		}
 	}
-	
-	
-	private void drawSprite(int par1, int par2, int par3, int par4, SecurityRight sr)
-	{
-		int var5 = this.mc.renderEngine.getTexture(sr.texture);
+
+	private void drawSprite(int par1, int par2, int par3, int par4,
+			SecurityRight sr) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(var5);
-		
-		if(sr.texIndex<=6){
-		par3+=sr.texIndex*18;
-		}else{par3+=(sr.texIndex-7)*18;}
-		
-		if(sr.texIndex>6)
-		par4+=36;
-		
+		this.mc.renderEngine.bindTexture(sr.texture);
+
+		if (sr.texIndex <= 6) {
+			par3 += sr.texIndex * 18;
+		} else {
+			par3 += (sr.texIndex - 7) * 18;
+		}
+
+		if (sr.texIndex > 6)
+			par4 += 36;
+
 		Tessellator var10 = Tessellator.instance;
 		var10.startDrawingQuads();
-		var10.addVertexWithUV((double)(par1 + 0), (double)(par2 + 18), (double)this.zLevel, (double)((float)(par3 + 0) * 0.0078125F), (double)((float)(par4 + 18) * 0.0078125F));
-		var10.addVertexWithUV((double)(par1 + 18), (double)(par2 + 18), (double)this.zLevel, (double)((float)(par3 + 18) * 0.0078125F), (double)((float)(par4 + 18) * 0.0078125F));
-		var10.addVertexWithUV((double)(par1 + 18), (double)(par2 + 0), (double)this.zLevel, (double)((float)(par3 + 18) * 0.0078125F), (double)((float)(par4 + 0) * 0.0078125F));
-		var10.addVertexWithUV((double)(par1 + 0), (double)(par2 + 0), (double)this.zLevel, (double)((float)(par3 + 0) * 0.0078125F), (double)((float)(par4 + 0) * 0.0078125F));
+		var10.addVertexWithUV((double) (par1 + 0), (double) (par2 + 18),
+				(double) this.zLevel,
+				(double) ((float) (par3 + 0) * 0.0078125F),
+				(double) ((float) (par4 + 18) * 0.0078125F));
+		var10.addVertexWithUV((double) (par1 + 18), (double) (par2 + 18),
+				(double) this.zLevel,
+				(double) ((float) (par3 + 18) * 0.0078125F),
+				(double) ((float) (par4 + 18) * 0.0078125F));
+		var10.addVertexWithUV((double) (par1 + 18), (double) (par2 + 0),
+				(double) this.zLevel,
+				(double) ((float) (par3 + 18) * 0.0078125F),
+				(double) ((float) (par4 + 0) * 0.0078125F));
+		var10.addVertexWithUV((double) (par1 + 0), (double) (par2 + 0),
+				(double) this.zLevel,
+				(double) ((float) (par3 + 0) * 0.0078125F),
+				(double) ((float) (par4 + 0) * 0.0078125F));
 		var10.draw();
 	}
-	
+
 	@Override
 	protected void mouseClicked(int i, int j, int k) {
 		super.mouseClicked(i, j, k);
-		
+
 		int xMin = (width - xSize) / 2;
 		int yMin = (height - ySize) / 2;
 
 		int x = i - xMin;
 		int y = j - yMin;
-		
-		if(x >= 12 && y >= 103 && x <= 27 && y <= 118){
-			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 101,"null");
+
+		if (x >= 12 && y >= 103 && x <= 27 && y <= 118) {
+			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 101, "null");
 		}
-		
-		if(x >= 68 && y >= 103 && x <= 83 && y <= 118){
-			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 102,"null");
+
+		if (x >= 68 && y >= 103 && x <= 83 && y <= 118) {
+			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 102, "null");
 		}
-		
-		if (editMode){
+
+		if (editMode) {
 			editMode = false;
-		}else if(x >= 120 && y >= 4 && x <= 250 && y <= 18){
-			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 10,"null");
+		} else if (x >= 120 && y >= 4 && x <= 250 && y <= 18) {
+			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 10, "null");
 			editMode = true;
 		}
 		if (hoverSR != null) {
-			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 100,hoverSR.rightKey);
+			NetworkHandlerClient.fireTileEntityEvent(tileEntity, 100,
+					hoverSR.rightKey);
 		}
 	}
-	
-	
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString("MFFS Security Station:", 8, 8, 0x404040);
@@ -205,22 +221,31 @@ public class GuiAdvSecurityStation extends GuiContainer {
 				itemRenderer.zLevel = 300F;
 				int i4 = 0xf0100010;
 				drawGradientRect(l2 - 3, j3 - 4, l2 + k3 + 3, j3 - 3, i4, i4);
-				drawGradientRect(l2 - 3, j3 + l3 + 3, l2 + k3 + 3, j3 + l3 + 4, i4, i4);
-				drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, j3 + l3 + 3, i4, i4);
+				drawGradientRect(l2 - 3, j3 + l3 + 3, l2 + k3 + 3, j3 + l3 + 4,
+						i4, i4);
+				drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, j3 + l3 + 3, i4,
+						i4);
 				drawGradientRect(l2 - 4, j3 - 3, l2 - 3, j3 + l3 + 3, i4, i4);
-				drawGradientRect(l2 + k3 + 3, j3 - 3, l2 + k3 + 4, j3 + l3 + 3, i4, i4);
+				drawGradientRect(l2 + k3 + 3, j3 - 3, l2 + k3 + 4, j3 + l3 + 3,
+						i4, i4);
 				int j4 = 0x505000ff;
 				int k4 = (j4 & 0xfefefe) >> 1 | j4 & 0xff000000;
-				drawGradientRect(l2 - 3, (j3 - 3) + 1, (l2 - 3) + 1, (j3 + l3 + 3) - 1, j4, k4);
-				drawGradientRect(l2 + k3 + 2, (j3 - 3) + 1, l2 + k3 + 3, (j3 + l3 + 3) - 1, j4, k4);
-				drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, (j3 - 3) + 1, j4, j4);
-				drawGradientRect(l2 - 3, j3 + l3 + 2, l2 + k3 + 3, j3 + l3 + 3, k4, k4);
+				drawGradientRect(l2 - 3, (j3 - 3) + 1, (l2 - 3) + 1,
+						(j3 + l3 + 3) - 1, j4, k4);
+				drawGradientRect(l2 + k3 + 2, (j3 - 3) + 1, l2 + k3 + 3, (j3
+						+ l3 + 3) - 1, j4, k4);
+				drawGradientRect(l2 - 3, j3 - 3, l2 + k3 + 3, (j3 - 3) + 1, j4,
+						j4);
+				drawGradientRect(l2 - 3, j3 + l3 + 2, l2 + k3 + 3, j3 + l3 + 3,
+						k4, k4);
 				for (int l4 = 0; l4 < list.size(); l4++) {
 					String s = (String) list.get(l4);
 					if (l4 == 0) {
-						s = (new StringBuilder()).append("\247F").append(s).toString();
+						s = (new StringBuilder()).append("\247F").append(s)
+								.toString();
 					} else {
-						s = (new StringBuilder()).append("\2477").append(s).toString();
+						s = (new StringBuilder()).append("\2477").append(s)
+								.toString();
 					}
 					fontRenderer.drawStringWithShadow(s, l2, j3, -1);
 					if (l4 == 0) {
@@ -235,8 +260,6 @@ public class GuiAdvSecurityStation extends GuiContainer {
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 			}
 		}
-		
-		
-		
+
 	}
 }

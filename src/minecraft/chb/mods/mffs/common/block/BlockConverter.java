@@ -23,36 +23,33 @@
 
 package chb.mods.mffs.common.block;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.tileentity.TileEntityConverter;
 
-
-
 public class BlockConverter extends BlockMFFSBase {
-	
+
 	public BlockConverter(int i) {
 		super(i);
 	}
 
-	
 	@Override
-	public String getTextureFile() {
+	public void registerIcons(IconRegister iconRegister) {
+		icons[0] = iconRegister.registerIcon("mffs:Converter/SideInactive");
+		icons[1] = iconRegister.registerIcon("mffs:Converter/FaceInactive");
+		icons[2] = iconRegister.registerIcon("mffs:Converter/SideActive");
+		icons[3] = iconRegister.registerIcon("mffs:Converter/FaceActive");
 
-		if(ModularForceFieldSystem.graphicstyle==1)
-		return "/chb/mods/mffs/sprites/Converter_ue.png";
-		
-		return "/chb/mods/mffs/sprites/Converter.png";
+		blockIcon = icons[0];
 	}
-	
-	
-	
+
 	@Override
 	public TileEntity createNewTileEntity(World world) {
-		
-         return new TileEntityConverter();
-		
+
+		return new TileEntityConverter();
+
 	}
 
 }

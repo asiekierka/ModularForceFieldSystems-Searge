@@ -16,7 +16,7 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common;
 
@@ -31,81 +31,74 @@ public class ForceFieldBlockStack {
 	private boolean sync;
 	public Queue<ForceFieldBlock> blocks = new LinkedList<ForceFieldBlock>();
 
-	public ForceFieldBlockStack(PointXYZ png)
-	{
+	public ForceFieldBlockStack(PointXYZ png) {
 		this.png = png;
 		sync = false;
 	}
 
-	public int getsize()
-	{
+	public int getsize() {
 		return blocks.size();
 	}
 
-	public void removeBlock()
-	{
+	public void removeBlock() {
 		blocks.poll();
 	}
 
-	public synchronized  void removebyProjector(int projectorid)
-	{
+	public synchronized void removebyProjector(int projectorid) {
 		ArrayList<ForceFieldBlock> tempblock = new ArrayList<ForceFieldBlock>();
 
-	  for (ForceFieldBlock ffblock : blocks)
-	  {
-		  if(ffblock.Projektor_ID == projectorid){
-				  tempblock.add(ffblock);
-		  }
-	  }
-	  if(!tempblock.isEmpty())
-	  blocks.removeAll(tempblock);
+		for (ForceFieldBlock ffblock : blocks) {
+			if (ffblock.Projektor_ID == projectorid) {
+				tempblock.add(ffblock);
+			}
+		}
+		if (!tempblock.isEmpty())
+			blocks.removeAll(tempblock);
 	}
 
-	public int getGenratorID(){
-		ForceFieldBlock ffblock =blocks.peek();
-		if(ffblock != null){
+	public int getGenratorID() {
+		ForceFieldBlock ffblock = blocks.peek();
+		if (ffblock != null) {
 			return ffblock.Generator_Id;
 		}
 		return 0;
 	}
 
-	public int getProjectorID(){
-		ForceFieldBlock ffblock =blocks.peek();
-		if(ffblock != null){
+	public int getProjectorID() {
+		ForceFieldBlock ffblock = blocks.peek();
+		if (ffblock != null) {
 			return ffblock.Projektor_ID;
 		}
 		return 0;
 	}
 
-	public int getTyp(){
-		ForceFieldBlock ffblock =blocks.peek();
-		if(ffblock != null){
+	public int getTyp() {
+		ForceFieldBlock ffblock = blocks.peek();
+		if (ffblock != null) {
 			return ffblock.typ;
 		}
 		return -1;
 	}
 
-	public void setSync(boolean sync){
+	public void setSync(boolean sync) {
 		this.sync = sync;
 	}
 
-	public boolean isSync(){
+	public boolean isSync() {
 		return sync;
 	}
 
-	public boolean isEmpty(){
+	public boolean isEmpty() {
 		return blocks.isEmpty();
 	}
 
-    public ForceFieldBlock get()
-    {
-    		return blocks.peek();
-    }
+	public ForceFieldBlock get() {
+		return blocks.peek();
+	}
 
-    public void add(int Generator_Id, int Projektor_ID, int typ)
-    {
-    	blocks.offer(new ForceFieldBlock(Generator_Id,Projektor_ID,typ));
-    }
+	public void add(int Generator_Id, int Projektor_ID, int typ) {
+		blocks.offer(new ForceFieldBlock(Generator_Id, Projektor_ID, typ));
+	}
 
 	public PointXYZ getPoint() {
 		return png;

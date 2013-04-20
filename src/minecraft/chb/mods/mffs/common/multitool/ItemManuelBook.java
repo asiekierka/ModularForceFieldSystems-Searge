@@ -5,8 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 
-
-public class ItemManuelBook extends ItemMultitool  {
+public class ItemManuelBook extends ItemMultitool {
 
 	public ItemManuelBook(int par1) {
 		super(par1, 5);
@@ -23,19 +22,15 @@ public class ItemManuelBook extends ItemMultitool  {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world,
 			EntityPlayer entityplayer) {
-		if(entityplayer.isSneaking())
-		{
+		if (entityplayer.isSneaking()) {
 			return super.onItemRightClick(itemstack, world, entityplayer);
 		}
-		
-		
-		if(world.isRemote)
-		entityplayer.openGui(ModularForceFieldSystem.instance, 1, world,0, 0, 0);
-		
+
+		if (world.isRemote)
+			entityplayer.openGui(ModularForceFieldSystem.instance, 1, world, 0,
+					0, 0);
 
 		return itemstack;
 	}
-	
-
 
 }

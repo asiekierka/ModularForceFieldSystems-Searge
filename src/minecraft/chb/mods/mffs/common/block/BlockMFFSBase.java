@@ -16,7 +16,7 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.block;
 
@@ -28,7 +28,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -49,14 +51,14 @@ import chb.mods.mffs.common.tileentity.TileEntityProjector;
 public abstract class BlockMFFSBase extends BlockContainer {
 	private int blockid;
 
+	protected Icon[] icons = new Icon[4];
+
 	public BlockMFFSBase(int i) {
 		super(i, Material.iron);
 		blockid = i;
 		setBlockUnbreakable();
-		setRequiresSelfNotify();
 		setResistance(100F);
 		setStepSound(soundMetalFootstep);
-		setRequiresSelfNotify();
 		setCreativeTab(ModularForceFieldSystem.MFFSTab);
 	}
 
@@ -64,93 +66,86 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	public abstract TileEntity createNewTileEntity(World world);
 
 	@Override
-	public abstract String getTextureFile();
-
-	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k,
 			EntityPlayer entityplayer, int par6, float par7, float par8,
-			float par9){
-		
-		
-		
-		if (entityplayer.isSneaking())
-        {
+			float par9) {
+
+		if (entityplayer.isSneaking()) {
 			return false;
-        }
-		
-		if(world.isRemote)
-		 return true;
+		}
 
+		if (world.isRemote)
+			return true;
 
-		TileEntityMachines tileentity = (TileEntityMachines) world.getBlockTileEntity(i, j, k);
-		
+		TileEntityMachines tileentity = (TileEntityMachines) world
+				.getBlockTileEntity(i, j, k);
+
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemMultitool)) {
 			return false;
 		}
-		
+
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardEmpty)) {
 			return false;
 		}
-		
+
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ModuleBase)) {
 			return false;
 		}
-		
+
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardPowerLink)) {
 			return false;
 		}
-		
+
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& (entityplayer.getCurrentEquippedItem().getItem() instanceof ItemCardSecurityLink)) {
 			return false;
 		}
-		
+
 		if (entityplayer.getCurrentEquippedItem() != null
 				&& entityplayer.getCurrentEquippedItem().itemID == Block.lever.blockID) {
 			return false;
 		}
-		
-		if(tileentity instanceof TileEntityAdvSecurityStation){
-			if(tileentity.isActive())
-			{
-				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,SecurityRight.CSR))
-				{return true;}
+
+		if (tileentity instanceof TileEntityAdvSecurityStation) {
+			if (tileentity.isActive()) {
+				if (!SecurityHelper.isAccessGranted(tileentity, entityplayer,
+						world, SecurityRight.CSR)) {
+					return true;
+				}
 			}
 		}
-		
-		if(tileentity instanceof TileEntityControlSystem){
-	
-				if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,SecurityRight.UCS))
-				{return true;}
+
+		if (tileentity instanceof TileEntityControlSystem) {
+
+			if (!SecurityHelper.isAccessGranted(tileentity, entityplayer,
+					world, SecurityRight.UCS)) {
+				return true;
+			}
 		}
-		
-		
-		if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,SecurityRight.EB))
-		{return true;}
-		
-		
+
+		if (!SecurityHelper.isAccessGranted(tileentity, entityplayer, world,
+				SecurityRight.EB)) {
+			return true;
+		}
+
 		if (!world.isRemote)
-		entityplayer.openGui(ModularForceFieldSystem.instance, 0, world,
-				i, j, k);
-		
-	
+			entityplayer.openGui(ModularForceFieldSystem.instance, 0, world, i,
+					j, k);
+
 		return true;
 	}
-	
-	
+
 	@Override
-	public void breakBlock(World world, int i, int j, int k,int a,int b) {
+	public void breakBlock(World world, int i, int j, int k, int a, int b) {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
-		if(tileEntity instanceof TileEntityMachines)
-			((TileEntityMachines)tileEntity).dropplugins();
+		if (tileEntity instanceof TileEntityMachines)
+			((TileEntityMachines) tileEntity).dropplugins();
 		world.removeBlockTileEntity(i, j, k);
 	}
-
-
 
 	public int idDropped(int i, Random random) {
 		return blockID;
@@ -165,83 +160,83 @@ public abstract class BlockMFFSBase extends BlockContainer {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k,
-			EntityLiving entityliving) {
-		
+			EntityLiving entityliving, ItemStack itemStack) {
+
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
-		if(tileEntity instanceof TileEntityMachines)
-		{
+		if (tileEntity instanceof TileEntityMachines) {
 
+			int l = MathHelper
+					.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+			int i1 = Math.round(entityliving.rotationPitch);
+			if (i1 >= 65) {
+				((TileEntityMachines) tileEntity).setSide((short) 1);
+			} else if (i1 <= -65) {
+				((TileEntityMachines) tileEntity).setSide((short) 0);
+			} else if (l == 0) {
+				((TileEntityMachines) tileEntity).setSide((short) 2);
+			} else if (l == 1) {
+				((TileEntityMachines) tileEntity).setSide((short) 5);
+			} else if (l == 2) {
+				((TileEntityMachines) tileEntity).setSide((short) 3);
+			} else if (l == 3) {
+				((TileEntityMachines) tileEntity).setSide((short) 4);
+			}
+		}
 
-		int l = MathHelper
-				.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
-		int i1 = Math.round(entityliving.rotationPitch);
-		if (i1 >= 65) {
-			((TileEntityMachines)tileEntity).setSide( (short) 1);
-		} else if (i1 <= -65) {
-			((TileEntityMachines)tileEntity).setSide((short) 0);
-		} else if (l == 0) {
-			((TileEntityMachines)tileEntity).setSide( (short) 2);
-		} else if (l == 1) {
-			((TileEntityMachines)tileEntity).setSide( (short) 5);
-		} else if (l == 2) {
-			((TileEntityMachines)tileEntity).setSide((short) 3);
-		} else if (l == 3) {
-			((TileEntityMachines)tileEntity).setSide((short) 4);
-		}
-		}
-		
-		
 	}
-	
+
 	@Override
-	public int getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k,
+	public Icon getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k,
 			int l) {
-		
-		int typ = 	0;
-		
+
+		int typ = 0;
 
 		TileEntity tileentity = iblockaccess.getBlockTileEntity(i, j, k);
 
 		int facing = (tileentity instanceof TileEntityMachines) ? ((TileEntityMachines) tileentity)
 				.getSide() : 1;
-		
-		ForgeDirection blockfacing = ForgeDirection.getOrientation(l);	
+
+		ForgeDirection blockfacing = ForgeDirection.getOrientation(l);
 		ForgeDirection TileEntityfacing = ForgeDirection.getOrientation(facing);
 
-		if(tileentity instanceof TileEntityProjector)
+		if (tileentity instanceof TileEntityProjector)
 			typ = ((TileEntityProjector) tileentity).getProjektor_Typ();
-		
-
 
 		if (isActive(iblockaccess, i, j, k)) {
-			if(blockfacing.equals(TileEntityfacing))
-				return (typ * 16) + 4 + 1 ;
-			
-			if(blockfacing.equals(TileEntityfacing.getOpposite()))
-				return (typ * 16) + 4 +2 ;
-		
-			return (typ * 16) + 4 ;
-			
+			if (blockfacing.equals(TileEntityfacing))
+				// return (typ * 16) + 4 + 1 ;
+				return icons[3];
+
+			/*
+			 * if(blockfacing.equals(TileEntityfacing.getOpposite())) //return
+			 * (typ * 16) + 4 +2 ; return icons[5];
+			 */
+
+			// return (typ * 16) + 4 ;
+			return icons[2];
+
 		} else {
-			
-			if(blockfacing.equals(TileEntityfacing))
-				return (typ * 16) + 1 ;
-			
-			if(blockfacing.equals(TileEntityfacing.getOpposite()))
-				return (typ * 16) + 2;
-		
-			return (typ * 16);
+
+			if (blockfacing.equals(TileEntityfacing))
+				// return (typ * 16) + 1 ;
+				return icons[1];
+
+			/*
+			 * if(blockfacing.equals(TileEntityfacing.getOpposite())) //return
+			 * (typ * 16) + 2; return icons[2];
+			 */
+
+			// return (typ * 16);
+			return icons[0];
 		}
 	}
-	
-
 
 	@Override
-	public float getExplosionResistance(Entity entity,World world, int i, int j,
-			int k, double d, double d1, double d2) {
+	public float getExplosionResistance(Entity entity, World world, int i,
+			int j, int k, double d, double d1, double d2) {
 		if (world.getBlockTileEntity(i, j, k) instanceof TileEntityMachines) {
 			TileEntity tileentity = world.getBlockTileEntity(i, j, k);
 			if (((TileEntityMachines) tileentity).isActive()) {

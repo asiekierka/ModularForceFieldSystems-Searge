@@ -25,8 +25,8 @@ package chb.mods.mffs.api;
 
 public interface ISwitchabel {
 
-    public boolean isSwitchabel();
-    
-    public void toggelSwitchValue();
+	public boolean isSwitchabel();
+
+	public void toggelSwitchValue();
 
 }

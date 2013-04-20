@@ -16,12 +16,13 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.modules;
 
 import java.util.Set;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 import chb.mods.mffs.api.PointXYZ;
 import chb.mods.mffs.common.IModularProjector;
@@ -41,9 +42,13 @@ import chb.mods.mffs.common.tileentity.TileEntityProjector;
 public class ItemProjectorModuleSphere extends Module3DBase {
 	public ItemProjectorModuleSphere(int i) {
 		super(i);
-		setIconIndex(52);
 	}
-		
+
+	@Override
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("mffs:modules/Sphere");
+	}
+
 	@Override
 	public boolean supportsDistance() {
 		return true;
@@ -58,68 +63,84 @@ public class ItemProjectorModuleSphere extends Module3DBase {
 	public boolean supportsMatrix() {
 		return false;
 	}
-	
 
-	
-	@Override
-	public void calculateField(IModularProjector projector, Set<PointXYZ> ffLocs, Set<PointXYZ> ffInterior) {
-		int radius = projector.countItemsInSlot(Slots.Distance) +4;
+	public void calculateField(IModularProjector projector,
+			Set<PointXYZ> ffLocs, Set<PointXYZ> ffInterior) {
+		int radius = projector.countItemsInSlot(Slots.Distance) + 4;
 
 		int yDown = radius;
 
-		if (((TileEntityProjector)projector).hasOption(ModularForceFieldSystem.MFFSProjectorOptionDome,true)) {
+		if (((TileEntityProjector) projector).hasOption(
+				ModularForceFieldSystem.MFFSProjectorOptionDome, true)) {
 			yDown = 0;
-     	}
-		
-		
+		}
+
 		for (int y1 = -yDown; y1 <= radius; y1++) {
 			for (int x1 = -radius; x1 <= radius; x1++) {
 				for (int z1 = -radius; z1 <= radius; z1++) {
-					int dx = x1; 
-					int dy = y1; 
+					int dx = x1;
+					int dy = y1;
 					int dz = z1;
 
-					int dist = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
+					int dist = (int) Math.round(Math.sqrt(dx * dx + dy * dy
+							+ dz * dz));
 
-					if (dist <= radius && dist > (radius - (projector.countItemsInSlot(Slots.Strength)+1))) {
-					     ffLocs.add(new PointXYZ(x1, y1, z1,0));
-					}else if(dist <= radius){
-						ffInterior.add(new PointXYZ(x1, y1, z1,0));
+					if (dist <= radius
+							&& dist > (radius - (projector
+									.countItemsInSlot(Slots.Strength) + 1))) {
+						ffLocs.add(new PointXYZ(x1, y1, z1, 0));
+					} else if (dist <= radius) {
+						ffInterior.add(new PointXYZ(x1, y1, z1, 0));
 					}
 				}
 			}
 		}
 	}
-	
+
 	public static boolean supportsOption(ItemProjectorOptionBase item) {
-		
-		if(item instanceof ItemProjectorOptionCamoflage) return true;
-		if(item instanceof ItemProjectorOptionDefenseStation) return true;
-		if(item instanceof ItemProjectorOptionFieldFusion) return true;
-		if(item instanceof ItemProjectorOptionFieldManipulator) return true;
-		if(item instanceof ItemProjectorOptionForceFieldJammer) return true;
-		if(item instanceof ItemProjectorOptionMobDefence) return true;
-		if(item instanceof ItemProjectorOptionSponge) return true;
-		if(item instanceof ItemProjectorOptionBlockBreaker) return true;
-		
+
+		if (item instanceof ItemProjectorOptionCamoflage)
+			return true;
+		if (item instanceof ItemProjectorOptionDefenseStation)
+			return true;
+		if (item instanceof ItemProjectorOptionFieldFusion)
+			return true;
+		if (item instanceof ItemProjectorOptionFieldManipulator)
+			return true;
+		if (item instanceof ItemProjectorOptionForceFieldJammer)
+			return true;
+		if (item instanceof ItemProjectorOptionMobDefence)
+			return true;
+		if (item instanceof ItemProjectorOptionSponge)
+			return true;
+		if (item instanceof ItemProjectorOptionBlockBreaker)
+			return true;
+
 		return false;
-		
+
 	}
-	
+
 	@Override
 	public boolean supportsOption(Item item) {
-		
-		if(item instanceof ItemProjectorOptionCamoflage) return true;
-		if(item instanceof ItemProjectorOptionDefenseStation) return true;
-		if(item instanceof ItemProjectorOptionFieldFusion) return true;
-		if(item instanceof ItemProjectorOptionFieldManipulator) return true;
-		if(item instanceof ItemProjectorOptionForceFieldJammer) return true;
-		if(item instanceof ItemProjectorOptionMobDefence) return true;
-		if(item instanceof ItemProjectorOptionSponge) return true;
-		if(item instanceof ItemProjectorOptionBlockBreaker) return true;
+
+		if (item instanceof ItemProjectorOptionCamoflage)
+			return true;
+		if (item instanceof ItemProjectorOptionDefenseStation)
+			return true;
+		if (item instanceof ItemProjectorOptionFieldFusion)
+			return true;
+		if (item instanceof ItemProjectorOptionFieldManipulator)
+			return true;
+		if (item instanceof ItemProjectorOptionForceFieldJammer)
+			return true;
+		if (item instanceof ItemProjectorOptionMobDefence)
+			return true;
+		if (item instanceof ItemProjectorOptionSponge)
+			return true;
+		if (item instanceof ItemProjectorOptionBlockBreaker)
+			return true;
 
 		return false;
 	}
-	
 
 }

@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.client;
 
@@ -39,90 +39,121 @@ public class GraphicButton extends GuiButton
 	private TileEntity tileEntity;
 	private int typ;
 
-    public GraphicButton(int par1, int par2, int par3, TileEntity tileEntity,int typ)
-    {
-        super(par1, par2, par3, 16, 16, "");
-        this.tileEntity = tileEntity;
-        this.typ = typ;
-    }
+	public GraphicButton(int par1, int par2, int par3, TileEntity tileEntity,
+			int typ) {
+		super(par1, par2, par3, 16, 16, "");
+		this.tileEntity = tileEntity;
+		this.typ = typ;
+	}
 
-    /**
-     * Draws this button to the screen.
-     */
-    @Override
-    public void drawButton(Minecraft par1Minecraft, int par2, int par3)
-    {
-        if (this.drawButton)
-        {
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine.getTexture("/chb/mods/mffs/sprites/items.png"));
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	/**
+	 * Draws this button to the screen.
+	 */
+	public void drawButton(Minecraft par1Minecraft, int par2, int par3) {
+		if (this.drawButton) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, par1Minecraft.renderEngine
+					.getTexture("/mods/mffs/textures/gui/items.png"));
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-            if((tileEntity instanceof TileEntityMachines) && typ == 0)
-            {
-            	this.drawTexturedModalRect(this.xPosition, this.yPosition, 80+(((TileEntityMachines)tileEntity).getSwitchModi()*16), 112, this.width, this.height);	
-            }
-            
-            if(tileEntity instanceof TileEntityConverter)
-            {
-            	if(typ == 1){
-            		this.drawTexturedModalRect(this.xPosition, this.yPosition, 80+(((TileEntityConverter)tileEntity).getIC_Output()*16), 128, this.width, this.height);		
-            	}
-              	if(typ == 2){
-            		this.drawTexturedModalRect(this.xPosition, this.yPosition, 80+(((TileEntityConverter)tileEntity).getUE_Output()*16), 128, this.width, this.height);		
-            	}
-            }
-            
-            
-            
-            
-            if(tileEntity instanceof TileEntityControlSystem)
-            {
-            	if(((TileEntityControlSystem)tileEntity).getStackInSlot(1)!=null){
-            	if(typ == 1){
-            	if(((TileEntityControlSystem)tileEntity).getRemoteActive())
-            	this.drawTexturedModalRect(this.xPosition, this.yPosition, 176, 80, this.width, this.height);	
-            
-            	if(!((TileEntityControlSystem)tileEntity).getRemoteActive())
-            	this.drawTexturedModalRect(this.xPosition, this.yPosition, 192, 80, this.width, this.height);	
-            	}
-            	if(typ == 2)
-            		if(((TileEntityControlSystem)tileEntity).getRemoteSwitchModi()>0)
-            	this.drawTexturedModalRect(this.xPosition, this.yPosition, 80+(((TileEntityControlSystem)tileEntity).getRemoteSwitchModi()*16), 112, this.width, this.height);
-            	
-            	if(typ == 3)
-            		if(((TileEntityControlSystem)tileEntity).getRemoteSwitchModi()==3)
-            			if(((TileEntityControlSystem)tileEntity).getRemoteSwitchValue()){
-            			this.drawTexturedModalRect(this.xPosition, this.yPosition, 208, 80, this.width, this.height);
-            			}else{
-            			this.drawTexturedModalRect(this.xPosition, this.yPosition, 224, 80, this.width, this.height);	
-            			}
-            	
-            	
-            }
-            }
-            
-            if((tileEntity instanceof TileEntityAreaDefenseStation))
-            {  
-              if(typ == 1)
-               this.drawTexturedModalRect(this.xPosition, this.yPosition, 176+(((TileEntityAreaDefenseStation)tileEntity).getcontratyp()*16), 80, this.width, this.height);
-              if(typ == 2)
-               this.drawTexturedModalRect(this.xPosition, this.yPosition, 64+(((TileEntityAreaDefenseStation)tileEntity).getActionmode()*16), 96, this.width, this.height);
-              if(typ == 3)
-               this.drawTexturedModalRect(this.xPosition, this.yPosition, 160+(((TileEntityAreaDefenseStation)tileEntity).getScanmode()*16), 96, this.width, this.height);  
-            }
-            
-            if(tileEntity instanceof TileEntityCapacitor)
-            {
-              if(typ == 1)
-            	  this.drawTexturedModalRect(this.xPosition, this.yPosition, 96+(((TileEntityCapacitor)tileEntity).getPowerlinkmode()*16), 80, this.width, this.height);
-            }
-            
-            if(tileEntity instanceof TileEntityProjector)
-            {
-            	if(typ == 1)
-            	this.drawTexturedModalRect(this.xPosition, this.yPosition, 0+(((TileEntityProjector)tileEntity).getaccesstyp()*16), 80, this.width, this.height);
-            }
-            
-        }
-    }
+			if ((tileEntity instanceof TileEntityMachines) && typ == 0) {
+				this.drawTexturedModalRect(
+						this.xPosition,
+						this.yPosition,
+						80 + (((TileEntityMachines) tileEntity).getSwitchModi() * 16),
+						112, this.width, this.height);
+			}
+
+			if (tileEntity instanceof TileEntityConverter) {
+				if (typ == 1) {
+					this.drawTexturedModalRect(this.xPosition, this.yPosition,
+							80 + (((TileEntityConverter) tileEntity)
+									.getIC_Output() * 16), 128, this.width,
+							this.height);
+				}
+				if (typ == 2) {
+					this.drawTexturedModalRect(this.xPosition, this.yPosition,
+							80 + (((TileEntityConverter) tileEntity)
+									.getUE_Output() * 16), 128, this.width,
+							this.height);
+				}
+			}
+
+			if (tileEntity instanceof TileEntityControlSystem) {
+				if (((TileEntityControlSystem) tileEntity).getStackInSlot(1) != null) {
+					if (typ == 1) {
+						if (((TileEntityControlSystem) tileEntity)
+								.getRemoteActive())
+							this.drawTexturedModalRect(this.xPosition,
+									this.yPosition, 176, 80, this.width,
+									this.height);
+
+						if (!((TileEntityControlSystem) tileEntity)
+								.getRemoteActive())
+							this.drawTexturedModalRect(this.xPosition,
+									this.yPosition, 192, 80, this.width,
+									this.height);
+					}
+					if (typ == 2)
+						if (((TileEntityControlSystem) tileEntity)
+								.getRemoteSwitchModi() > 0)
+							this.drawTexturedModalRect(
+									this.xPosition,
+									this.yPosition,
+									80 + (((TileEntityControlSystem) tileEntity)
+											.getRemoteSwitchModi() * 16), 112,
+									this.width, this.height);
+
+					if (typ == 3)
+						if (((TileEntityControlSystem) tileEntity)
+								.getRemoteSwitchModi() == 3)
+							if (((TileEntityControlSystem) tileEntity)
+									.getRemoteSwitchValue()) {
+								this.drawTexturedModalRect(this.xPosition,
+										this.yPosition, 208, 80, this.width,
+										this.height);
+							} else {
+								this.drawTexturedModalRect(this.xPosition,
+										this.yPosition, 224, 80, this.width,
+										this.height);
+							}
+
+				}
+			}
+
+			if ((tileEntity instanceof TileEntityAreaDefenseStation)) {
+				if (typ == 1)
+					this.drawTexturedModalRect(this.xPosition, this.yPosition,
+							176 + (((TileEntityAreaDefenseStation) tileEntity)
+									.getcontratyp() * 16), 80, this.width,
+							this.height);
+				if (typ == 2)
+					this.drawTexturedModalRect(this.xPosition, this.yPosition,
+							64 + (((TileEntityAreaDefenseStation) tileEntity)
+									.getActionmode() * 16), 96, this.width,
+							this.height);
+				if (typ == 3)
+					this.drawTexturedModalRect(this.xPosition, this.yPosition,
+							160 + (((TileEntityAreaDefenseStation) tileEntity)
+									.getScanmode() * 16), 96, this.width,
+							this.height);
+			}
+
+			if (tileEntity instanceof TileEntityCapacitor) {
+				if (typ == 1)
+					this.drawTexturedModalRect(this.xPosition, this.yPosition,
+							96 + (((TileEntityCapacitor) tileEntity)
+									.getPowerlinkmode() * 16), 80, this.width,
+							this.height);
+			}
+
+			if (tileEntity instanceof TileEntityProjector) {
+				if (typ == 1)
+					this.drawTexturedModalRect(this.xPosition, this.yPosition,
+							0 + (((TileEntityProjector) tileEntity)
+									.getaccesstyp() * 16), 80, this.width,
+							this.height);
+			}
+
+		}
+	}
 }

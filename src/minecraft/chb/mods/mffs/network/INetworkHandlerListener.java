@@ -16,19 +16,16 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
-
+ */
 
 package chb.mods.mffs.network;
 
 import java.util.List;
 
-
 public interface INetworkHandlerListener {
-	
+
 	public void onNetworkHandlerUpdate(String field);
 
 	public List<String> getFieldsforUpdate();
-	
-	
+
 }

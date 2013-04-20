@@ -16,10 +16,11 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Random;
@@ -38,150 +39,167 @@ import chb.mods.mffs.common.tileentity.TileEntityMachines;
 import chb.mods.mffs.common.tileentity.TileEntityProjector;
 import chb.mods.mffs.common.tileentity.TileEntitySecStorage;
 
-
 public final class Linkgrid {
 	private static Map WorldpowernetMap = new MapMaker().weakKeys().makeMap();
 
-	 public static class Worldlinknet {
-		 		 
-		 
-			private Map<Integer, TileEntityProjector> Projektor = new Hashtable<Integer, TileEntityProjector>();
-			private Map<Integer, TileEntityCapacitor> Capacitors = new Hashtable<Integer, TileEntityCapacitor>();
-			private Map<Integer, TileEntityAdvSecurityStation> SecStation = new Hashtable<Integer, TileEntityAdvSecurityStation>();
-			private Map<Integer, TileEntityAreaDefenseStation> DefStation = new Hashtable<Integer, TileEntityAreaDefenseStation>();
-			private Map<Integer, TileEntityExtractor> Extractor = new Hashtable<Integer, TileEntityExtractor>();
-			private Map<Integer, TileEntityConverter> Converter = new Hashtable<Integer, TileEntityConverter>();
-			private Map<Integer, TileEntityProjector> Jammer = new Hashtable<Integer, TileEntityProjector>();
-			private Map<Integer, TileEntityProjector> FieldFusion = new Hashtable<Integer, TileEntityProjector>();
-			private Map<Integer, TileEntitySecStorage> SecStorage = new Hashtable<Integer, TileEntitySecStorage>();
-		    private Map<Integer, TileEntityControlSystem> ControlSystem = new Hashtable<Integer, TileEntityControlSystem>();
+	public static class Worldlinknet {
 
-			public Map<Integer, TileEntitySecStorage> getSecStorage() {
-				return SecStorage;
-			}
-			
-			public Map<Integer, TileEntityControlSystem> getControlSystem() {
-				return ControlSystem;
-			}
-			
-			public Map<Integer, TileEntityConverter> getConverter() {
-				return Converter;
-			}
-			
-			public Map<Integer, TileEntityExtractor> getExtractor() {
-				return Extractor;
-			}
-			
-			public Map<Integer, TileEntityProjector> getProjektor() {
-				return Projektor;
-			}
+		private Map<Integer, TileEntityProjector> Projektor = new Hashtable<Integer, TileEntityProjector>();
+		private Map<Integer, TileEntityCapacitor> Capacitors = new Hashtable<Integer, TileEntityCapacitor>();
+		private Map<Integer, TileEntityAdvSecurityStation> SecStation = new Hashtable<Integer, TileEntityAdvSecurityStation>();
+		private Map<Integer, TileEntityAreaDefenseStation> DefStation = new Hashtable<Integer, TileEntityAreaDefenseStation>();
+		private Map<Integer, TileEntityExtractor> Extractor = new Hashtable<Integer, TileEntityExtractor>();
+		private Map<Integer, TileEntityConverter> Converter = new Hashtable<Integer, TileEntityConverter>();
+		private Map<Integer, TileEntityProjector> Jammer = new Hashtable<Integer, TileEntityProjector>();
+		private Map<Integer, TileEntityProjector> FieldFusion = new Hashtable<Integer, TileEntityProjector>();
+		private Map<Integer, TileEntitySecStorage> SecStorage = new Hashtable<Integer, TileEntitySecStorage>();
+		private Map<Integer, TileEntityControlSystem> ControlSystem = new Hashtable<Integer, TileEntityControlSystem>();
 
-			public Map<Integer, TileEntityCapacitor> getCapacitor() {
-				return Capacitors;
-			}
-			
-			public Map<Integer, TileEntityAdvSecurityStation> getSecStation() {
-				return SecStation;
-			}
+		public Map<Integer, TileEntitySecStorage> getSecStorage() {
+			return SecStorage;
+		}
 
-			public Map<Integer, TileEntityAreaDefenseStation> getDefStation() {
-				return DefStation;
-			}
+		public Map<Integer, TileEntityControlSystem> getControlSystem() {
+			return ControlSystem;
+		}
 
-			public Map<Integer, TileEntityProjector> getJammer() {
-				return Jammer;
-			}
+		public Map<Integer, TileEntityConverter> getConverter() {
+			return Converter;
+		}
 
-			public Map<Integer, TileEntityProjector> getFieldFusion() {
-				return FieldFusion;
-			}
-		
-			
-		public int refreshID(TileEntityMachines tileEntity,int remDeviceID){
-			
+		public Map<Integer, TileEntityExtractor> getExtractor() {
+			return Extractor;
+		}
+
+		public Map<Integer, TileEntityProjector> getProjektor() {
+			return Projektor;
+		}
+
+		public Map<Integer, TileEntityCapacitor> getCapacitor() {
+			return Capacitors;
+		}
+
+		public Map<Integer, TileEntityAdvSecurityStation> getSecStation() {
+			return SecStation;
+		}
+
+		public Map<Integer, TileEntityAreaDefenseStation> getDefStation() {
+			return DefStation;
+		}
+
+		public Map<Integer, TileEntityProjector> getJammer() {
+			return Jammer;
+		}
+
+		public Map<Integer, TileEntityProjector> getFieldFusion() {
+			return FieldFusion;
+		}
+
+		public int refreshID(TileEntityMachines tileEntity, int remDeviceID) {
+
 			Random random = new Random();
 			int DeviceID = random.nextInt();
-			if(tileEntity instanceof TileEntitySecStorage){
-				if(remDeviceID==0){
+			if (tileEntity instanceof TileEntitySecStorage) {
+				if (remDeviceID == 0) {
 					while (SecStorage.get(DeviceID) != null) {
 						DeviceID = random.nextInt();
 					}
-				}else{DeviceID = remDeviceID;}
-		     SecStorage.put(DeviceID, (TileEntitySecStorage) tileEntity);		
-			 return DeviceID;	
+				} else {
+					DeviceID = remDeviceID;
+				}
+				SecStorage.put(DeviceID, (TileEntitySecStorage) tileEntity);
+				return DeviceID;
 			}
-			if(tileEntity instanceof TileEntityControlSystem){
-				if(remDeviceID==0){
+			if (tileEntity instanceof TileEntityControlSystem) {
+				if (remDeviceID == 0) {
 					while (ControlSystem.get(DeviceID) != null) {
 						DeviceID = random.nextInt();
 					}
-				}else{DeviceID = remDeviceID;}
-				ControlSystem.put(DeviceID, (TileEntityControlSystem) tileEntity);		
-			 return DeviceID;	
+				} else {
+					DeviceID = remDeviceID;
+				}
+				ControlSystem.put(DeviceID,
+						(TileEntityControlSystem) tileEntity);
+				return DeviceID;
 			}
-			if(tileEntity instanceof TileEntityAdvSecurityStation){
-				if(remDeviceID==0){
+			if (tileEntity instanceof TileEntityAdvSecurityStation) {
+				if (remDeviceID == 0) {
 					while (SecStation.get(DeviceID) != null) {
 						DeviceID = random.nextInt();
 					}
-				}else{DeviceID = remDeviceID;}
-				SecStation.put(DeviceID, (TileEntityAdvSecurityStation) tileEntity);		
-			 return DeviceID;	
+				} else {
+					DeviceID = remDeviceID;
+				}
+				SecStation.put(DeviceID,
+						(TileEntityAdvSecurityStation) tileEntity);
+				return DeviceID;
 			}
-			if(tileEntity instanceof TileEntityAreaDefenseStation){
-				if(remDeviceID==0){
+			if (tileEntity instanceof TileEntityAreaDefenseStation) {
+				if (remDeviceID == 0) {
 					while (DefStation.get(DeviceID) != null) {
 						DeviceID = random.nextInt();
 					}
-				}else{DeviceID = remDeviceID;}
-				DefStation.put(DeviceID, (TileEntityAreaDefenseStation) tileEntity);		
-			 return DeviceID;	
+				} else {
+					DeviceID = remDeviceID;
+				}
+				DefStation.put(DeviceID,
+						(TileEntityAreaDefenseStation) tileEntity);
+				return DeviceID;
 			}
-			if(tileEntity instanceof TileEntityCapacitor){
-				if(remDeviceID==0){
+			if (tileEntity instanceof TileEntityCapacitor) {
+				if (remDeviceID == 0) {
 					while (Capacitors.get(DeviceID) != null) {
 						DeviceID = random.nextInt();
 					}
-				}else{DeviceID = remDeviceID;}
-				Capacitors.put(DeviceID, (TileEntityCapacitor) tileEntity);		
-			 return DeviceID;	
+				} else {
+					DeviceID = remDeviceID;
+				}
+				Capacitors.put(DeviceID, (TileEntityCapacitor) tileEntity);
+				return DeviceID;
 			}
-			if(tileEntity instanceof TileEntityConverter){
-				if(remDeviceID==0){
+			if (tileEntity instanceof TileEntityConverter) {
+				if (remDeviceID == 0) {
 					while (Converter.get(DeviceID) != null) {
 						DeviceID = random.nextInt();
 					}
-				}else{DeviceID = remDeviceID;}
-				Converter.put(DeviceID, (TileEntityConverter) tileEntity);		
-			 return DeviceID;	
+				} else {
+					DeviceID = remDeviceID;
+				}
+				Converter.put(DeviceID, (TileEntityConverter) tileEntity);
+				return DeviceID;
 			}
-			if(tileEntity instanceof TileEntityExtractor){
-				if(remDeviceID==0){
+			if (tileEntity instanceof TileEntityExtractor) {
+				if (remDeviceID == 0) {
 					while (Extractor.get(DeviceID) != null) {
 						DeviceID = random.nextInt();
 					}
-				}else{DeviceID = remDeviceID;}
-				Extractor.put(DeviceID, (TileEntityExtractor) tileEntity);		
-			 return DeviceID;	
+				} else {
+					DeviceID = remDeviceID;
+				}
+				Extractor.put(DeviceID, (TileEntityExtractor) tileEntity);
+				return DeviceID;
 			}
-			if(tileEntity instanceof TileEntityProjector){
-				if(remDeviceID==0){
+			if (tileEntity instanceof TileEntityProjector) {
+				if (remDeviceID == 0) {
 					while (Projektor.get(DeviceID) != null) {
 						DeviceID = random.nextInt();
 					}
-				}else{DeviceID = remDeviceID;}
-				Projektor.put(DeviceID, (TileEntityProjector) tileEntity);		
-			 return DeviceID;	
+				} else {
+					DeviceID = remDeviceID;
+				}
+				Projektor.put(DeviceID, (TileEntityProjector) tileEntity);
+				return DeviceID;
 			}
 			return 0;
 		}
-			
 
 		public int connectedtoCapacitor(TileEntityCapacitor Cap, int range) {
 			int counter = 0;
 			for (TileEntityProjector tileentity : Projektor.values()) {
 				if (tileentity.getPowerSourceID() == Cap.getPowerStorageID()) {
-					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
+					if (range >= PointXYZ.distance(
+							tileentity.getMaschinePoint(),
+							Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}
@@ -189,32 +207,39 @@ public final class Linkgrid {
 
 			for (TileEntityCapacitor tileentity : Capacitors.values()) {
 				if (tileentity.getPowerSourceID() == Cap.getPowerStorageID()) {
-					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
+					if (range >= PointXYZ.distance(
+							tileentity.getMaschinePoint(),
+							Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}
 			}
-			
-			
+
 			for (TileEntityAreaDefenseStation tileentity : DefStation.values()) {
 				if (tileentity.getPowerSourceID() == Cap.getPowerStorageID()) {
-					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
+					if (range >= PointXYZ.distance(
+							tileentity.getMaschinePoint(),
+							Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}
 			}
-			
+
 			for (TileEntityExtractor tileentity : Extractor.values()) {
 				if (tileentity.getPowerSourceID() == Cap.getPowerStorageID()) {
-					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
+					if (range >= PointXYZ.distance(
+							tileentity.getMaschinePoint(),
+							Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}
 			}
-			
+
 			for (TileEntityConverter tileentity : Converter.values()) {
 				if (tileentity.getPowerSourceID() == Cap.getPowerStorageID()) {
-					if (range >= PointXYZ.distance(tileentity.getMaschinePoint(),Cap.getMaschinePoint())) {
+					if (range >= PointXYZ.distance(
+							tileentity.getMaschinePoint(),
+							Cap.getMaschinePoint())) {
 						counter++;
 					}
 				}
@@ -222,39 +247,35 @@ public final class Linkgrid {
 
 			return counter;
 		}
-		
-		
-		public TileEntityMachines getTileEntityMachines(String displayname,int key)
-		{
-			
-			MFFSMaschines tem =MFFSMaschines.fromdisplayName(displayname);
 
-			if(tem != null)
-			{
-    	    switch(tem.index)
-    	    {
-    	    case 1:
-    	    	return getProjektor().get(key);
-    	    case 2:
-    	    	return  getExtractor().get(key);
-    	    case 3:
-    	    	return getCapacitor().get(key);
-    	    case 4:
-    	    	return getConverter().get(key);
-    	    case 5:
-    	    	return getDefStation().get(key);
-    	    case 6:
-    	    	return getSecStation().get(key);
-    	    case 7:
-    	    	return getSecStorage().get(key);
-    	    case 8:
-    	    	return getControlSystem().get(key); 
-    	    }
+		public TileEntityMachines getTileEntityMachines(String displayname,
+				int key) {
+
+			MFFSMaschines tem = MFFSMaschines.fromdisplayName(displayname);
+
+			if (tem != null) {
+				switch (tem.index) {
+				case 1:
+					return getProjektor().get(key);
+				case 2:
+					return getExtractor().get(key);
+				case 3:
+					return getCapacitor().get(key);
+				case 4:
+					return getConverter().get(key);
+				case 5:
+					return getDefStation().get(key);
+				case 6:
+					return getSecStation().get(key);
+				case 7:
+					return getSecStorage().get(key);
+				case 8:
+					return getControlSystem().get(key);
+				}
 			}
-    	    return null;
+			return null;
 		}
-		
-		
+
 	}
 
 	public static Worldlinknet getWorldMap(World world) {
@@ -267,6 +288,5 @@ public final class Linkgrid {
 
 		return null;
 	}
-	
-	
+
 }

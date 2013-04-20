@@ -17,15 +17,15 @@ public abstract class Module3DBase extends ModuleBase {
 	public void calculateField(IModularProjector projector, Set<PointXYZ> points) {
 
 	}
-	
-	public abstract void calculateField(IModularProjector projector, Set<PointXYZ> fieldPoints, Set<PointXYZ> interiorPoints);
 
-	
+	public abstract void calculateField(IModularProjector projector,
+			Set<PointXYZ> fieldPoints, Set<PointXYZ> interiorPoints);
+
 	@Override
-	public ForceFieldTyps getForceFieldTyps(){
-		if(this instanceof ItemProjectorModuleContainment)
-		 return ForceFieldTyps.Containment;
-			
+	public ForceFieldTyps getForceFieldTyps() {
+		if (this instanceof ItemProjectorModuleContainment)
+			return ForceFieldTyps.Containment;
+
 		return ForceFieldTyps.Area;
 	}
 

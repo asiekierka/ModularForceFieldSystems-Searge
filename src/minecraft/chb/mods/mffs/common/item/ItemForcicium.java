@@ -16,20 +16,23 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.item;
 
-public class ItemForcicium extends ItemMFFSBase	{
+import net.minecraft.client.renderer.texture.IconRegister;
+
+public class ItemForcicium extends ItemMFFSBase {
 	public ItemForcicium(int i) {
 		super(i);
-		setIconIndex(97);
 		setMaxStackSize(64);
 	}
+
 	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("mffs:Forcicium");
 	}
+
 	@Override
 	public boolean isRepairable() {
 		return false;

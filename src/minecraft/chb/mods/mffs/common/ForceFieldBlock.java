@@ -16,7 +16,7 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common;
 
@@ -32,7 +32,7 @@ public class ForceFieldBlock {
 	}
 
 	@Override
-	public String toString(){
-		return Projektor_ID+"-"+Generator_Id+"-"+typ;
+	public String toString() {
+		return Projektor_ID + "-" + Generator_Id + "-" + typ;
 	}
 }

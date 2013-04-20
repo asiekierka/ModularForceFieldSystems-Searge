@@ -16,7 +16,7 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common;
 
@@ -26,58 +26,57 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import chb.mods.mffs.common.tileentity.TileEntityProjector;
 
-
-
 public final class ForceFieldOptions {
 
-	//-----------------------------------Block Protected by ForceField---------------------------------------------------------------------
+	// -----------------------------------Block Protected by
+	// ForceField---------------------------------------------------------------------
 
-		
-	public static boolean BlockProtected(World world,int x, int y , int z, EntityPlayer entityplayer)
-	{
-		
-		
-		Map<Integer, TileEntityProjector> ProjectorinrangeMap =  Linkgrid.getWorldMap(world).getProjektor();
+	public static boolean BlockProtected(World world, int x, int y, int z,
+			EntityPlayer entityplayer) {
+
+		Map<Integer, TileEntityProjector> ProjectorinrangeMap = Linkgrid
+				.getWorldMap(world).getProjektor();
 		for (TileEntityProjector tileentity : ProjectorinrangeMap.values()) {
-			
+
 			int dx = tileentity.xCoord - x;
 			int dy = tileentity.yCoord - y;
 			int dz = tileentity.zCoord - z;
 
 			int dist = (int) Math.round(Math.sqrt(dx * dx + dy * dy + dz * dz));
-			
-			
-			if(dist > 64 || !tileentity.isActive() ||tileentity.getProjektor_Typ() == 1 ||  tileentity.getProjektor_Typ() == 2)
-			{continue;}
 
-	Map<Integer, TileEntityProjector> InnerMap = null;
-	InnerMap = Linkgrid.getWorldMap(world).getProjektor();
-	
-	for (TileEntityProjector tileentity2 : InnerMap.values()) {
-		
-		boolean logicswitch = tileentity2.equals(tileentity);
-		
-		if (logicswitch && tileentity2.isActive()) {
-			
-			 if(entityplayer != null)
-			 {
-				
-			    	 if(!SecurityHelper.isAccessGranted(tileentity, entityplayer, world, SecurityRight.RPB,true))
-			    	 { 
-			         return true;
-			    	 }
-			    
-			 }else{
-				
-				 return true;	 
-			 }
-		
-		}
-		
-       	}
+			if (dist > 64 || !tileentity.isActive()
+					|| tileentity.getProjektor_Typ() == 1
+					|| tileentity.getProjektor_Typ() == 2) {
+				continue;
+			}
+
+			Map<Integer, TileEntityProjector> InnerMap = null;
+			InnerMap = Linkgrid.getWorldMap(world).getProjektor();
+
+			for (TileEntityProjector tileentity2 : InnerMap.values()) {
+
+				boolean logicswitch = tileentity2.equals(tileentity);
+
+				if (logicswitch && tileentity2.isActive()) {
+
+					if (entityplayer != null) {
+
+						if (!SecurityHelper.isAccessGranted(tileentity,
+								entityplayer, world, SecurityRight.RPB, true)) {
+							return true;
+						}
+
+					} else {
+
+						return true;
+					}
+
+				}
+
+			}
 
 		}
-		
+
 		return false;
 	}
 

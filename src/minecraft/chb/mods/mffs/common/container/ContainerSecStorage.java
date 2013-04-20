@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.container;
 
@@ -36,68 +36,63 @@ public class ContainerSecStorage extends Container {
 		SecStorage = tileentity;
 		this.player = player;
 
-		addSlotToContainer(new SlotHelper(SecStorage, 0, 12, 24)); //Security link
+		addSlotToContainer(new SlotHelper(SecStorage, 0, 12, 24)); // Security
+																	// link
 
 		int var3;
 		int var4;
 
 		for (var3 = 0; var3 < 6; ++var3) {
 			for (var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new SlotHelper(SecStorage, (var4 + var3 * 9)+1,
-						12 + var4 * 18,43 + var3 * 18));
+				this.addSlotToContainer(new SlotHelper(SecStorage,
+						(var4 + var3 * 9) + 1, 12 + var4 * 18, 43 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 3; ++var3) {
 			for (var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						12 + var4 * 18, 155 + var3 * 18));
+				this.addSlotToContainer(new Slot(player.inventory, var4 + var3
+						* 9 + 9, 12 + var4 * 18, 155 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, 12 + var3 * 18, 213));
+			this.addSlotToContainer(new Slot(player.inventory, var3,
+					12 + var3 * 18, 213));
 		}
 	}
 
-    public EntityPlayer getPlayer() {
-    	return player;
-    }
+	public EntityPlayer getPlayer() {
+		return player;
+	}
 
-	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return SecStorage.isUseableByPlayer(entityplayer);
 	}
 
-	  @Override
-	  public ItemStack transferStackInSlot(EntityPlayer p, int i)
-	  {
-	    ItemStack itemstack = null;
-	    Slot slot = (Slot) inventorySlots.get(i);
-	    if (slot != null && slot.getHasStack())
-	    {
-	      ItemStack itemstack1 = slot.getStack();
-	      itemstack = itemstack1.copy();
-	      if (i < SecStorage.getSizeInventory())
-	      {
-	        if (!mergeItemStack(itemstack1, SecStorage.getSizeInventory(), inventorySlots.size(), true))
-	        {
-	          return null;
-	        }
-	      } else if (!mergeItemStack(itemstack1, 0, SecStorage.getSizeInventory(), false))
-	      {
-	        return null;
-	      }
-	      if (itemstack1.stackSize == 0)
-	      {
-	        slot.putStack(null);
-	      } else
-	      {
-	        slot.onSlotChanged();
-	      }
-	    }
-	    return itemstack;
-	  }
-	
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer p, int i) {
+		ItemStack itemstack = null;
+		Slot slot = (Slot) inventorySlots.get(i);
+		if (slot != null && slot.getHasStack()) {
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
+			if (i < SecStorage.getSizeInventory()) {
+				if (!mergeItemStack(itemstack1, SecStorage.getSizeInventory(),
+						inventorySlots.size(), true)) {
+					return null;
+				}
+			} else if (!mergeItemStack(itemstack1, 0,
+					SecStorage.getSizeInventory(), false)) {
+				return null;
+			}
+			if (itemstack1.stackSize == 0) {
+				slot.putStack(null);
+			} else {
+				slot.onSlotChanged();
+			}
+		}
+		return itemstack;
+	}
 
 }

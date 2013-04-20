@@ -36,79 +36,72 @@ import chb.mods.mffs.common.container.ContainerSecStorage;
 import chb.mods.mffs.common.item.ItemCardSecurityLink;
 
 public class TileEntitySecStorage extends TileEntityMachines implements
-		ISidedInventory,IInventory {
+		ISidedInventory, IInventory {
 
 	private ItemStack inventory[];
 
 	public TileEntitySecStorage() {
 		inventory = new ItemStack[60];
 	}
-	
 
-	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a, this);
 		}
 	}
-	
-	
-	@Override
-	public TileEntityAdvSecurityStation getLinkedSecurityStation(){
+
+	public TileEntityAdvSecurityStation getLinkedSecurityStation() {
 		return ItemCardSecurityLink.getLinkedSecurityStation(this, 0, worldObj);
 	}
-
 
 	@Override
 	public void invalidate() {
 		Linkgrid.getWorldMap(worldObj).getSecStorage().remove(getDeviceID());
 		super.invalidate();
 	}
-	
-	
-	public int getSecStation_ID(){
+
+	public int getSecStation_ID() {
 		TileEntityAdvSecurityStation sec = getLinkedSecurityStation();
-		if(sec != null)
+		if (sec != null)
 			return sec.getDeviceID();
-		return 0;	
+		return 0;
 	}
-	
+
 	@Override
-	public  short getmaxSwitchModi(){
+	public short getmaxSwitchModi() {
 		return 3;
 	}
+
 	@Override
-	public  short getminSwitchModi(){
+	public short getminSwitchModi() {
 		return 2;
 	}
-	
-	public int getfreeslotcount()
-	{
+
+	public int getfreeslotcount() {
 		int count = 0;
-		
+
 		for (int a = 1; a < this.inventory.length; a++) {
-			if(getStackInSlot(a)==null)
+			if (getStackInSlot(a) == null)
 				count++;
 		}
-		
+
 		return count;
 	}
 
 	@Override
 	public void updateEntity() {
-		
+
 		if (!worldObj.isRemote) {
-                if(getLinkedSecurityStation()!=null && !isActive() && getSwitchValue())
-                	setActive(true);
-                if((getLinkedSecurityStation()==null || !getSwitchValue()) && isActive())
-                	setActive(false);
+			if (getLinkedSecurityStation() != null && !isActive()
+					&& getSwitchValue())
+				setActive(true);
+			if ((getLinkedSecurityStation() == null || !getSwitchValue())
+					&& isActive())
+				setActive(false);
 		}
 		super.updateEntity();
 	}
 
-
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
@@ -124,7 +117,6 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		}
 	}
 
-	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		NBTTagList nbttaglist = new NBTTagList();
@@ -140,37 +132,29 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
 
-
-	@Override
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
 
-	@Override
 	public String getInvName() {
 		return "SecStation";
 	}
-	
 
-	@Override
 	public int getSizeInventory() {
 		return inventory.length;
 	}
 
-    @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-    {
-        this.inventory[par1] = par2ItemStack;
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {
+		this.inventory[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-        {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
-        }
+		if (par2ItemStack != null
+				&& par2ItemStack.stackSize > this.getInventoryStackLimit()) {
+			par2ItemStack.stackSize = this.getInventoryStackLimit();
+		}
 
-        this.onInventoryChanged();
-    }
+		this.onInventoryChanged();
+	}
 
-	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {
@@ -188,22 +172,19 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 		}
 	}
 
-
-
 	@Override
 	public int getStartInventorySide(ForgeDirection side) {
-		if(isActive())
+		if (isActive())
 			return 0;
 		return 1;
 	}
 
 	@Override
 	public int getSizeInventorySide(ForgeDirection side) {
-		if(isActive())
+		if (isActive())
 			return 0;
 		return 54;
 	}
-
 
 	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
@@ -224,9 +205,19 @@ public class TileEntitySecStorage extends TileEntityMachines implements
 
 	@Override
 	public int getSlotStackLimit(int slt) {
-		if(slt==0)
+		if (slt == 0)
 			return 1;
 		return 64;
+	}
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return false;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return true;
 	}
 
 }

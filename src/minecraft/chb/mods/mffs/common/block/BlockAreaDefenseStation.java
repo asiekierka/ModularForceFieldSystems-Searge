@@ -16,15 +16,14 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 package chb.mods.mffs.common.block;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.tileentity.TileEntityAreaDefenseStation;
-
-
 
 public class BlockAreaDefenseStation extends BlockMFFSBase {
 	public BlockAreaDefenseStation(int i) {
@@ -32,12 +31,13 @@ public class BlockAreaDefenseStation extends BlockMFFSBase {
 	}
 
 	@Override
-	public String getTextureFile() {
-		
-		if(ModularForceFieldSystem.graphicstyle==1)
-		return "/chb/mods/mffs/sprites/DefenceStation_ue.png";
-		
-		return "/chb/mods/mffs/sprites/DefenceStation.png";
+	public void registerIcons(IconRegister iconRegister) {
+		icons[0] = icons[1] = iconRegister
+				.registerIcon("mffs:DefStation/Inactive");
+		icons[2] = icons[3] = iconRegister
+				.registerIcon("mffs:DefStation/Active");
+
+		blockIcon = icons[0];
 	}
 
 	@Override

@@ -35,69 +35,61 @@ import chb.mods.mffs.common.tileentity.TileEntityExtractor;
 import chb.mods.mffs.common.tileentity.TileEntityProjector;
 import chb.mods.mffs.common.tileentity.TileEntitySecStorage;
 
-
 public class SecurityHelper {
 
-	
-	
-	
 	public static boolean isAccessGranted(TileEntity tileEntity,
 			EntityPlayer entityplayer, World world, SecurityRight right) {
-		
-		return isAccessGranted(tileEntity,
-				 entityplayer, world, right,false);
+
+		return isAccessGranted(tileEntity, entityplayer, world, right, false);
 	}
-	
-	
+
 	public static boolean isAccessGranted(TileEntity tileEntity,
-			EntityPlayer entityplayer, World world, SecurityRight right,boolean suppresswarning) {
-		
-		
+			EntityPlayer entityplayer, World world, SecurityRight right,
+			boolean suppresswarning) {
 
 		if (tileEntity instanceof TileEntitySecStorage) {
-			
-			
-			TileEntityAdvSecurityStation sec = ((TileEntitySecStorage)tileEntity).getLinkedSecurityStation();
-			
-			if(sec!=null){
-				if(sec.isAccessGranted(entityplayer.username, right))
+
+			TileEntityAdvSecurityStation sec = ((TileEntitySecStorage) tileEntity)
+					.getLinkedSecurityStation();
+
+			if (sec != null) {
+				if (sec.isAccessGranted(entityplayer.username, right))
 					return true;
-				
-				
+
 				if (!suppresswarning)
-					entityplayer.sendChatToPlayer("[Field Security] Fail: access denied");
+					entityplayer
+							.sendChatToPlayer("[Field Security] Fail: access denied");
 				return false;
-			}else{
-				
+			} else {
+
 				if (world.isRemote)
 					return false;
-				
+
 				return true;
 			}
-		
+
 		}
 
-		
-		
 		if (tileEntity instanceof TileEntityControlSystem) {
-			
-			TileEntityAdvSecurityStation sec = ((TileEntityControlSystem)tileEntity).getLinkedSecurityStation();
-			if(sec!=null){
-				if(sec.isAccessGranted(entityplayer.username, right))
+
+			TileEntityAdvSecurityStation sec = ((TileEntityControlSystem) tileEntity)
+					.getLinkedSecurityStation();
+			if (sec != null) {
+				if (sec.isAccessGranted(entityplayer.username, right))
 					return true;
-				
-				
+
 				if (!suppresswarning)
-					entityplayer.sendChatToPlayer("[Field Security] Fail: access denied");
+					entityplayer
+							.sendChatToPlayer("[Field Security] Fail: access denied");
 				return false;
-			}else{
-				
+			} else {
+
 				if (world.isRemote)
 					return false;
-				
+
 				return true;
 			}
-			
+
 		}
 		if (tileEntity instanceof TileEntityAdvSecurityStation) {
 
@@ -110,149 +102,130 @@ public class SecurityHelper {
 				return false;
 			}
 		}
-		
-		
-		
 
 		if (tileEntity instanceof TileEntityConverter) {
-			
-			TileEntityAdvSecurityStation sec = ((TileEntityConverter)tileEntity).getLinkedSecurityStation();
-			if(sec!=null)
-				{
-				  if(sec.isAccessGranted(entityplayer.username, right))
-				  {
-					  return true;
-				  }else{
-						if (!suppresswarning)
-							Functions.ChattoPlayer(entityplayer,
-									"[Field Security] Fail: access denied");
-					  return false;
-				  }
-					
-				}
-			return true;
-		}
-			
-	
-		
-		if (tileEntity instanceof TileEntityCapacitor) {
-			
-			TileEntityAdvSecurityStation sec = ((TileEntityCapacitor)tileEntity).getLinkedSecurityStation();
-			if(sec!=null)
-			{
-			  if(sec.isAccessGranted(entityplayer.username, right))
-			  {
-				  return true;
-			  }else{
+
+			TileEntityAdvSecurityStation sec = ((TileEntityConverter) tileEntity)
+					.getLinkedSecurityStation();
+			if (sec != null) {
+				if (sec.isAccessGranted(entityplayer.username, right)) {
+					return true;
+				} else {
 					if (!suppresswarning)
 						Functions.ChattoPlayer(entityplayer,
 								"[Field Security] Fail: access denied");
-				  return false;
-			  }
-				
+					return false;
+				}
+
 			}
 			return true;
 		}
-			
-			
 
-		
+		if (tileEntity instanceof TileEntityCapacitor) {
+
+			TileEntityAdvSecurityStation sec = ((TileEntityCapacitor) tileEntity)
+					.getLinkedSecurityStation();
+			if (sec != null) {
+				if (sec.isAccessGranted(entityplayer.username, right)) {
+					return true;
+				} else {
+					if (!suppresswarning)
+						Functions.ChattoPlayer(entityplayer,
+								"[Field Security] Fail: access denied");
+					return false;
+				}
+
+			}
+			return true;
+		}
 
 		if (tileEntity instanceof TileEntityExtractor) {
-			
-			TileEntityAdvSecurityStation sec = ((TileEntityExtractor)tileEntity).getLinkedSecurityStation();
-			if(sec!=null)
-				{
-				  if(sec.isAccessGranted(entityplayer.username, right))
-				  {
-					  return true;
-				  }else{
-						if (!suppresswarning)
-							Functions.ChattoPlayer(entityplayer,
-									"[Field Security] Fail: access denied");
-					  return false;
-				  }
-					
+
+			TileEntityAdvSecurityStation sec = ((TileEntityExtractor) tileEntity)
+					.getLinkedSecurityStation();
+			if (sec != null) {
+				if (sec.isAccessGranted(entityplayer.username, right)) {
+					return true;
+				} else {
+					if (!suppresswarning)
+						Functions.ChattoPlayer(entityplayer,
+								"[Field Security] Fail: access denied");
+					return false;
 				}
-		
+
+			}
+
 			return true;
-			
-			
+
 		}
 
 		if (tileEntity instanceof TileEntityAreaDefenseStation) {
-			
-				TileEntityAdvSecurityStation sec = ((TileEntityAreaDefenseStation)tileEntity).getLinkedSecurityStation();
-				
-				if(sec!=null)
-				{
-				  if(sec.isAccessGranted(entityplayer.username, right))
-				  {
-					  return true;
-				  }else{
-						if (!suppresswarning)
-							Functions.ChattoPlayer(entityplayer,
-									"[Field Security] Fail: access denied");
-					  return false;
-				  }
-					
-				
+
+			TileEntityAdvSecurityStation sec = ((TileEntityAreaDefenseStation) tileEntity)
+					.getLinkedSecurityStation();
+
+			if (sec != null) {
+				if (sec.isAccessGranted(entityplayer.username, right)) {
+					return true;
+				} else {
+					if (!suppresswarning)
+						Functions.ChattoPlayer(entityplayer,
+								"[Field Security] Fail: access denied");
+					return false;
+				}
+
 			}
 			return true;
 
 		}
-		
-
 
 		if (tileEntity instanceof TileEntityProjector) {
-			
-		
-			switch(((TileEntityProjector) tileEntity).getaccesstyp()){
+
+			switch (((TileEntityProjector) tileEntity).getaccesstyp()) {
 			case 2:
-				
-				TileEntityCapacitor cap =Linkgrid.getWorldMap(world).getCapacitor().get(((TileEntityProjector)tileEntity).getPowerSourceID());
-				if(cap != null)
-				{
-					TileEntityAdvSecurityStation sec = cap.getLinkedSecurityStation();
-					if(sec!=null)
-					{
-					  if(sec.isAccessGranted(entityplayer.username, right))
-					  {
-						  return true;
-					  }else{
+
+				TileEntityCapacitor cap = Linkgrid
+						.getWorldMap(world)
+						.getCapacitor()
+						.get(((TileEntityProjector) tileEntity)
+								.getPowerSourceID());
+				if (cap != null) {
+					TileEntityAdvSecurityStation sec = cap
+							.getLinkedSecurityStation();
+					if (sec != null) {
+						if (sec.isAccessGranted(entityplayer.username, right)) {
+							return true;
+						} else {
 							if (!suppresswarning)
 								Functions.ChattoPlayer(entityplayer,
 										"[Field Security] Fail: access denied");
-						  return false;
-					  }
-						
+							return false;
+						}
+
 					}
 				}
-				
-				
-			break;
+
+				break;
 			case 3:
-				
-				TileEntityAdvSecurityStation sec = ((TileEntityProjector)tileEntity).getLinkedSecurityStation();
-				if(sec!=null)
-				{
-				  if(sec.isAccessGranted(entityplayer.username, right))
-				  {
-					  return true;
-				  }else{
+
+				TileEntityAdvSecurityStation sec = ((TileEntityProjector) tileEntity)
+						.getLinkedSecurityStation();
+				if (sec != null) {
+					if (sec.isAccessGranted(entityplayer.username, right)) {
+						return true;
+					} else {
 						if (!suppresswarning)
 							Functions.ChattoPlayer(entityplayer,
 									"[Field Security] Fail: access denied");
-					  return false;
-				  }
+						return false;
+					}
+				}
+
+				break;
 			}
-				
-			break;
-			}
-			
+
 			return true;
 		}
-
 
 		return true;
 	}

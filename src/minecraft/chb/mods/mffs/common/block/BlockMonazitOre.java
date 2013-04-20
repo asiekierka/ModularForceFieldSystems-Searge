@@ -16,7 +16,7 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.block;
 
@@ -24,15 +24,13 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.client.renderer.texture.IconRegister;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 
-
-
 public class BlockMonazitOre extends Block {
-	
+
 	private int blockid;
-	
+
 	public BlockMonazitOre(int i) {
 		super(i, Material.rock);
 		setHardness(3.0F);
@@ -43,23 +41,17 @@ public class BlockMonazitOre extends Block {
 	}
 
 	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/forciciumore.png";
+	public void registerIcons(IconRegister iconRegister) {
+		blockIcon = iconRegister.registerIcon("mffs:MonazitOre");
 	}
 
-    @Override
-	public int getBlockTexture(IBlockAccess iblockaccess, int i, int j, int k,
-			int l) {
-    	return 0;
+	@Override
+	public int idDropped(int par1, Random par2Random, int par3) {
+		return ModularForceFieldSystem.MFFSMonazitOre.blockID;
 	}
-    @Override
-    public int idDropped(int par1, Random par2Random, int par3)
-    {
-        return   ModularForceFieldSystem.MFFSMonazitOre.blockID;
-    }
-    @Override
-    public int quantityDropped(Random par1Random)
-    {
-        return 1 ;
-    }
+
+	@Override
+	public int quantityDropped(Random par1Random) {
+		return 1;
+	}
 }

@@ -37,24 +37,24 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
-import universalelectricity.core.electricity.ElectricityConnections;
-import universalelectricity.core.electricity.ElectricityNetwork;
-import universalelectricity.core.vector.Vector3;
+/*import universalelectricity.core.electricity.ElectricityConnections;
+ import universalelectricity.core.electricity.ElectricityNetwork;
+ import universalelectricity.core.vector.Vector3;*/
 import chb.mods.mffs.api.IPowerLinkItem;
 import chb.mods.mffs.common.Linkgrid;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.container.ContainerConverter;
 
-public class TileEntityConverter extends TileEntityFEPoweredMachine implements IEnergySource {
+public class TileEntityConverter extends TileEntityFEPoweredMachine implements
+		IEnergySource {
 	private ItemStack inventory[];
 	private int IC_Outputpacketsize;
-	private int IC_Outputpacketamount; 
+	private int IC_Outputpacketamount;
 	private int IC_Output = 0;
 	private int UE_Outputvoltage;
-	private int UE_Outputamp; 
+	private int UE_Outputamp;
 	private int UE_Output = 0;
-	
-	
+
 	private boolean addedToEnergyNet;
 	private boolean Industriecraftfound = true;
 	private int linkPower;
@@ -62,7 +62,7 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 
 	public TileEntityConverter() {
 		inventory = new ItemStack[4];
-		capacity =0;
+		capacity = 0;
 		IC_Outputpacketsize = 1;
 		IC_Outputpacketamount = 1;
 		UE_Outputvoltage = 120;
@@ -70,8 +70,7 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 		addedToEnergyNet = false;
 		linkPower = 0;
 	}
-	
-	
+
 	public int getUE_Outputvoltage() {
 		return UE_Outputvoltage;
 	}
@@ -120,14 +119,12 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 		IC_Outputpacketamount = iC_Outputpacketamount;
 	}
 
-
 	@Override
 	public void setSide(int i) {
 		super.setSide(i);
 		setUEwireConnection();
 	}
 
-	
 	public int getLinkPower() {
 		return linkPower;
 	}
@@ -135,92 +132,85 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 	public void setLinkPower(int linkPower) {
 		this.linkPower = linkPower;
 	}
-	
-	public int getCapacity(){
+
+	public int getCapacity() {
 		return capacity;
 	}
 
-	public void setCapacity(int Capacity){
+	public void setCapacity(int Capacity) {
 		this.capacity = Capacity;
 	}
 
-	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			if (!addedToEnergyNet && Industriecraftfound) {
 				try {
-					MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+					MinecraftForge.EVENT_BUS
+							.post(new EnergyTileLoadEvent(this));
 					addedToEnergyNet = true;
 				} catch (Exception ex) {
 					Industriecraftfound = false;
 				}
 			}
-			
+
 			if (init) {
 				setUEwireConnection();
 			}
-			
-			if(hasPowerSource())
-			{
+
+			if (hasPowerSource()) {
 				setLinkPower(getAvailablePower());
-			}else{
-				
+			} else {
+
 				setLinkPower(0);
 			}
-			
+
 			if (getSwitchModi() == 1)
-				if(!getSwitchValue() && isRedstoneSignal())
-				 toggelSwitchValue();
-			
+				if (!getSwitchValue() && isRedstoneSignal())
+					toggelSwitchValue();
+
 			if (getSwitchModi() == 1)
-				if(getSwitchValue() && !isRedstoneSignal())
-				 toggelSwitchValue();
-			
-			
-			if (getSwitchValue() &&   hasPowerSource()
-					&& !isActive())
+				if (getSwitchValue() && !isRedstoneSignal())
+					toggelSwitchValue();
+
+			if (getSwitchValue() && hasPowerSource() && !isActive())
 				setActive(true);
 
 			if ((!getSwitchValue() || !hasPowerSource()) && isActive())
 				setActive(false);
 
 			if (isActive())
-				if(getIC_Output()==1)
-				EmitICpower(getIC_Outputpacketsize(),getIC_Outputpacketamount());
-			
+				if (getIC_Output() == 1)
+					EmitICpower(getIC_Outputpacketsize(),
+							getIC_Outputpacketamount());
 
-		     EmitUEPower(getUE_Outputvoltage(),getUE_Outputamp());
+			EmitUEPower(getUE_Outputvoltage(), getUE_Outputamp());
 
-		} 
+		}
 		super.updateEntity();
 	}
 
-
-
-	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a, this);
 		}
 	}
 
-
-	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		
-		
-		try{
-		    IC_Outputpacketamount = nbttagcompound.getShort("ICOutputpacketamount");
-		}catch(Exception e){
-			IC_Outputpacketamount = nbttagcompound.getInteger("ICOutputpacketamount");
+
+		try {
+			IC_Outputpacketamount = nbttagcompound
+					.getShort("ICOutputpacketamount");
+		} catch (Exception e) {
+			IC_Outputpacketamount = nbttagcompound
+					.getInteger("ICOutputpacketamount");
 		}
 		IC_Output = nbttagcompound.getInteger("ICOutput");
 		IC_Outputpacketsize = nbttagcompound.getInteger("ICOutputpacketsize");
-		UE_Output= nbttagcompound.getInteger("UEOutput");
-		UE_Outputvoltage= nbttagcompound.getInteger("UEOutputvoltage");
-		UE_Outputamp= nbttagcompound.getInteger("UEOutputamp");
-		
+		UE_Output = nbttagcompound.getInteger("UEOutput");
+		UE_Outputvoltage = nbttagcompound.getInteger("UEOutputvoltage");
+		UE_Outputamp = nbttagcompound.getInteger("UEOutputamp");
+
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -234,18 +224,18 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 		}
 	}
 
-	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		
+
 		nbttagcompound.setInteger("ICOutput", IC_Output);
 		nbttagcompound.setInteger("ICOutputpacketsize", IC_Outputpacketsize);
-		nbttagcompound.setInteger("ICOutputpacketamount", IC_Outputpacketamount);
+		nbttagcompound
+				.setInteger("ICOutputpacketamount", IC_Outputpacketamount);
 
 		nbttagcompound.setInteger("UEOutput", UE_Output);
 		nbttagcompound.setInteger("UEOutputvoltage", UE_Outputvoltage);
 		nbttagcompound.setInteger("UEOutputamp", UE_Outputamp);
-		
+
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
 			if (inventory[i] != null) {
@@ -259,23 +249,18 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
 
-	@Override
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
 
-	@Override
 	public String getInvName() {
 		return "Extractor";
 	}
 
-
-	@Override
 	public int getSizeInventory() {
 		return inventory.length;
 	}
 
-	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
@@ -283,7 +268,6 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 		}
 	}
 
-	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {
@@ -317,141 +301,181 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 	}
 
 	@Override
-	public void onNetworkHandlerUpdate(String field){ 
+	public void onNetworkHandlerUpdate(String field) {
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
+
 	@Override
-	public void onNetworkHandlerEvent(int key,String value) {
-		
-	
-			if(key==100)
-			{
-				if (this.getIC_Output() == 0) {
-					this.setIC_Output(1);
-				} else {
-					this.setIC_Output(0);
+	public void onNetworkHandlerEvent(int key, String value) {
+
+		if (key == 100) {
+			if (this.getIC_Output() == 0) {
+				this.setIC_Output(1);
+			} else {
+				this.setIC_Output(0);
+			}
+		}
+
+		if (key == 101) {
+			if (this.getUE_Output() == 0) {
+				this.setUE_Output(1);
+			} else {
+				this.setUE_Output(0);
+			}
+		}
+
+		if (getIC_Output() == 0) {
+			if (key == 200) {
+				if (value.equalsIgnoreCase("+")) {
+					switch (IC_Outputpacketsize) {
+					case 1:
+						IC_Outputpacketsize = 32;
+						break;
+					case 32:
+						IC_Outputpacketsize = 128;
+						break;
+					case 128:
+						IC_Outputpacketsize = 512;
+						break;
+					case 512:
+						IC_Outputpacketsize = 2048;
+						break;
+					case 2048:
+						IC_Outputpacketsize = 1;
+						break;
+					}
+				}
+				if (value.equalsIgnoreCase("-")) {
+					switch (IC_Outputpacketsize) {
+					case 1:
+						IC_Outputpacketsize = 2048;
+						break;
+					case 32:
+						IC_Outputpacketsize = 1;
+						break;
+					case 128:
+						IC_Outputpacketsize = 32;
+						break;
+					case 512:
+						IC_Outputpacketsize = 128;
+						break;
+					case 2048:
+						IC_Outputpacketsize = 512;
+						break;
+					}
 				}
 			}
-			
-			if(key==101)
-			{
-				if (this.getUE_Output() == 0) {
-					this.setUE_Output(1);
-				} else {
-					this.setUE_Output(0);
+			if (key == 201) {
+				if (value.equalsIgnoreCase("+")) {
+					if (IC_Outputpacketamount == 9) {
+						IC_Outputpacketamount = 1;
+					} else {
+						IC_Outputpacketamount++;
+					}
+				}
+				if (value.equalsIgnoreCase("-")) {
+					if (IC_Outputpacketamount == 1) {
+						IC_Outputpacketamount = 9;
+					} else {
+						IC_Outputpacketamount--;
+					}
 				}
 			}
-		
-	     if(getIC_Output()==0){
-		    if(key==200){ 
-		    	if(value.equalsIgnoreCase("+")){
-		    		switch(IC_Outputpacketsize){
-		    		case 1: IC_Outputpacketsize = 32;break;
-		    		case 32: IC_Outputpacketsize = 128;break;
-		    		case 128: IC_Outputpacketsize = 512;break;
-		    		case 512: IC_Outputpacketsize = 2048;break;
-		    		case 2048: IC_Outputpacketsize = 1;break;
-		    		}
-		    	}
-		    	if(value.equalsIgnoreCase("-")){
-		    		switch(IC_Outputpacketsize){
-	    		case 1: IC_Outputpacketsize = 2048;break;
-	    		case 32: IC_Outputpacketsize = 1;break;
-	    		case 128: IC_Outputpacketsize = 32;break;
-	    		case 512: IC_Outputpacketsize = 128;break;
-	    		case 2048: IC_Outputpacketsize =512;break;
-		    	}	
-		    	}
-			}
-		    if(key==201){ 
-		    	if(value.equalsIgnoreCase("+")){
-		    		if(IC_Outputpacketamount==9){
-		    			IC_Outputpacketamount=1;}else{
-		    		IC_Outputpacketamount++;}
-		    	}
-		    	if(value.equalsIgnoreCase("-")){
-		    		if(IC_Outputpacketamount==1){
-		    			IC_Outputpacketamount=9;}else{
-		    		IC_Outputpacketamount--;}
-		    	}
-			}  
-	     }
-	     if(getUE_Output()==0){
-	    	 
-			    if(key==202){ 
-			    	if(value.equalsIgnoreCase("+")){
-			    		switch(UE_Outputvoltage){
-			    		case 60: UE_Outputvoltage = 120;break;
-			    		case 120: UE_Outputvoltage = 240;break;
-			    		case 240: UE_Outputvoltage = 60;break;
-			    		}
-			    	}
-			    	if(value.equalsIgnoreCase("-")){
-			    		switch(UE_Outputvoltage){
-			    		case 60: UE_Outputvoltage = 240;break;
-			    		case 120: UE_Outputvoltage = 60;break;
-			    		case 240: UE_Outputvoltage = 120;break;
-			    	}	
-			    	}
+		}
+		if (getUE_Output() == 0) {
+
+			if (key == 202) {
+				if (value.equalsIgnoreCase("+")) {
+					switch (UE_Outputvoltage) {
+					case 60:
+						UE_Outputvoltage = 120;
+						break;
+					case 120:
+						UE_Outputvoltage = 240;
+						break;
+					case 240:
+						UE_Outputvoltage = 60;
+						break;
+					}
 				}
-			    if(key==203){ 
-			    	if(value.equalsIgnoreCase("+")){
-			    		if(UE_Outputamp==50){
-			    			UE_Outputamp=1;}else{
-			    				UE_Outputamp++;}
-			    	}
-			    	if(value.equalsIgnoreCase("-")){
-			    		if(UE_Outputamp==1){
-			    			UE_Outputamp=50;}else{
-			    				UE_Outputamp--;}
-			    	}
-				}  
-	    	 
-	    	 
-	     }
+				if (value.equalsIgnoreCase("-")) {
+					switch (UE_Outputvoltage) {
+					case 60:
+						UE_Outputvoltage = 240;
+						break;
+					case 120:
+						UE_Outputvoltage = 60;
+						break;
+					case 240:
+						UE_Outputvoltage = 120;
+						break;
+					}
+				}
+			}
+			if (key == 203) {
+				if (value.equalsIgnoreCase("+")) {
+					if (UE_Outputamp == 50) {
+						UE_Outputamp = 1;
+					} else {
+						UE_Outputamp++;
+					}
+				}
+				if (value.equalsIgnoreCase("-")) {
+					if (UE_Outputamp == 1) {
+						UE_Outputamp = 50;
+					} else {
+						UE_Outputamp--;
+					}
+				}
+			}
+
+		}
 
 		super.onNetworkHandlerEvent(key, value);
 	}
-	
 
-	public void EmitUEPower(int volt,int amp){
-	if(ModularForceFieldSystem.uefound && hasPowerSource()){
-			
-		ForgeDirection outputDirection = ForgeDirection.getOrientation(getSide());
-		TileEntity outputTile = Vector3.getTileEntityFromSide(this.worldObj, new Vector3(this), outputDirection);
-		ElectricityNetwork outputNetwork = ElectricityNetwork.getNetworkFromTileEntity(outputTile, outputDirection);
-		
-		if (outputNetwork != null){
-			
-			double outputWatts = Math.min(outputNetwork.getRequest().getWatts(), volt * amp);
-			
-			if(consumePower((int)((ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000) * (outputWatts/50)), true))
-			{
-			if (outputWatts > 0 && isActive() && getUE_Output()==1){
-			outputNetwork.startProducing(this, outputWatts / volt, volt);	
-			consumePower((int)((ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000) * (outputWatts/50)), false);
-			}else{
-				outputNetwork.stopProducing(this);
-			}
-		   }
-		 }
-		}
+	public void EmitUEPower(int volt, int amp) {
+		/*
+		 * if(ModularForceFieldSystem.uefound && hasPowerSource()){
+		 * 
+		 * ForgeDirection outputDirection =
+		 * ForgeDirection.getOrientation(getSide()); TileEntity outputTile =
+		 * Vector3.getTileEntityFromSide(this.worldObj, new Vector3(this),
+		 * outputDirection); ElectricityNetwork outputNetwork =
+		 * ElectricityNetwork.getNetworkFromTileEntity(outputTile,
+		 * outputDirection);
+		 * 
+		 * if (outputNetwork != null){
+		 * 
+		 * double outputWatts = Math.min(outputNetwork.getRequest().getWatts(),
+		 * volt * amp);
+		 * 
+		 * if(consumePower((int)((ModularForceFieldSystem.
+		 * ExtractorPassForceEnergyGenerate/4000) * (outputWatts/50)), true)) {
+		 * if (outputWatts > 0 && isActive() && getUE_Output()==1){
+		 * outputNetwork.startProducing(this, outputWatts / volt, volt);
+		 * consumePower
+		 * ((int)((ModularForceFieldSystem.ExtractorPassForceEnergyGenerate
+		 * /4000) * (outputWatts/50)), false); }else{
+		 * outputNetwork.stopProducing(this); } } } }
+		 */
 	}
-	
-	
-	
+
 	public void EmitICpower(int amount, int packets) {
 		if (Industriecraftfound && hasPowerSource()) {
-			
-			while(packets>0)
-			{
-			if(consumePower((ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000) * amount, true))
-			{
-		 	EnergyTileSourceEvent event = new EnergyTileSourceEvent(this, amount);
-		 	MinecraftForge.EVENT_BUS.post(event);
-		 	consumePower((ModularForceFieldSystem.ExtractorPassForceEnergyGenerate/4000) * (amount-event.amount), false);
-			}	
-			packets--;
+
+			while (packets > 0) {
+				if (consumePower(
+						(ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 4000)
+								* amount, true)) {
+					EnergyTileSourceEvent event = new EnergyTileSourceEvent(
+							this, amount);
+					MinecraftForge.EVENT_BUS.post(event);
+					consumePower(
+							(ModularForceFieldSystem.ExtractorPassForceEnergyGenerate / 4000)
+									* (amount - event.amount), false);
+				}
+				packets--;
 			}
 		}
 	}
@@ -466,22 +490,19 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 		super.invalidate();
 	}
 
-	@Override
 	public boolean isAddedToEnergyNet() {
 		return addedToEnergyNet;
 	}
 
-	@Override
 	public int getMaxEnergyOutput() {
 		return Integer.MAX_VALUE;
 	}
 
 	@Override
 	public boolean emitsEnergyTo(TileEntity receiver, Direction direction) {
-		
+
 		return receiver instanceof IEnergyAcceptor;
 	}
-
 
 	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
@@ -501,13 +522,13 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 	}
 
 	@Override
-	public int getSlotStackLimit(int Slot){
+	public int getSlotStackLimit(int Slot) {
 		return 1;
 	}
 
 	@Override
 	public ItemStack getPowerLinkStack() {
-		 return this.getStackInSlot(getPowerlinkSlot());
+		return this.getStackInSlot(getPowerlinkSlot());
 	}
 
 	@Override
@@ -516,37 +537,47 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements I
 	}
 
 	@Override
-	public  short getmaxSwitchModi(){
+	public short getmaxSwitchModi() {
 		return 3;
 	}
+
 	@Override
-	public  short getminSwitchModi(){
+	public short getminSwitchModi() {
 		return 1;
 	}
-	
-	public void setUEwireConnection()
-	{
-		if(ModularForceFieldSystem.uefound)
-		{
-		  ElectricityConnections.registerConnector(this, EnumSet.of(ForgeDirection.getOrientation(this.getFacing())));
-		  worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord,worldObj.getBlockId(xCoord, yCoord, zCoord) );
-		}
+
+	public void setUEwireConnection() {
+		/*
+		 * if(ModularForceFieldSystem.uefound) {
+		 * ElectricityConnections.registerConnector(this,
+		 * EnumSet.of(ForgeDirection.getOrientation(this.getFacing())));
+		 * worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord,
+		 * zCoord,worldObj.getBlockId(xCoord, yCoord, zCoord) ); }
+		 */
 	}
 
 	@Override
 	public TileEntityAdvSecurityStation getLinkedSecurityStation() {
-	
-		TileEntityCapacitor cap =Linkgrid.getWorldMap(worldObj).getCapacitor().get(getPowerSourceID());
-		if(cap != null)
-		{
+
+		TileEntityCapacitor cap = Linkgrid.getWorldMap(worldObj).getCapacitor()
+				.get(getPowerSourceID());
+		if (cap != null) {
 			TileEntityAdvSecurityStation sec = cap.getLinkedSecurityStation();
-			if(sec!=null)
-			{
+			if (sec != null) {
 				return sec;
 			}
 		}
 		return null;
 	}
 
-	
+	@Override
+	public boolean isInvNameLocalized() {
+		return false;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return true;
+	}
+
 }

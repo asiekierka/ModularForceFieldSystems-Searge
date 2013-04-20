@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.multitool;
 
@@ -37,146 +37,168 @@ import chb.mods.mffs.common.item.ItemCardDataLink;
 import chb.mods.mffs.common.item.ItemCardPersonalID;
 import chb.mods.mffs.common.tileentity.TileEntityMachines;
 
-
-
-public class ItemPersonalIDWriter extends ItemMultitool{
+public class ItemPersonalIDWriter extends ItemMultitool {
 	public ItemPersonalIDWriter(int i) {
-		super(i,2);
+		super(i, 2);
 	}
 
-    @Override
-    public boolean onLeftClickEntity(ItemStack itemstack, EntityPlayer entityplayer, Entity entity)
-    {
-    	if(entity instanceof EntityPlayer)
-    	{
-		List<Slot> slots = entityplayer.inventoryContainer.inventorySlots;
-		for (Slot slot : slots) {
-			ItemStack stack = slot.getStack();
-			if (stack != null) {
-				if (stack.getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
-					if(this.consumePower(itemstack, 1000, true))
-					{
-						this.consumePower(itemstack, 1000, false);
-                        ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
-                        ItemCardPersonalID.setOwner(IDCard, ((EntityPlayer)entity).username);
-                    
-                        if (--stack.stackSize<=0) {
-        					slot.putStack(IDCard);
-        				} else if (!entityplayer.inventory.addItemStackToInventory(IDCard))
-        					entityplayer.dropPlayerItem(IDCard);
-
-						Functions.ChattoPlayer(entityplayer,"[MultiTool] Success: ID-Card create");
-                        return true;
-					}else{
-						Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough FP please charge");
-						 return true;
-					}
-				}
-			}
-		}
-
-		Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: need MFFS Card <blank> in  Inventory");
-        return true;
-    	}
-    	return false;
-    }
-
-	@Override
-	public ItemStack onItemRightClick(ItemStack itemstack, World world,
-			EntityPlayer entityplayer) {
-
-		if(entityplayer.isSneaking())
-		{
-			return super.onItemRightClick(itemstack, world, entityplayer);
-		}
-
+	public boolean onLeftClickEntity(ItemStack itemstack,
+			EntityPlayer entityplayer, Entity entity) {
+		if (entity instanceof EntityPlayer) {
 			List<Slot> slots = entityplayer.inventoryContainer.inventorySlots;
 			for (Slot slot : slots) {
 				ItemStack stack = slot.getStack();
 				if (stack != null) {
 					if (stack.getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
-						if(this.consumePower(itemstack, 1000, true))
-						{
+						if (this.consumePower(itemstack, 1000, true)) {
 							this.consumePower(itemstack, 1000, false);
-                            ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSItemIDCard, 1);
-                            ItemCardPersonalID.setOwner(IDCard, entityplayer.username);
-   
-                            if (--stack.stackSize<=0) {
-            					slot.putStack(IDCard);
-            				} else if (!entityplayer.inventory.addItemStackToInventory(IDCard))
-            					entityplayer.dropPlayerItem(IDCard);
-                            if (world.isRemote)
-							Functions.ChattoPlayer(entityplayer,"[MultiTool] Success: ID-Card create");
+							ItemStack IDCard = new ItemStack(
+									ModularForceFieldSystem.MFFSItemIDCard, 1);
+							ItemCardPersonalID.setOwner(IDCard,
+									((EntityPlayer) entity).username);
 
-							return itemstack;
-						}else{
-							if (world.isRemote)
-							Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: not enough FP please charge");
-							return itemstack;
+							if (--stack.stackSize <= 0) {
+								slot.putStack(IDCard);
+							} else if (!entityplayer.inventory
+									.addItemStackToInventory(IDCard))
+								entityplayer.dropPlayerItem(IDCard);
+
+							Functions.ChattoPlayer(entityplayer,
+									"[MultiTool] Success: ID-Card create");
+							return true;
+						} else {
+							Functions
+									.ChattoPlayer(entityplayer,
+											"[MultiTool] Fail: not enough FP please charge");
+							return true;
 						}
 					}
 				}
 			}
-			if (world.isRemote)
-			Functions.ChattoPlayer(entityplayer,"[MultiTool] Fail: need MFFS Card <blank> in  Inventory");
+
+			Functions.ChattoPlayer(entityplayer,
+					"[MultiTool] Fail: need MFFS Card <blank> in  Inventory");
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public ItemStack onItemRightClick(ItemStack itemstack, World world,
+			EntityPlayer entityplayer) {
+		if (entityplayer.isSneaking()) {
+			return super.onItemRightClick(itemstack, world, entityplayer);
+		}
+
+		List<Slot> slots = entityplayer.inventoryContainer.inventorySlots;
+		for (Slot slot : slots) {
+			ItemStack stack = slot.getStack();
+			if (stack != null) {
+				if (stack.getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
+					if (this.consumePower(itemstack, 1000, true)) {
+						this.consumePower(itemstack, 1000, false);
+						ItemStack IDCard = new ItemStack(
+								ModularForceFieldSystem.MFFSItemIDCard, 1);
+						ItemCardPersonalID.setOwner(IDCard,
+								entityplayer.username);
+
+						if (--stack.stackSize <= 0) {
+							slot.putStack(IDCard);
+						} else if (!entityplayer.inventory
+								.addItemStackToInventory(IDCard))
+							entityplayer.dropPlayerItem(IDCard);
+						if (world.isRemote)
+							Functions.ChattoPlayer(entityplayer,
+									"[MultiTool] Success: ID-Card create");
+
+						return itemstack;
+					} else {
+						if (world.isRemote)
+							Functions
+									.ChattoPlayer(entityplayer,
+											"[MultiTool] Fail: not enough FP please charge");
+						return itemstack;
+					}
+				}
+			}
+		}
+		if (world.isRemote)
+			Functions.ChattoPlayer(entityplayer,
+					"[MultiTool] Fail: need MFFS Card <blank> in  Inventory");
 
 		return itemstack;
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player,
-			World world, int x, int y, int z, int side, float hitX, float hitY,
-			float hitZ) {
-		
-		if(world.isRemote)
-			return true;
-		
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world,
+			int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+
+		if (world.isRemote)
+			return false;
+
 		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-		if(tileEntity instanceof TileEntityMachines ){
-		 if(SecurityHelper.isAccessGranted(tileEntity, player, world,SecurityRight.UCS))
-		 {		 
-			List<Slot> slots = player.inventoryContainer.inventorySlots;
-			for (Slot slot : slots) {
-				ItemStack playerstack = slot.getStack();
-				if (playerstack != null) {
-					if (playerstack.getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
-						if(this.consumePower(stack, 1000, true))
-						{
-							this.consumePower(stack, 1000, false);
-                            ItemStack IDCard= new ItemStack(ModularForceFieldSystem.MFFSitemDataLinkCard);
+		if (tileEntity instanceof TileEntityMachines) {
+			if (SecurityHelper.isAccessGranted(tileEntity, player, world,
+					SecurityRight.UCS)) {
+				List<Slot> slots = player.inventoryContainer.inventorySlots;
+				for (Slot slot : slots) {
+					ItemStack playerstack = slot.getStack();
+					if (playerstack != null) {
+						if (playerstack.getItem() == ModularForceFieldSystem.MFFSitemcardempty) {
+							if (this.consumePower(stack, 1000, true)) {
+								this.consumePower(stack, 1000, false);
+								ItemStack IDCard = new ItemStack(
+										ModularForceFieldSystem.MFFSitemDataLinkCard);
 
-                            ((ItemCardDataLink)IDCard.getItem()).setforArea(IDCard, ((TileEntityMachines)tileEntity).getDeviceName());
-                            ((ItemCardDataLink)IDCard.getItem()).setInformation(IDCard, new PointXYZ(x,y,z,world),"DeviceID", ((TileEntityMachines)tileEntity).getDeviceID(),tileEntity);
-                                                   
-                            if (--playerstack.stackSize<=0) {
-                   					slot.putStack(IDCard);
-                   				} else if (!player.inventory.addItemStackToInventory(IDCard))
-                   					player.dropPlayerItem(IDCard);                           
+								((ItemCardDataLink) IDCard.getItem())
+										.setforArea(
+												IDCard,
+												((TileEntityMachines) tileEntity)
+														.getDeviceName());
+								((ItemCardDataLink) IDCard.getItem())
+										.setInformation(
+												IDCard,
+												new PointXYZ(x, y, z, world),
+												"DeviceID",
+												((TileEntityMachines) tileEntity)
+														.getDeviceID(),
+												tileEntity);
 
-                            player.inventoryContainer.detectAndSendChanges();  
-							Functions.ChattoPlayer(player,"[MultiTool] Success: DataLink-Card create");
+								if (--playerstack.stackSize <= 0) {
+									slot.putStack(IDCard);
+								} else if (!player.inventory
+										.addItemStackToInventory(IDCard))
+									player.dropPlayerItem(IDCard);
 
-							return true;
-						}else{
+								player.inventoryContainer
+										.detectAndSendChanges();
+								Functions
+										.ChattoPlayer(player,
+												"[MultiTool] Success: DataLink-Card create");
 
-							Functions.ChattoPlayer(player,"[MultiTool] Fail: not enough FP please charge");
-							return false;
+								return true;
+							} else {
+
+								Functions
+										.ChattoPlayer(player,
+												"[MultiTool] Fail: not enough FP please charge");
+								return false;
+							}
 						}
 					}
 				}
-			}	
-          }
+			}
 		}
 		return false;
 
 	}
-	
+
 	@Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player,
 			World world, int x, int y, int z, int side, float hitX, float hitY,
 			float hitZ) {
-		
+
 		return false;
 	}
-	
+
 }

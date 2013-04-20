@@ -16,7 +16,7 @@
 
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.container;
 
@@ -36,43 +36,42 @@ public class ContainerControlSystem extends Container {
 		Control = tileentity;
 		this.player = player;
 
-		
 		addSlotToContainer(new SlotHelper(Control, 0, 236, 4)); // Security Link
 		addSlotToContainer(new SlotHelper(Control, 1, 203, 30)); // Reader
-		
+
 		int var3;
 		int var4;
 
 		for (var3 = 0; var3 < 7; ++var3) {
 			for (var4 = 0; var4 < 4; ++var4) {
-				this.addSlotToContainer(new SlotHelper(Control, (var4 + var3 * 4)+4,
-						176 + var4 * 18, 80 + var3 * 18));
+				this.addSlotToContainer(new SlotHelper(Control,
+						(var4 + var3 * 4) + 4, 176 + var4 * 18, 80 + var3 * 18));
 			}
 		}
-		
+
 		for (var3 = 0; var3 < 3; ++var3) {
-			for ( var4 = 0; var4 < 9; ++var4) {
-				this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9,
-						8 + var4 * 18, 134 + var3 * 18));
+			for (var4 = 0; var4 < 9; ++var4) {
+				this.addSlotToContainer(new Slot(player.inventory, var4 + var3
+						* 9 + 9, 8 + var4 * 18, 134 + var3 * 18));
 			}
 		}
 
 		for (var3 = 0; var3 < 9; ++var3) {
-			this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 192));
+			this.addSlotToContainer(new Slot(player.inventory, var3,
+					8 + var3 * 18, 192));
 		}
 	}
 
-    public EntityPlayer getPlayer() {
-    	return player;
-    }
+	public EntityPlayer getPlayer() {
+		return player;
+	}
 
-	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return Control.isUseableByPlayer(entityplayer);
 	}
-	
+
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer p,int i) {
+	public ItemStack transferStackInSlot(EntityPlayer p, int i) {
 		return null;
 	}
 

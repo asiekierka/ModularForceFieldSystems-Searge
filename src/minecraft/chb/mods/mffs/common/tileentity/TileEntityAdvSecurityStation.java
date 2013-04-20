@@ -43,6 +43,8 @@ import chb.mods.mffs.common.item.ItemCardPersonalID;
 import chb.mods.mffs.common.item.ItemCardPowerLink;
 import chb.mods.mffs.common.item.ItemCardSecurityLink;
 import chb.mods.mffs.common.multitool.ItemDebugger;
+import chb.mods.mffs.network.INetworkHandlerEventListener;
+import chb.mods.mffs.network.client.NetworkHandlerClient;
 import chb.mods.mffs.network.server.NetworkHandlerServer;
 
 public class TileEntityAdvSecurityStation extends TileEntityMachines {
@@ -56,9 +58,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		MainUser = "";
 
 	}
-	
 
-	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a);
@@ -70,12 +70,11 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 	}
 
 	public void setMainUser(String s) {
-		if(!MainUser.equals(s)){
-		this.MainUser = s;
-		NetworkHandlerServer.updateTileEntityField(this, "MainUser");
+		if (!MainUser.equals(s)) {
+			this.MainUser = s;
+			NetworkHandlerServer.updateTileEntityField(this, "MainUser");
 		}
 	}
-
 
 	public void dropplugins(int slot) {
 		if (getStackInSlot(slot) != null) {
@@ -97,22 +96,19 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		}
 	}
 
-	@Override
 	public Container getContainer(InventoryPlayer inventoryplayer) {
 		return new ContainerAdvSecurityStation(inventoryplayer.player, this);
 	}
-
 
 	@Override
 	public void invalidate() {
 		Linkgrid.getWorldMap(worldObj).getSecStation().remove(getDeviceID());
 		super.invalidate();
 	}
-	
-	@Override
+
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		
+
 		NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
 		inventory = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); i++) {
@@ -126,10 +122,9 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		}
 	}
 
-	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		
+
 		NBTTagList nbttaglist = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
 			if (inventory[i] != null) {
@@ -143,27 +138,26 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
 
-	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 
 			if (this.getTicker() == 10) {
 
-			if (!getMainUser().equals("")) {
-				if (isActive() != true) {
-					setActive(true);
+				if (!getMainUser().equals("")) {
+					if (isActive() != true) {
+						setActive(true);
+					}
+				} else {
+					if (isActive() != false) {
+						setActive(false);
+					}
 				}
-			} else {
-				if (isActive() != false) {
-					setActive(false);
-				}
-			}
 				checkslots();
 				this.setTicker((short) 0);
 			}
 			this.setTicker((short) (this.getTicker() + 1));
-		} 
-		
+		}
+
 		super.updateEntity();
 	}
 
@@ -174,8 +168,6 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 						.getItem();
 
 				String name = Card.getUsername(getStackInSlot(0));
-				
-			
 
 				if (!getMainUser().equals(name)) {
 					setMainUser(name);
@@ -183,7 +175,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 
 				if (Card.hasRight(getStackInSlot(0), SecurityRight.CSR) != true) {
 					Card.setRight(getStackInSlot(0), SecurityRight.CSR, true);
-					}
+				}
 			} else {
 
 				setMainUser("");
@@ -193,36 +185,31 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 			setMainUser("");
 
 		}
-		
-		
+
 		if (getStackInSlot(39) != null && getStackInSlot(38) != null) {
-			if (getStackInSlot(38).getItem() instanceof ItemCardEmpty &&
-				getStackInSlot(39).getItem() instanceof ItemCardPersonalID){
-				
-				this.setInventorySlotContents(38, ItemStack.copyItemStack(getStackInSlot(39)));
-				
-			}	
+			if (getStackInSlot(38).getItem() instanceof ItemCardEmpty
+					&& getStackInSlot(39).getItem() instanceof ItemCardPersonalID) {
+
+				this.setInventorySlotContents(38,
+						ItemStack.copyItemStack(getStackInSlot(39)));
+
+			}
 		}
 
 	}
 
-
-	@Override
 	public int getSizeInventory() {
 		return inventory.length;
 	}
 
-	@Override
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
 
-	@Override
 	public int getInventoryStackLimit() {
 		return 1;
 	}
 
-	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {
@@ -240,7 +227,6 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		}
 	}
 
-	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
@@ -248,23 +234,25 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		}
 	}
 
-	@Override
 	public String getInvName() {
 		return "Secstation";
 	}
-
 
 	public boolean RemoteInventory(String username, SecurityRight right) {
 
 		for (int a = 35; a >= 1; a--) {
 			if (getStackInSlot(a) != null) {
 				if (getStackInSlot(a).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
-					String username_invtory = NBTTagCompoundHelper.getTAGfromItemstack(getStackInSlot(a)).getString("name");
-					
-					ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(a).getItem();
-					
-					boolean access = ItemCardPersonalID.hasRight(getStackInSlot(a), right);
-					
+					String username_invtory = NBTTagCompoundHelper
+							.getTAGfromItemstack(getStackInSlot(a)).getString(
+									"name");
+
+					ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(
+							a).getItem();
+
+					boolean access = ItemCardPersonalID.hasRight(
+							getStackInSlot(a), right);
+
 					if (username_invtory.equals(username)) {
 						if (access) {
 							return true;
@@ -278,65 +266,72 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 
 		return false;
 	}
-	
-	public boolean RemotePlayerInventory(String username,SecurityRight right)
-	{
+
+	public boolean RemotePlayerInventory(String username, SecurityRight right) {
 		EntityPlayer player = worldObj.getPlayerEntityByName(username);
-		if(player != null){
+		if (player != null) {
 			List<Slot> slots = player.inventoryContainer.inventorySlots;
 			for (Slot slot : slots) {
 				ItemStack stack = slot.getStack();
 				if (stack != null) {
-					if (stack.getItem() instanceof ItemAccessCard) {	
-						if(((ItemAccessCard)stack.getItem()).getvalidity(stack)>0){
-							if(((ItemAccessCard)stack.getItem()).getlinkID(stack)==getDeviceID()){
-							 if(((ItemAccessCard)stack.getItem()).hasRight(stack, right)){
-								 
-								 if(!((ItemAccessCard)stack.getItem()).getforAreaname(stack).equals(getDeviceName()))
-									 ((ItemAccessCard)stack.getItem()).setforArea(stack, this);
-								 
-								 return true;
-							 }
+					if (stack.getItem() instanceof ItemAccessCard) {
+						if (((ItemAccessCard) stack.getItem())
+								.getvalidity(stack) > 0) {
+							if (((ItemAccessCard) stack.getItem())
+									.getlinkID(stack) == getDeviceID()) {
+								if (((ItemAccessCard) stack.getItem())
+										.hasRight(stack, right)) {
+
+									if (!((ItemAccessCard) stack.getItem())
+											.getforAreaname(stack).equals(
+													getDeviceName()))
+										((ItemAccessCard) stack.getItem())
+												.setforArea(stack, this);
+
+									return true;
+								}
 							}
-						}else{
+						} else {
 							player.sendChatToPlayer("[Security Station] expired validity <Access license>");
-							ItemStack Card= new ItemStack(ModularForceFieldSystem.MFFSitemcardempty, 1);
+							ItemStack Card = new ItemStack(
+									ModularForceFieldSystem.MFFSitemcardempty,
+									1);
 							slot.putStack(Card);
-							NetworkHandlerServer.syncClientPlayerinventorySlot(player,slot, Card);
+							NetworkHandlerServer.syncClientPlayerinventorySlot(
+									player, slot, Card);
 						}
 
 					}
-					if (stack.getItem() instanceof ItemDebugger){
+					if (stack.getItem() instanceof ItemDebugger) {
 						return true;
 					}
-						
-			    }
-		    }
+
+				}
+			}
 		}
 		return false;
 	}
-	
+
 	public boolean isAccessGranted(String username, SecurityRight sr) {
 
 		if (!isActive())
 			return true;
 
 		String[] ops = ModularForceFieldSystem.Admin.split(";");
-		
-		for(int i = 0;i<=ops.length-1;i++){
+
+		for (int i = 0; i <= ops.length - 1; i++) {
 			if (username.equalsIgnoreCase(ops[i]))
 				return true;
 		}
 
 		if (this.MainUser.equals(username))
 			return true;
-		
+
 		if (RemoteInventory(username, sr))
 			return true;
-		
+
 		if (RemotePlayerInventory(username, sr))
 			return true;
-		
 
 		return false;
 	}
@@ -355,11 +350,9 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		return 0;
 	}
 
-
-	
 	@Override
 	public List<String> getFieldsforUpdate() {
-		
+
 		List<String> NetworkedFields = new LinkedList<String>();
 		NetworkedFields.clear();
 
@@ -371,87 +364,105 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack, int Slot) {
-		
-		switch(Slot)
-		{
+
+		switch (Slot) {
 		case 38:
-			if (!(par1ItemStack.getItem() instanceof ItemCardEmpty))return false;	
-		break;
+			if (!(par1ItemStack.getItem() instanceof ItemCardEmpty))
+				return false;
+			break;
 		case 39:
-			if (par1ItemStack.getItem() instanceof ItemAccessCard || !(par1ItemStack.getItem() instanceof ItemCardPersonalID) )return false;
-		break;
-		
+			if (par1ItemStack.getItem() instanceof ItemAccessCard
+					|| !(par1ItemStack.getItem() instanceof ItemCardPersonalID))
+				return false;
+			break;
+
 		}
 
-		if (par1ItemStack.getItem() instanceof ItemCardPersonalID || par1ItemStack.getItem() instanceof ItemCardEmpty)
+		if (par1ItemStack.getItem() instanceof ItemCardPersonalID
+				|| par1ItemStack.getItem() instanceof ItemCardEmpty)
 			return true;
 
 		return false;
 	}
 
-
-
 	@Override
-	public void onNetworkHandlerEvent(int key,String value) {
-		
-		switch(key){
+	public void onNetworkHandlerEvent(int key, String value) {
+
+		switch (key) {
 		case 100:
 			if (getStackInSlot(1) != null) {
 				SecurityRight sr = SecurityRight.rights.get(value);
-				if (sr != null && getStackInSlot(1).getItem() instanceof ItemCardPersonalID) {
-					ItemCardPersonalID.setRight(getStackInSlot(1), sr, !ItemCardPersonalID.hasRight(getStackInSlot(1), sr));
+				if (sr != null
+						&& getStackInSlot(1).getItem() instanceof ItemCardPersonalID) {
+					ItemCardPersonalID
+							.setRight(getStackInSlot(1), sr,
+									!ItemCardPersonalID.hasRight(
+											getStackInSlot(1), sr));
 				}
 			}
-		break;
+			break;
 		case 101:
 			if (getStackInSlot(1) != null) {
-				if(getStackInSlot(1).getItem() instanceof ItemAccessCard){
-					if(ItemAccessCard.getvalidity(getStackInSlot(1)) <=5){
-						this.setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSitemcardempty,1));
-					}else{
-						ItemAccessCard.setvalidity(getStackInSlot(1), ItemAccessCard.getvalidity(getStackInSlot(1))-5);	
+				if (getStackInSlot(1).getItem() instanceof ItemAccessCard) {
+					if (ItemAccessCard.getvalidity(getStackInSlot(1)) <= 5) {
+						this.setInventorySlotContents(1, new ItemStack(
+								ModularForceFieldSystem.MFFSitemcardempty, 1));
+					} else {
+						ItemAccessCard
+								.setvalidity(getStackInSlot(1), ItemAccessCard
+										.getvalidity(getStackInSlot(1)) - 5);
 					}
 				}
 			}
-		break;
+			break;
 		case 102:
 			if (getStackInSlot(1) != null) {
 				if (getStackInSlot(1).getItem() instanceof ItemCardEmpty) {
-					    setInventorySlotContents(1, new ItemStack(ModularForceFieldSystem.MFFSAccessCard, 1));
-					    if (getStackInSlot(1).getItem() instanceof ItemAccessCard){
-					    	ItemAccessCard.setforArea(getStackInSlot(1), this);
-					    	ItemAccessCard.setvalidity(getStackInSlot(1), 5);	    
-					    	ItemAccessCard.setlinkID(getStackInSlot(1), this);	
-					    }
-					 break;
+					setInventorySlotContents(1, new ItemStack(
+							ModularForceFieldSystem.MFFSAccessCard, 1));
+					if (getStackInSlot(1).getItem() instanceof ItemAccessCard) {
+						ItemAccessCard.setforArea(getStackInSlot(1), this);
+						ItemAccessCard.setvalidity(getStackInSlot(1), 5);
+						ItemAccessCard.setlinkID(getStackInSlot(1), this);
 					}
-				if(getStackInSlot(1).getItem() instanceof ItemAccessCard){
-			     
-						ItemAccessCard.setvalidity(getStackInSlot(1), ItemAccessCard.getvalidity(getStackInSlot(1))+5);	
+					break;
+				}
+				if (getStackInSlot(1).getItem() instanceof ItemAccessCard) {
+
+					ItemAccessCard.setvalidity(getStackInSlot(1),
+							ItemAccessCard.getvalidity(getStackInSlot(1)) + 5);
 				}
 			}
-		break;
-		
-		}
-		super.onNetworkHandlerEvent(key,value);
-	}
-	
-	public ItemStack getModCardStack(){
-     if (getStackInSlot(1) != null){
-      return getStackInSlot(1);
-     }
-      return null;
-    }
+			break;
 
+		}
+		super.onNetworkHandlerEvent(key, value);
+	}
+
+	public ItemStack getModCardStack() {
+		if (getStackInSlot(1) != null) {
+			return getStackInSlot(1);
+		}
+		return null;
+	}
 
 	@Override
 	public int getSlotStackLimit(int slt) {
 		return 1;
 	}
 
-
 	@Override
 	public TileEntityAdvSecurityStation getLinkedSecurityStation() {
 		return this;
+	}
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return false;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return true;
 	}
 }

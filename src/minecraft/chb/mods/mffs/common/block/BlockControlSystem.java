@@ -1,11 +1,12 @@
 package chb.mods.mffs.common.block;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.tileentity.TileEntityControlSystem;
 
-public class BlockControlSystem extends BlockMFFSBase{
+public class BlockControlSystem extends BlockMFFSBase {
 
 	public BlockControlSystem(int i) {
 		super(i);
@@ -17,12 +18,12 @@ public class BlockControlSystem extends BlockMFFSBase{
 	}
 
 	@Override
-	public String getTextureFile() {
-		
-		if(ModularForceFieldSystem.graphicstyle==1)
-		return "/chb/mods/mffs/sprites/ControlSystem_ue.png";
-		
-		return "/chb/mods/mffs/sprites/ControlSystem.png";
-	}
+	public void registerIcons(IconRegister iconRegister) {
+		icons[0] = icons[1] = iconRegister
+				.registerIcon("mffs:ControlSystem/Inactive");
+		icons[2] = icons[3] = iconRegister
+				.registerIcon("mffs:ControlSystem/Active");
 
+		blockIcon = icons[0];
+	}
 }

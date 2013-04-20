@@ -16,16 +16,19 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.options;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 
-
-public class ItemProjectorOptionBlockBreaker extends ItemProjectorOptionBase  {
+public class ItemProjectorOptionBlockBreaker extends ItemProjectorOptionBase {
 	public ItemProjectorOptionBlockBreaker(int i) {
 		super(i);
-		setIconIndex(38);
 	}
 
+	@Override
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("mffs:options/BlockBreaker");
+	}
 }

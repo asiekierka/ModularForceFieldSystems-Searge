@@ -16,10 +16,11 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -28,20 +29,19 @@ import com.google.common.collect.MapMaker;
 import net.minecraft.world.World;
 import chb.mods.mffs.api.PointXYZ;
 
-
-
 public final class WorldMap {
 	private static Map ForceFieldWorlds = new MapMaker().weakKeys().makeMap();
 
 	public static class ForceFieldWorld {
 		private static Map<Integer, ForceFieldBlockStack> ForceFieldStackMap = new Hashtable<Integer, ForceFieldBlockStack>();
 
-		
-		public ForceFieldBlockStack getorcreateFFStackMap(int x, int y, int z,World world) {
-			PointXYZ png = new PointXYZ(x,y,z,world);
+		public ForceFieldBlockStack getorcreateFFStackMap(int x, int y, int z,
+				World world) {
+			PointXYZ png = new PointXYZ(x, y, z, world);
 			if (ForceFieldStackMap.get(png.hashCode()) == null) {
-					ForceFieldStackMap.put(png.hashCode(), new ForceFieldBlockStack(png));
-            }
+				ForceFieldStackMap.put(png.hashCode(),
+						new ForceFieldBlockStack(png));
+			}
 			return ForceFieldStackMap.get(png.hashCode());
 		}
 
@@ -49,16 +49,13 @@ public final class WorldMap {
 			return ForceFieldStackMap.get(hasher);
 		}
 
-		
 		public ForceFieldBlockStack getForceFieldStackMap(PointXYZ png) {
-		return ForceFieldStackMap.get(png.hashCode());
-	}
-		
+			return ForceFieldStackMap.get(png.hashCode());
+		}
 
-		public int isExistForceFieldStackMap(int x, int y, int z, int counter, int typ,World world)
-		{
-			switch(typ)
-			{
+		public int isExistForceFieldStackMap(int x, int y, int z, int counter,
+				int typ, World world) {
+			switch (typ) {
 			case 0:
 				y += counter;
 				break;
@@ -71,21 +68,21 @@ public final class WorldMap {
 			case 3:
 				z -= counter;
 				break;
-		    case 4:
-		    	x += counter;
-		    	break;
-		    case 5:
-		    	x -= counter;
-		    	break;
+			case 4:
+				x += counter;
+				break;
+			case 5:
+				x -= counter;
+				break;
 			}
 
-			ForceFieldBlockStack Map = ForceFieldStackMap.get(new PointXYZ(x,y,z,world).hashCode());
+			ForceFieldBlockStack Map = ForceFieldStackMap.get(new PointXYZ(x,
+					y, z, world).hashCode());
 
 			if (Map == null) {
 				return 0;
 			} else {
-				if(Map.isEmpty())
-				{
+				if (Map.isEmpty()) {
 					return 0;
 				}
 

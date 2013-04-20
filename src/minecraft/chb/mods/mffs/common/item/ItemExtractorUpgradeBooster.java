@@ -16,12 +16,13 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 
 package chb.mods.mffs.common.item;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -29,31 +30,32 @@ import org.lwjgl.input.Keyboard;
 
 import chb.mods.mffs.common.MFFSMaschines;
 
-
-public class ItemExtractorUpgradeBooster extends ItemMFFSBase  {
+public class ItemExtractorUpgradeBooster extends ItemMFFSBase {
 	public ItemExtractorUpgradeBooster(int i) {
 		super(i);
-		setIconIndex(37);
 		setMaxStackSize(19);
 	}
+
 	@Override
-	public String getTextureFile() {
-		return "/chb/mods/mffs/sprites/items.png";
+	public void registerIcons(IconRegister iconRegister) {
+		itemIcon = iconRegister.registerIcon("mffs:ExtractorUpgradeBooster");
 	}
+
 	@Override
 	public boolean isRepairable() {
 		return false;
 	}
-	
+
 	@Override
-    public void addInformation(ItemStack itemStack,EntityPlayer player, List info,boolean b)
-    {
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
-            info.add("compatible with:");
-            info.add("MFFS "+MFFSMaschines.Extractor.displayName);
-            
-        }else{
-        	info.add("compatible with: (Hold Shift)");
-        }
-    }
+	public void addInformation(ItemStack itemStack, EntityPlayer player,
+			List info, boolean b) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)
+				|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+			info.add("compatible with:");
+			info.add("MFFS " + MFFSMaschines.Extractor.displayName);
+
+		} else {
+			info.add("compatible with: (Hold Shift)");
+		}
+	}
 }

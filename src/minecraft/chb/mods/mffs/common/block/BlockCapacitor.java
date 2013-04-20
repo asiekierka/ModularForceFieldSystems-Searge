@@ -16,15 +16,14 @@
     
     Contributors:
     Thunderdark - initial implementation
-*/
+ */
 package chb.mods.mffs.common.block;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.tileentity.TileEntityCapacitor;
-
-
 
 public class BlockCapacitor extends BlockMFFSBase {
 	public BlockCapacitor(int i) {
@@ -32,16 +31,15 @@ public class BlockCapacitor extends BlockMFFSBase {
 	}
 
 	@Override
-	public String getTextureFile() {
-		
-		if(ModularForceFieldSystem.graphicstyle==1)
-		return "/chb/mods/mffs/sprites/Capacitor_ue.png";
-		
-		return "/chb/mods/mffs/sprites/Capacitor.png";
-	}
-	
+	public void registerIcons(IconRegister iconRegister) {
+		icons[0] = iconRegister.registerIcon("mffs:Capacitor/SideInactive");
+		icons[1] = iconRegister.registerIcon("mffs:Capacitor/FaceInactive");
+		icons[2] = iconRegister.registerIcon("mffs:Capacitor/SideActive");
+		icons[3] = iconRegister.registerIcon("mffs:Capacitor/FaceActive");
 
-	
+		blockIcon = icons[0];
+	}
+
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TileEntityCapacitor();
