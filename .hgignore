@@ -30,5 +30,6 @@ src/minecraft/Start.java
 
 *.bat
 *.sh
+.gitignore
 CHANGELOG
 LICENSE.txt
