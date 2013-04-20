@@ -138,6 +138,7 @@ public abstract class TileEntityMachines extends TileEntity implements
 		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 
+	@Override
 	public void updateEntity() {
 
 		if (!worldObj.isRemote)
@@ -248,13 +249,13 @@ public abstract class TileEntityMachines extends TileEntity implements
 					|| inventory.getStackInSlot(slot).getItem() instanceof ItemCardPersonalID
 					|| inventory.getStackInSlot(slot).getItem() instanceof ItemCardDataLink) {
 				worldObj.spawnEntityInWorld(new EntityItem(worldObj,
-						(float) this.xCoord, (float) this.yCoord,
-						(float) this.zCoord, new ItemStack(
+						this.xCoord, this.yCoord,
+						this.zCoord, new ItemStack(
 								ModularForceFieldSystem.MFFSitemcardempty, 1)));
 			} else {
 				worldObj.spawnEntityInWorld(new EntityItem(worldObj,
-						(float) this.xCoord, (float) this.yCoord,
-						(float) this.zCoord, inventory.getStackInSlot(slot)));
+						this.xCoord, this.yCoord,
+						this.zCoord, inventory.getStackInSlot(slot)));
 			}
 
 			inventory.setInventorySlotContents(slot, null);
@@ -264,6 +265,7 @@ public abstract class TileEntityMachines extends TileEntity implements
 
 	public abstract Container getContainer(InventoryPlayer inventoryplayer);
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 		Side = nbttagcompound.getInteger("side");
@@ -274,6 +276,7 @@ public abstract class TileEntityMachines extends TileEntity implements
 		SwitchModi = nbttagcompound.getShort("SwitchModi");
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
@@ -416,8 +419,8 @@ public abstract class TileEntityMachines extends TileEntity implements
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
 			return false;
 		} else {
-			return entityplayer.getDistance((double) xCoord + 0.5D,
-					(double) yCoord + 0.5D, (double) zCoord + 0.5D) <= 64D;
+			return entityplayer.getDistance(xCoord + 0.5D,
+					yCoord + 0.5D, zCoord + 0.5D) <= 64D;
 		}
 	}
 

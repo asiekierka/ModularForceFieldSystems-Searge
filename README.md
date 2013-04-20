@@ -7,6 +7,7 @@ ModularForceFieldSystem V2 is a Minecraft Mod
 The goal of this project is to keep the mod updated and as compatible as possible with existing world saves. To make it easier to distinguish between this version and other versions, this fork may be called "MFFS v2 Classic"
 
 License:
+
     Copyright (C) 2012 Thunderdark
 
     This program is free software: you can redistribute it and/or modify
@@ -23,7 +24,9 @@ License:
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Roadmap:
+
 - Clean up code and fix a few bugs
+
 - Update to Minecraft 1.5.x
+
 - Implement some (3) new feature requests from the community
-- ...

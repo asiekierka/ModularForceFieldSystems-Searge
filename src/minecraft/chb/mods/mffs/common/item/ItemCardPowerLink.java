@@ -66,8 +66,8 @@ public class ItemCardPowerLink extends ItemCard implements IPowerLinkItem {
 						.getCapacitor().get(Cap_ID);
 				if (cap != null) {
 					if (!cap.getDeviceName().equals(
-							this.getforAreaname(itemStack))) {
-						this.setforArea(itemStack, cap.getDeviceName());
+							ItemCard.getforAreaname(itemStack))) {
+						ItemCard.setforArea(itemStack, cap.getDeviceName());
 					}
 				}
 			}
@@ -176,8 +176,8 @@ public class ItemCardPowerLink extends ItemCard implements IPowerLinkItem {
 											itemStack) != 0) {
 
 								if (!cap.getDeviceName().equals(
-										this.getforAreaname(itemStack))) {
-									this.setforArea(itemStack,
+										ItemCard.getforAreaname(itemStack))) {
+									ItemCard.setforArea(itemStack,
 											cap.getDeviceName());
 								}
 

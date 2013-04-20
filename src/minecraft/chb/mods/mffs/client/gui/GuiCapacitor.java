@@ -113,10 +113,12 @@ public class GuiCapacitor extends GuiContainer {
 				0x404040);
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		NetworkHandlerClient.fireTileEntityEvent(Core, guibutton.id, "");
 	}
 
+	@Override
 	public void initGui() {
 		buttonList.add(new GraphicButton(0, (width / 2) + 65,
 				(height / 2) - 100, Core, 0));

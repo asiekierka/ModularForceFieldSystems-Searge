@@ -41,6 +41,7 @@ public class ItemProjectorFocusMatrix extends ItemMFFSBase {
 		itemIcon = iconRegister.registerIcon("mffs:ProjectorFocusMatrix");
 	}
 
+	@Override
 	public boolean isRepairable() {
 		return false;
 	}

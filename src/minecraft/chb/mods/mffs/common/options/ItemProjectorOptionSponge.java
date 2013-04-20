@@ -37,6 +37,7 @@ public class ItemProjectorOptionSponge extends ItemProjectorOptionBase
 		itemIcon = iconRegister.registerIcon("mffs:options/Sponge");
 	}
 
+	@Override
 	public void checkInteriorBlock(PointXYZ png, World world,
 			TileEntityProjector Projector) {
 		if (world.getBlockMaterial(png.X, png.Y, png.Z).isLiquid()) {

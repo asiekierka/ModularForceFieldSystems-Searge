@@ -41,6 +41,7 @@ public class ItemCapacitorUpgradeRange extends ItemMFFSBase {
 		itemIcon = iconRegister.registerIcon("mffs:CapacitorUpgradeRange");
 	}
 
+	@Override
 	public boolean isRepairable() {
 		return false;
 	}

@@ -73,7 +73,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 							"Secstation_ID",
 							((TileEntityAdvSecurityStation) tileEntity)
 									.getDeviceID());
-					((ItemCardSecurityLink) newcard.getItem()).setforArea(
+					ItemCard.setforArea(
 							newcard,
 							((TileEntityAdvSecurityStation) tileEntity)
 									.getDeviceName());
@@ -111,7 +111,7 @@ public class ItemCardEmpty extends ItemMFFSBase {
 				((ItemCardPowerLink) newcard.getItem()).setInformation(newcard,
 						new PointXYZ(i, j, k, world), "CapacitorID",
 						((TileEntityCapacitor) tileEntity).getPowerStorageID());
-				((ItemCardPowerLink) newcard.getItem()).setforArea(newcard,
+				ItemCard.setforArea(newcard,
 						((TileEntityCapacitor) tileEntity).getDeviceName());
 
 				if (--itemstack.stackSize <= 0) {

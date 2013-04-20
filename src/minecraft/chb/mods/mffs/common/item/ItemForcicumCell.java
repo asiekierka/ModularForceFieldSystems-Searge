@@ -171,6 +171,7 @@ public class ItemForcicumCell extends ItemMFFSBase {
 		return itemstack;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int i, CreativeTabs tabs, List itemList) {
 		ItemStack charged = new ItemStack(this, 1);

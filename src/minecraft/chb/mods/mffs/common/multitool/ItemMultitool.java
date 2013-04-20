@@ -144,6 +144,7 @@ public abstract class ItemMultitool extends ForceEnergyItems implements
 
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int i, CreativeTabs tabs, List itemList) {
 		ItemStack charged = new ItemStack(this, 1);

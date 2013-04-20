@@ -64,10 +64,12 @@ public class GuiSecStorage extends GuiContainer {
 		}
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		NetworkHandlerClient.fireTileEntityEvent(SecStorage, guibutton.id, "");
 	}
 
+	@Override
 	public void initGui() {
 		buttonList.add(new GraphicButton(0, (width / 2) + 65,
 				(height / 2) - 113, SecStorage, 0));

@@ -103,6 +103,7 @@ public class GuiAreaDefenseStation extends GuiContainer {
 				"");
 	}
 
+	@Override
 	public void initGui() {
 		buttonList.add(new GraphicButton(0, (width / 2) + 107,
 				(height / 2) - 104, DefenceStation, 0));

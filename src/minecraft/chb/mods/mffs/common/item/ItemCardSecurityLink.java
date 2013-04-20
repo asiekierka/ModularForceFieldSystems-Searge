@@ -63,8 +63,8 @@ public class ItemCardSecurityLink extends ItemCard {
 						.getSecStation().get(Sec_ID);
 				if (sec != null) {
 					if (!sec.getDeviceName().equals(
-							this.getforAreaname(itemStack))) {
-						this.setforArea(itemStack, sec.getDeviceName());
+							ItemCard.getforAreaname(itemStack))) {
+						ItemCard.setforArea(itemStack, sec.getDeviceName());
 					}
 				}
 			}
@@ -100,9 +100,9 @@ public class ItemCardSecurityLink extends ItemCard {
 											inventiory.getStackInSlot(slot)) != 0) {
 
 								if (!sec.getDeviceName().equals(
-										card.getforAreaname(inventiory
+										ItemCard.getforAreaname(inventiory
 												.getStackInSlot(slot)))) {
-									card.setforArea(
+									ItemCard.setforArea(
 											inventiory.getStackInSlot(slot),
 											sec.getDeviceName());
 								}

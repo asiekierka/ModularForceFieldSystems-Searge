@@ -88,6 +88,7 @@ public class ContainerProjector extends Container {
 		return player;
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return projectorentity.isUseableByPlayer(entityplayer);
 	}
@@ -143,6 +144,7 @@ public class ContainerProjector extends Container {
 		capacity = projectorentity.getPercentageCapacity();
 	}
 
+	@Override
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 		case 0:

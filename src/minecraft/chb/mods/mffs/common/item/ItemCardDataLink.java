@@ -42,8 +42,8 @@ public class ItemCardDataLink extends ItemCard {
 				if (device != null) {
 
 					if (!device.getDeviceName().equals(
-							this.getforAreaname(itemStack))) {
-						this.setforArea(itemStack, device.getDeviceName());
+							ItemCard.getforAreaname(itemStack))) {
+						ItemCard.setforArea(itemStack, device.getDeviceName());
 					}
 
 				}

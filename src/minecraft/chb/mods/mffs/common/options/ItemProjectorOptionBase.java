@@ -48,7 +48,7 @@ public abstract class ItemProjectorOptionBase extends Item {
 
 			if (ItemProjectorModuleWall.supportsOption(this))
 				info.add(ProjectorTyp.getdisplayName(ProjectorTyp.wall));
-			if (ItemProjectorModulediagonallyWall.supportsOption(this))
+			if (ItemProjectorModuleWall.supportsOption(this))
 				info.add(ProjectorTyp
 						.getdisplayName(ProjectorTyp.diagonallywall));
 			if (ItemProjectorModuleDeflector.supportsOption(this))

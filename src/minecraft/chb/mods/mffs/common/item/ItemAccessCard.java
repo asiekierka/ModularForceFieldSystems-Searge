@@ -67,14 +67,14 @@ public class ItemAccessCard extends ItemCardPersonalID {
 			if (getvalidity(itemStack) > 0) {
 				setvalidity(itemStack, getvalidity(itemStack) - 1);
 
-				int SEC_ID = this.getlinkID(itemStack);
+				int SEC_ID = ItemAccessCard.getlinkID(itemStack);
 				if (SEC_ID != 0) {
 					TileEntityAdvSecurityStation sec = Linkgrid
 							.getWorldMap(world).getSecStation().get(SEC_ID);
 					if (sec != null) {
 						if (!sec.getDeviceName().equals(
-								this.getforAreaname(itemStack))) {
-							this.setforArea(itemStack, sec);
+								ItemAccessCard.getforAreaname(itemStack))) {
+							ItemAccessCard.setforArea(itemStack, sec);
 						}
 					}
 				}

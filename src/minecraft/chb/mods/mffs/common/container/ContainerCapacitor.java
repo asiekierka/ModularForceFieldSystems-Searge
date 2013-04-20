@@ -109,6 +109,7 @@ public class ContainerCapacitor extends Container {
 		Powerlinkmode = generatorentity.getPowerlinkmode();
 	}
 
+	@Override
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 		case 1:
@@ -135,6 +136,7 @@ public class ContainerCapacitor extends Container {
 		}
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return generatorentity.isUseableByPlayer(entityplayer);
 	}

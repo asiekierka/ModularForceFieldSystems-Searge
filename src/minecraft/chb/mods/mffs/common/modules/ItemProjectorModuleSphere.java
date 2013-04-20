@@ -64,6 +64,7 @@ public class ItemProjectorModuleSphere extends Module3DBase {
 		return false;
 	}
 
+	@Override
 	public void calculateField(IModularProjector projector,
 			Set<PointXYZ> ffLocs, Set<PointXYZ> ffInterior) {
 		int radius = projector.countItemsInSlot(Slots.Distance) + 4;

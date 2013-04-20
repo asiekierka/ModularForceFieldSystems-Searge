@@ -134,22 +134,22 @@ public class GuiAdvSecurityStation extends GuiContainer {
 
 		Tessellator var10 = Tessellator.instance;
 		var10.startDrawingQuads();
-		var10.addVertexWithUV((double) (par1 + 0), (double) (par2 + 18),
-				(double) this.zLevel,
-				(double) ((float) (par3 + 0) * 0.0078125F),
-				(double) ((float) (par4 + 18) * 0.0078125F));
-		var10.addVertexWithUV((double) (par1 + 18), (double) (par2 + 18),
-				(double) this.zLevel,
-				(double) ((float) (par3 + 18) * 0.0078125F),
-				(double) ((float) (par4 + 18) * 0.0078125F));
-		var10.addVertexWithUV((double) (par1 + 18), (double) (par2 + 0),
-				(double) this.zLevel,
-				(double) ((float) (par3 + 18) * 0.0078125F),
-				(double) ((float) (par4 + 0) * 0.0078125F));
-		var10.addVertexWithUV((double) (par1 + 0), (double) (par2 + 0),
-				(double) this.zLevel,
-				(double) ((float) (par3 + 0) * 0.0078125F),
-				(double) ((float) (par4 + 0) * 0.0078125F));
+		var10.addVertexWithUV(par1 + 0, par2 + 18,
+				this.zLevel,
+				(par3 + 0) * 0.0078125F,
+				(par4 + 18) * 0.0078125F);
+		var10.addVertexWithUV(par1 + 18, par2 + 18,
+				this.zLevel,
+				(par3 + 18) * 0.0078125F,
+				(par4 + 18) * 0.0078125F);
+		var10.addVertexWithUV(par1 + 18, par2 + 0,
+				this.zLevel,
+				(par3 + 18) * 0.0078125F,
+				(par4 + 0) * 0.0078125F);
+		var10.addVertexWithUV(par1 + 0, par2 + 0,
+				this.zLevel,
+				(par3 + 0) * 0.0078125F,
+				(par4 + 0) * 0.0078125F);
 		var10.draw();
 	}
 

@@ -205,7 +205,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 				case 0:
 					par5EntityPlayer.attackEntityFrom(
 							MFFSDamageSource.fieldShock, 10);
-					Functions.ChattoPlayer((EntityPlayer) par5EntityPlayer,
+					Functions.ChattoPlayer(par5EntityPlayer,
 							"[Force Field] Attention High Energy Field");
 					break;
 
@@ -215,7 +215,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 							par5EntityPlayer, par1World, SecurityRight.SR)) {
 						par5EntityPlayer.attackEntityFrom(
 								MFFSDamageSource.fieldShock, 10);
-						Functions.ChattoPlayer((EntityPlayer) par5EntityPlayer,
+						Functions.ChattoPlayer(par5EntityPlayer,
 								"[Force Field] Attention High Energy Field");
 					}
 					break;
@@ -226,7 +226,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 					par1World, SecurityRight.SR)) {
 				par5EntityPlayer.attackEntityFrom(MFFSDamageSource.fieldShock,
 						10);
-				Functions.ChattoPlayer((EntityPlayer) par5EntityPlayer,
+				Functions.ChattoPlayer(par5EntityPlayer,
 						"[Force Field] Attention High Energy Field");
 			}
 		}
@@ -244,16 +244,16 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 					j + 1 - f, k + 1 - f);
 		}
 
-		return AxisAlignedBB.getBoundingBox((float) i, j, (float) k,
-				(float) (i + 1), (float) (j + 1), (float) (k + 1));
+		return AxisAlignedBB.getBoundingBox(i, j, k,
+				i + 1, j + 1, k + 1);
 
 	}
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i,
 			int j, int k) {
-		return AxisAlignedBB.getBoundingBox((float) i, j, (float) k,
-				(float) (i + 0), j + 0, (float) (k + 0));
+		return AxisAlignedBB.getBoundingBox(i, j, k,
+				i + 0, j + 0, k + 0);
 	}
 
 	@Override

@@ -26,7 +26,6 @@ package chb.mods.mffs.common.block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.tileentity.TileEntityConverter;
 
 public class BlockConverter extends BlockMFFSBase {

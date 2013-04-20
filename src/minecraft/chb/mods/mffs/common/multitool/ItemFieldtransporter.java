@@ -115,7 +115,7 @@ public class ItemFieldtransporter extends ItemMultitool {
 						int ymodi = 0;
 
 						int lm = MathHelper
-								.floor_double((double) ((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+								.floor_double((entityplayer.rotationYaw * 4F) / 360F + 0.5D) & 3;
 						int i1 = Math.round(entityplayer.rotationPitch);
 
 						if (i1 >= 65) { // Facing 1

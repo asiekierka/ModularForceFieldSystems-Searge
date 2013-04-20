@@ -3,7 +3,6 @@ package chb.mods.mffs.network.server;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
@@ -26,21 +25,21 @@ public class ForceFieldServerUpdatehandler implements IScheduledTickHandler {
 		for (World world : DimensionManager.getWorlds()) {
 			StringBuilder str = new StringBuilder();
 
-			while (!this.getWorldMap(world).queue.isEmpty()) {
+			while (!ForceFieldServerUpdatehandler.getWorldMap(world).queue.isEmpty()) {
 
-				str.append(this.getWorldMap(world).queue.pop());
+				str.append(ForceFieldServerUpdatehandler.getWorldMap(world).queue.pop());
 				str.append("/");
-				str.append(this.getWorldMap(world).queue.pop());
+				str.append(ForceFieldServerUpdatehandler.getWorldMap(world).queue.pop());
 				str.append("/");
-				str.append(this.getWorldMap(world).queue.pop());
+				str.append(ForceFieldServerUpdatehandler.getWorldMap(world).queue.pop());
 				str.append("!");
-				str.append(this.getWorldMap(world).queue.pop());
+				str.append(ForceFieldServerUpdatehandler.getWorldMap(world).queue.pop());
 				str.append("<");
-				str.append(this.getWorldMap(world).queue.pop());
+				str.append(ForceFieldServerUpdatehandler.getWorldMap(world).queue.pop());
 				str.append("/");
-				str.append(this.getWorldMap(world).queue.pop());
+				str.append(ForceFieldServerUpdatehandler.getWorldMap(world).queue.pop());
 				str.append("/");
-				str.append(this.getWorldMap(world).queue.pop());
+				str.append(ForceFieldServerUpdatehandler.getWorldMap(world).queue.pop());
 				str.append(">");
 
 				if (str.length() > 7500)

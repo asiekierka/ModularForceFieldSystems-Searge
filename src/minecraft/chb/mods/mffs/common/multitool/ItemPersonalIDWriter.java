@@ -33,6 +33,7 @@ import chb.mods.mffs.common.Functions;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import chb.mods.mffs.common.SecurityHelper;
 import chb.mods.mffs.common.SecurityRight;
+import chb.mods.mffs.common.item.ItemCard;
 import chb.mods.mffs.common.item.ItemCardDataLink;
 import chb.mods.mffs.common.item.ItemCardPersonalID;
 import chb.mods.mffs.common.tileentity.TileEntityMachines;
@@ -42,6 +43,7 @@ public class ItemPersonalIDWriter extends ItemMultitool {
 		super(i, 2);
 	}
 
+	@Override
 	public boolean onLeftClickEntity(ItemStack itemstack,
 			EntityPlayer entityplayer, Entity entity) {
 		if (entity instanceof EntityPlayer) {
@@ -150,7 +152,7 @@ public class ItemPersonalIDWriter extends ItemMultitool {
 								ItemStack IDCard = new ItemStack(
 										ModularForceFieldSystem.MFFSitemDataLinkCard);
 
-								((ItemCardDataLink) IDCard.getItem())
+								ItemCard
 										.setforArea(
 												IDCard,
 												((TileEntityMachines) tileEntity)

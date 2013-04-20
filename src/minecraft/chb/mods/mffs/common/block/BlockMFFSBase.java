@@ -169,7 +169,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		if (tileEntity instanceof TileEntityMachines) {
 
 			int l = MathHelper
-					.floor_double((double) ((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+					.floor_double((entityliving.rotationYaw * 4F) / 360F + 0.5D) & 3;
 			int i1 = Math.round(entityliving.rotationPitch);
 			if (i1 >= 65) {
 				((TileEntityMachines) tileEntity).setSide((short) 1);

@@ -1,13 +1,8 @@
 package chb.mods.mffs.network.client;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
-import com.google.common.collect.MapMaker;
-
-import net.minecraft.world.World;
 import chb.mods.mffs.common.ModularForceFieldSystem;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
@@ -22,13 +17,13 @@ public final class ForceFieldClientUpdatehandler implements
 
 		StringBuilder str = new StringBuilder();
 
-		while (!this.queue.isEmpty()) {
+		while (!ForceFieldClientUpdatehandler.queue.isEmpty()) {
 
-			str.append(this.queue.pop());
+			str.append(ForceFieldClientUpdatehandler.queue.pop());
 			str.append("/");
-			str.append(this.queue.pop());
+			str.append(ForceFieldClientUpdatehandler.queue.pop());
 			str.append("/");
-			str.append(this.queue.pop());
+			str.append(ForceFieldClientUpdatehandler.queue.pop());
 			str.append("#");
 
 			if (str.length() > 7500)

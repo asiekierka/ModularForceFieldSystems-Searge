@@ -32,6 +32,7 @@ public class MFFSCreativeTab extends CreativeTabs {
 		super(par1, par2Str);
 	}
 
+	@Override
 	public ItemStack getIconItemStack() {
 		return new ItemStack(ModularForceFieldSystem.MFFSCapacitor);
 	}

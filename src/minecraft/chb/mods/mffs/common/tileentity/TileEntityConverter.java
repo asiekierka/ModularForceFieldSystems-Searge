@@ -27,8 +27,6 @@ import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySource;
 
-import java.util.EnumSet;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -141,6 +139,7 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements
 		this.capacity = Capacity;
 	}
 
+	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote == false) {
 			if (!addedToEnergyNet && Industriecraftfound) {
@@ -189,12 +188,14 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements
 		super.updateEntity();
 	}
 
+	@Override
 	public void dropplugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a, this);
 		}
 	}
 
+	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
 
@@ -224,6 +225,7 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements
 		}
 	}
 
+	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 
@@ -249,18 +251,22 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements
 		nbttagcompound.setTag("Items", nbttaglist);
 	}
 
+	@Override
 	public ItemStack getStackInSlot(int i) {
 		return inventory[i];
 	}
 
+	@Override
 	public String getInvName() {
 		return "Extractor";
 	}
 
+	@Override
 	public int getSizeInventory() {
 		return inventory.length;
 	}
 
+	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		inventory[i] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
@@ -268,6 +274,7 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements
 		}
 	}
 
+	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (inventory[i] != null) {
 			if (inventory[i].stackSize <= j) {
@@ -490,10 +497,12 @@ public class TileEntityConverter extends TileEntityFEPoweredMachine implements
 		super.invalidate();
 	}
 
+	@Override
 	public boolean isAddedToEnergyNet() {
 		return addedToEnergyNet;
 	}
 
+	@Override
 	public int getMaxEnergyOutput() {
 		return Integer.MAX_VALUE;
 	}

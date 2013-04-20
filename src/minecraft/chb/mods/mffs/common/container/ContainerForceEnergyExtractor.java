@@ -71,6 +71,7 @@ public class ContainerForceEnergyExtractor extends Container {
 		return player;
 	}
 
+	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
 		return ForceEnergyExtractor.isUseableByPlayer(entityplayer);
 	}
@@ -96,6 +97,7 @@ public class ContainerForceEnergyExtractor extends Container {
 		return itemstack;
 	}
 
+	@Override
 	public void updateProgressBar(int i, int j) {
 		switch (i) {
 		case 0:

@@ -100,6 +100,7 @@ public class GuiControlSystem extends GuiContainer {
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
 	}
 
+	@Override
 	protected void actionPerformed(GuiButton guibutton) {
 		if (guibutton.id == 103) {
 			NetworkHandlerClient.fireTileEntityEvent(ControlSystem,
@@ -110,6 +111,7 @@ public class GuiControlSystem extends GuiContainer {
 		}
 	}
 
+	@Override
 	public void initGui() {
 
 		buttonList.add(new GraphicButton(100, (width / 2) - 115,
