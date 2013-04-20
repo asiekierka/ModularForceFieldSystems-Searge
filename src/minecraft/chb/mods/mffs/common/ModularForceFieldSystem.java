@@ -258,8 +258,8 @@ public class ModularForceFieldSystem {
 			Property prop_VersionremoteUrl = MFFSconfig
 					.get(Configuration.CATEGORY_GENERAL,
 							"VersionremoteUrl",
-							"https://raw.github.com/Thunderdark/ModularForceFieldSystem/master/src/minecraft/versioninfo?login=Thunderdark&token=7bd46da10acec0374ad5e5c02acece61");
-			prop_VersionremoteUrl.comment = "URL to MFFS VersionInfofile ask Thunderdark if get 'MFFS can't connect to remote version' in Log ";
+							"https://raw.github.com/Minalien/ModularForceFieldSystem/master/src/minecraft/versioninfo");
+			prop_VersionremoteUrl.comment = "URL to MFFS VersionInfo file";
 			VersionremoteUrl = prop_VersionremoteUrl.getString();
 
 			Property prop_graphicstyle = MFFSconfig.get(
