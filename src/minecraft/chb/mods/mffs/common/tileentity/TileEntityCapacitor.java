@@ -40,12 +40,11 @@ import chb.mods.mffs.common.item.ItemCapacitorUpgradeRange;
 import chb.mods.mffs.common.item.ItemCardSecurityLink;
 import chb.mods.mffs.network.INetworkHandlerEventListener;
 import chb.mods.mffs.network.server.NetworkHandlerServer;
-
-/*import dan200.computer.api.IComputerAccess;
- import dan200.computer.api.IPeripheral;*/
+import dan200.computer.api.IComputerAccess;
+import dan200.computer.api.IPeripheral;
 
 public class TileEntityCapacitor extends TileEntityFEPoweredMachine implements
-		INetworkHandlerEventListener, IForceEnergyStorageBlock/* ,IPeripheral */{
+		INetworkHandlerEventListener, IForceEnergyStorageBlock, IPeripheral {
 	private ItemStack inventory[];
 	private int forcePower;
 	private short linketprojektor;
@@ -677,32 +676,54 @@ public class TileEntityCapacitor extends TileEntityFEPoweredMachine implements
 
 	// Computercraft
 
-	/*
-	 * @Override public String getType() { return "MFFSCapacitor"; }
-	 * 
-	 * @Override public String[] getMethodNames() { return new String[] {
-	 * "isActive"
-	 * ,"getTransmitRange","getPercentageStorageCapacity","getcountlinketdevice"
-	 * ,"getforceenergy","getStorageMaxPower","getfreeStorageAmount"}; }
-	 * 
-	 * @Override public Object[] callMethod(IComputerAccess computer, int
-	 * method, Object[] arguments) throws Exception { switch (method) { case 0:
-	 * return new Object[] { this.isActive() }; case 1: return new Object[] {
-	 * this.getTransmitRange() }; case 2: return new Object[] {
-	 * this.getPercentageStorageCapacity() }; case 3: return new Object[] {
-	 * this.getLinketProjektor()}; case 4: return new Object[] {
-	 * this.getStorageAvailablePower() }; case 5: return new Object[] {
-	 * this.getStorageMaxPower() }; case 6: return new Object[] {
-	 * this.getfreeStorageAmount() };
-	 * 
-	 * default: throw new Exception("Function unimplemented"); } }
-	 * 
-	 * @Override public boolean canAttachToSide(int side) { return true; }
-	 * 
-	 * @Override public void attach(IComputerAccess computer) { }
-	 * 
-	 * @Override public void detach(IComputerAccess computer) { }
-	 */
+	@Override
+	public String getType() {
+		return "MFFSCapacitor";
+	}
+
+	@Override
+	public String[] getMethodNames() {
+		return new String[] { "isActive", "getTransmitRange",
+				"getPercentageStorageCapacity", "getcountlinketdevice",
+				"getforceenergy", "getStorageMaxPower", "getfreeStorageAmount" };
+	}
+
+	@Override
+	public Object[] callMethod(IComputerAccess computer, int method,
+			Object[] arguments) throws Exception {
+		switch (method) {
+		case 0:
+			return new Object[] { this.isActive() };
+		case 1:
+			return new Object[] { this.getTransmitRange() };
+		case 2:
+			return new Object[] { this.getPercentageStorageCapacity() };
+		case 3:
+			return new Object[] { this.getLinketProjektor() };
+		case 4:
+			return new Object[] { this.getStorageAvailablePower() };
+		case 5:
+			return new Object[] { this.getStorageMaxPower() };
+		case 6:
+			return new Object[] { this.getfreeStorageAmount() };
+
+		default:
+			throw new Exception("Function unimplemented");
+		}
+	}
+
+	@Override
+	public boolean canAttachToSide(int side) {
+		return true;
+	}
+
+	@Override
+	public void attach(IComputerAccess computer) {
+	}
+
+	@Override
+	public void detach(IComputerAccess computer) {
+	}
 
 	@Override
 	public boolean isInvNameLocalized() {

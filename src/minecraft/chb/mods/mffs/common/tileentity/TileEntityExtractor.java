@@ -40,9 +40,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
-/*import universalelectricity.core.electricity.ElectricityConnections;
- import universalelectricity.core.implement.IConductor;
- import universalelectricity.core.vector.Vector3;*/
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerFramework;
@@ -55,12 +52,11 @@ import chb.mods.mffs.common.item.ItemExtractorUpgradeBooster;
 import chb.mods.mffs.common.item.ItemForcicium;
 import chb.mods.mffs.common.item.ItemForcicumCell;
 import chb.mods.mffs.network.server.NetworkHandlerServer;
-
-/*import dan200.computer.api.IComputerAccess;
- import dan200.computer.api.IPeripheral;*/
+import dan200.computer.api.IComputerAccess;
+import dan200.computer.api.IPeripheral;
 
 public class TileEntityExtractor extends TileEntityFEPoweredMachine implements
-		IPowerReceptor, IEnergySink/* ,IPeripheral */{
+		IPowerReceptor, IEnergySink, IPeripheral {
 	private ItemStack inventory[];
 
 	private int workmode = 0;
@@ -197,8 +193,8 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
 			return false;
 		} else {
-			return entityplayer.getDistance(xCoord + 0.5D,
-					yCoord + 0.5D, zCoord + 0.5D) <= 64D;
+			return entityplayer.getDistance(xCoord + 0.5D, yCoord + 0.5D,
+					zCoord + 0.5D) <= 64D;
 		}
 	}
 
@@ -693,32 +689,54 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements
 	}
 
 	// Computercraft
+	@Override
+	public String getType() {
+		return "MFFSExtractor";
+	}
 
-	/*
-	 * @Override public String getType() { return "MFFSExtractor"; }
-	 * 
-	 * @Override public String[] getMethodNames() { return new String[] {
-	 * "getCapacity", "getWorkdone",
-	 * "getForceEnergybuffer","getWorkCylce","getworkmode"
-	 * ,"isActive","hasStufftoConvert"}; }
-	 * 
-	 * @Override public Object[] callMethod(IComputerAccess computer, int
-	 * method, Object[] arguments) throws Exception { switch (method) { case 0:
-	 * return new Object[] { this.getCapacity() }; case 1: return new Object[] {
-	 * this.getWorkdone() }; case 2: return new Object[] {
-	 * this.getForceEnergybuffer() }; case 3: return new Object[] {
-	 * this.getWorkCylce()}; case 4: return new Object[] { this.getWorkdone() };
-	 * case 5: return new Object[] { this.isActive() }; case 6: return new
-	 * Object[] { this.hasStufftoConvert() };
-	 * 
-	 * default: throw new Exception("Function unimplemented"); } }
-	 * 
-	 * @Override public boolean canAttachToSide(int side) { return true; }
-	 * 
-	 * @Override public void attach(IComputerAccess computer) { }
-	 * 
-	 * @Override public void detach(IComputerAccess computer) { }
-	 */
+	@Override
+	public String[] getMethodNames() {
+		return new String[] { "getCapacity", "getWorkdone",
+				"getForceEnergybuffer", "getWorkCylce", "getworkmode",
+				"isActive", "hasStufftoConvert" };
+	}
+
+	@Override
+	public Object[] callMethod(IComputerAccess computer, int method,
+			Object[] arguments) throws Exception {
+		switch (method) {
+		case 0:
+			return new Object[] { this.getCapacity() };
+		case 1:
+			return new Object[] { this.getWorkdone() };
+		case 2:
+			return new Object[] { this.getForceEnergybuffer() };
+		case 3:
+			return new Object[] { this.getWorkCylce() };
+		case 4:
+			return new Object[] { this.getWorkdone() };
+		case 5:
+			return new Object[] { this.isActive() };
+		case 6:
+			return new Object[] { this.hasStufftoConvert() };
+
+		default:
+			throw new Exception("Function unimplemented");
+		}
+	}
+
+	@Override
+	public boolean canAttachToSide(int side) {
+		return true;
+	}
+
+	@Override
+	public void attach(IComputerAccess computer) {
+	}
+
+	@Override
+	public void detach(IComputerAccess computer) {
+	}
 
 	@Override
 	public boolean isInvNameLocalized() {
