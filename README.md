@@ -8,7 +8,7 @@ ModularForceFieldSystem V2 is a Minecraft Mod
 
 	Bughunter: Lightone
 
-    Textures: [Imalune][1]
+    Textures: Imalune
 
 The goal of this project is to keep the mod updated and as compatible as possible with existing world saves. To make it easier to distinguish between this version and other versions, this fork may be called "MFFS v2 Classic"
 
@@ -36,5 +36,3 @@ Roadmap:
 - Update to Minecraft 1.5.x
 
 - Implement some (3) new feature requests from the community
-
-[1]:[http://imalune.deviantart.com]
