@@ -200,6 +200,8 @@ public class ModularForceFieldSystem {
 	public static boolean enableBC3Recipes = true;
 	public static boolean enableTERecipes = true;
 
+	public static int graphicsStyle = 1;
+
 	public static boolean showZapperParticles;
 	public static boolean uumatterForcicium;
 	public static boolean chunckloader = true;
@@ -337,6 +339,11 @@ public class ModularForceFieldSystem {
 					Configuration.CATEGORY_GENERAL, "ForceciumWorkCylce", 250);
 			fcWorkCycle.comment = "WorkCycle amount of Forcecium inside a Extractor";
 			ForceciumWorkCylce = fcWorkCycle.getInt(250);
+
+			Property graphics = MFFSconfig.get(Configuration.CATEGORY_GENERAL,
+					"GraphicStyle", 1);
+			graphics.comment = "Graphics style to use. 0 = original (16x16), 1 = new (32x32)";
+			graphicsStyle = graphics.getInt(1);
 
 			Property fcCellWorkCycle = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "ForceciumCellWorkCylce",

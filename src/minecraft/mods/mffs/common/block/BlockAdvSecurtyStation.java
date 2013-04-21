@@ -20,6 +20,7 @@
 
 package mods.mffs.common.block;
 
+import mods.mffs.common.ModularForceFieldSystem;
 import mods.mffs.common.tileentity.TileEntityAdvSecurityStation;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
@@ -33,9 +34,13 @@ public class BlockAdvSecurtyStation extends BlockMFFSBase {
 	@Override
 	public void registerIcons(IconRegister iconRegister) {
 		icons[0] = icons[1] = iconRegister
-				.registerIcon("mffs:AdvSecStation/Inactive");
+				.registerIcon("mffs:AdvSecStation/Inactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		icons[2] = icons[3] = iconRegister
-				.registerIcon("mffs:AdvSecStation/Active");
+				.registerIcon("mffs:AdvSecStation/Active"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		blockIcon = icons[0];
 	}

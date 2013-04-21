@@ -62,15 +62,18 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 		setBlockUnbreakable();
 		setResistance(999F);
 		setTickRandomly(true);
-
 	}
 
 	@Override
 	public void registerIcons(IconRegister iconRegister) {
-		icons[0] = iconRegister.registerIcon("mffs:Field/Default");
-		icons[1] = iconRegister.registerIcon("mffs:Field/Zapper");
-		icons[2] = iconRegister.registerIcon("mffs:Field/Area");
-		icons[3] = iconRegister.registerIcon("mffs:Field/Containment");
+		icons[0] = iconRegister.registerIcon("mffs:Field/Default"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[1] = iconRegister.registerIcon("mffs:Field/Zapper"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[2] = iconRegister.registerIcon("mffs:Field/Area"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[3] = iconRegister.registerIcon("mffs:Field/Containment"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
 
 		blockIcon = icons[0];
 	}

@@ -19,6 +19,7 @@
  */
 package mods.mffs.common.block;
 
+import mods.mffs.common.ModularForceFieldSystem;
 import mods.mffs.common.tileentity.TileEntityCapacitor;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
@@ -31,10 +32,14 @@ public class BlockCapacitor extends BlockMFFSBase {
 
 	@Override
 	public void registerIcons(IconRegister iconRegister) {
-		icons[0] = iconRegister.registerIcon("mffs:Capacitor/SideInactive");
-		icons[1] = iconRegister.registerIcon("mffs:Capacitor/FaceInactive");
-		icons[2] = iconRegister.registerIcon("mffs:Capacitor/SideActive");
-		icons[3] = iconRegister.registerIcon("mffs:Capacitor/FaceActive");
+		icons[0] = iconRegister.registerIcon("mffs:Capacitor/SideInactive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[1] = iconRegister.registerIcon("mffs:Capacitor/FaceInactive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[2] = iconRegister.registerIcon("mffs:Capacitor/SideActive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[3] = iconRegister.registerIcon("mffs:Capacitor/FaceActive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
 
 		blockIcon = icons[0];
 	}

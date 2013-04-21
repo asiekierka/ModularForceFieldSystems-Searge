@@ -63,7 +63,7 @@ public class TileEntityAreaDefenseStation extends TileEntityFEPoweredMachine
 	protected List<EntityPlayer> warnlist = new ArrayList<EntityPlayer>();
 	protected List<EntityPlayer> actionlist = new ArrayList<EntityPlayer>();
 	protected List<EntityLiving> NPClist = new ArrayList<EntityLiving>();
-	private ArrayList<Item> ContraList = new ArrayList();
+	private final ArrayList<Item> ContraList = new ArrayList();
 
 	public TileEntityAreaDefenseStation() {
 		Random random = new Random();
@@ -245,7 +245,7 @@ public class TileEntityAreaDefenseStation extends TileEntityFEPoweredMachine
 								if (!(ModularForceFieldSystem.DefenceStationNPCScannsuppressnotification && getActionmode() >= 3)) {
 									player.addChatMessage("!!! [Security Station]["
 											+ sec.getDeviceName()
-											+ "] Warning you now in me Scanning range!!!");
+											+ "] Warning you are now in my Scanning range!");
 									player.attackEntityFrom(
 											MFFSDamageSource.areaDefense, 1);
 								}
@@ -434,7 +434,7 @@ public class TileEntityAreaDefenseStation extends TileEntityFEPoweredMachine
 				switch (getActionmode()) {
 				case 0: // Inform
 					if (!sec.isAccessGranted(player.username, SecurityRight.SR)) {
-						player.addChatMessage("!!! [Area Defence]  get out immediately you have no right to be here!!!");
+						player.addChatMessage("!!! [Area Defence] Get out immediately, you have no right to be here!");
 					}
 
 					break;
@@ -445,7 +445,7 @@ public class TileEntityAreaDefenseStation extends TileEntityFEPoweredMachine
 							true)) {
 						if (!sec.isAccessGranted(player.username,
 								SecurityRight.SR)) {
-							player.addChatMessage("!!! [Area Defence] you have been warned BYE BYE!!!");
+							player.addChatMessage("!!! [Area Defence] You have been warned.");
 
 							for (int i = 0; i < 4; i++) {
 								if (player.inventory.armorInventory[i] != null) {

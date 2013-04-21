@@ -23,6 +23,7 @@
 
 package mods.mffs.common.block;
 
+import mods.mffs.common.ModularForceFieldSystem;
 import mods.mffs.common.tileentity.TileEntityConverter;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
@@ -36,10 +37,14 @@ public class BlockConverter extends BlockMFFSBase {
 
 	@Override
 	public void registerIcons(IconRegister iconRegister) {
-		icons[0] = iconRegister.registerIcon("mffs:Converter/SideInactive");
-		icons[1] = iconRegister.registerIcon("mffs:Converter/FaceInactive");
-		icons[2] = iconRegister.registerIcon("mffs:Converter/SideActive");
-		icons[3] = iconRegister.registerIcon("mffs:Converter/FaceActive");
+		icons[0] = iconRegister.registerIcon("mffs:Converter/SideInactive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[1] = iconRegister.registerIcon("mffs:Converter/FaceInactive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[2] = iconRegister.registerIcon("mffs:Converter/SideActive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[3] = iconRegister.registerIcon("mffs:Converter/FaceActive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
 
 		blockIcon = icons[0];
 	}

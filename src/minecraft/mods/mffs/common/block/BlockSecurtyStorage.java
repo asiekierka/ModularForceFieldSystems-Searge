@@ -48,9 +48,13 @@ public class BlockSecurtyStorage extends BlockMFFSBase {
 	@Override
 	public void registerIcons(IconRegister iconRegister) {
 		icons[0] = icons[1] = iconRegister
-				.registerIcon("mffs:SecStorage/Inactive");
+				.registerIcon("mffs:SecStorage/Inactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		icons[2] = icons[3] = iconRegister
-				.registerIcon("mffs:SecStorage/Active");
+				.registerIcon("mffs:SecStorage/Active"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		blockIcon = icons[0];
 	}

@@ -20,6 +20,7 @@
 
 package mods.mffs.common.block;
 
+import mods.mffs.common.ModularForceFieldSystem;
 import mods.mffs.common.tileentity.TileEntityExtractor;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
@@ -33,10 +34,14 @@ public class BlockExtractor extends BlockMFFSBase {
 
 	@Override
 	public void registerIcons(IconRegister iconRegister) {
-		icons[0] = iconRegister.registerIcon("mffs:Extractor/SideInactive");
-		icons[1] = iconRegister.registerIcon("mffs:Extractor/FaceInactive");
-		icons[2] = iconRegister.registerIcon("mffs:Extractor/SideActive");
-		icons[3] = iconRegister.registerIcon("mffs:Extractor/FaceActive");
+		icons[0] = iconRegister.registerIcon("mffs:Extractor/SideInactive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[1] = iconRegister.registerIcon("mffs:Extractor/FaceInactive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[2] = iconRegister.registerIcon("mffs:Extractor/SideActive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
+		icons[3] = iconRegister.registerIcon("mffs:Extractor/FaceActive"
+				+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32" : ""));
 
 		blockIcon = icons[0];
 	}

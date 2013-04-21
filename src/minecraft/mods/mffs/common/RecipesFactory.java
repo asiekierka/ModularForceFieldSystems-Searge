@@ -35,7 +35,7 @@ public final class RecipesFactory {
 	public static boolean addRecipe(String Recipe, int count, int forMod,
 			Block block, Item item) {
 
-		if ((forMod > 2 && forMod < 0) || (count < 0)
+		if ((forMod >= 2 || forMod < 0) || (count < 0)
 				|| (block == null && item == null)
 				|| (block != null && item != null) || (Recipe.length() != 9)) {
 			System.out
