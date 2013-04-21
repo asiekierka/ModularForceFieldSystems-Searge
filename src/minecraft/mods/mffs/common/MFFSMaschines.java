@@ -82,13 +82,13 @@ public enum MFFSMaschines {
 		this.Gui = gui;
 		try {
 			this.clazz = (Class<? extends TileEntity>) Class
-					.forName("chb.mods.mffs.common.tileentity." + cls);
+					.forName("mods.mffs.common.tileentity." + cls);
 		} catch (ClassNotFoundException ex) {
 			this.clazz = null;
 		}
 		try {
 			this.Container = (Class<? extends Container>) Class
-					.forName("chb.mods.mffs.common.container." + container);
+					.forName("mods.mffs.common.container." + container);
 		} catch (ClassNotFoundException ex) {
 			this.Container = null;
 		}

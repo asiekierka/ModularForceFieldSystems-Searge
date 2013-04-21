@@ -1,9 +1,9 @@
 package mods.mffs.nei;
 /*
- * package chb.mods.mffs.nei;
+ * package mods.mffs.nei;
  * 
- * import chb.mods.mffs.common.ModularForceFieldSystem; import
- * chb.mods.mffs.common.Versioninfo; import codechicken.nei.MultiItemRange;
+ * import mods.mffs.common.ModularForceFieldSystem; import
+ * mods.mffs.common.Versioninfo; import codechicken.nei.MultiItemRange;
  * import codechicken.nei.api.API; import codechicken.nei.api.IConfigureNEI;
  * 
  * public class NEI_MFFS_Config implements IConfigureNEI {

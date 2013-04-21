@@ -90,9 +90,6 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 
-import org.modstats.ModstatInfo;
-import org.modstats.Modstats;
-
 
 import com.google.common.collect.Lists;
 
@@ -115,7 +112,6 @@ import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.3.0.0.1", dependencies = "after:ThermalExpansion")
 @NetworkMod(versionBounds = "[2.3.0.0.1]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
-@ModstatInfo(prefix = "mffs")
 public class ModularForceFieldSystem {
 
 	public static CreativeTabs MFFSTab;
@@ -213,8 +209,6 @@ public class ModularForceFieldSystem {
 
 	public static boolean DefenceStationNPCScannsuppressnotification;
 
-	public static int graphicstyle;
-
 	public static Configuration MFFSconfig;
 
 	public static String Admin;
@@ -222,7 +216,7 @@ public class ModularForceFieldSystem {
 	public static String Versionremote;
 	public static String VersionremoteUrl;
 
-	@SidedProxy(clientSide = "chb.mods.mffs.client.ClientProxy", serverSide = "chb.mods.mffs.common.CommonProxy")
+	@SidedProxy(clientSide = "mods.mffs.client.ClientProxy", serverSide = "mods.mffs.common.CommonProxy")
 	public static CommonProxy proxy;
 
 	@Instance("ModularForceFieldSystem")
@@ -238,8 +232,6 @@ public class ModularForceFieldSystem {
 
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(proxy);
-
-		Modstats.instance().getReporter().registerMod(this);
 
 		if (ee3found)
 			MinecraftForge.EVENT_BUS.register(new EE3Event());
@@ -260,11 +252,6 @@ public class ModularForceFieldSystem {
 							"https://bitbucket.org/SeargeDP/modularforcefieldsystem/downloads/versioninfo");
 			prop_VersionremoteUrl.comment = "URL to MFFS VersionInfo file";
 			VersionremoteUrl = prop_VersionremoteUrl.getString();
-
-			Property prop_graphicstyle = MFFSconfig.get(
-					Configuration.CATEGORY_GENERAL, "GraphicStyle", 1);
-			prop_graphicstyle.comment = "Set Graphic Style for Blocks 0: Default(ugly ;-)) 1: UE-Thema";
-			graphicstyle = prop_graphicstyle.getInt(1);
 
 			Property chunckloader_prop = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "Chunkloader", true);

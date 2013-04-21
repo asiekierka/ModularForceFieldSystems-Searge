@@ -54,7 +54,7 @@ public class CommonProxy implements IGuiHandler {
 
 		try {
 			Constructor mkGui = Class.forName(
-					"chb.mods.mffs.client.gui." + machType.Gui).getConstructor(
+					"mods.mffs.client.gui." + machType.Gui).getConstructor(
 					new Class[] { EntityPlayer.class, machType.clazz });
 			return mkGui.newInstance(player, (machType.clazz.cast(te)));
 
