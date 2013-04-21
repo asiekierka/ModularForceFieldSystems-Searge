@@ -31,8 +31,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class RecipesFactory {
 
-	// forMod 0: independent 1: IC2 2: Universal Electric
-
+	// forMod: 0: independent, 1: IC2, 2: BC3, 3: Thermal Expansion
 	public static boolean addRecipe(String Recipe, int count, int forMod,
 			Block block, Item item) {
 
@@ -56,7 +55,7 @@ public final class RecipesFactory {
 				Recipe.substring(3, 6), Recipe.substring(6, 9) };
 
 		switch (forMod) {
-		case 0:
+		case 0: // Independent
 
 			GameRegistry.addRecipe(itemstack, recipeSplit,
 
@@ -88,8 +87,9 @@ public final class RecipesFactory {
 			);
 			return true;
 
-		case 1:
-			if (ModularForceFieldSystem.ic2found) {
+		case 1: // IndustrialCraft 2
+			if (ModularForceFieldSystem.ic2found
+					&& ModularForceFieldSystem.enableIC2Recipes) {
 
 				GameRegistry
 						.addRecipe(
@@ -145,8 +145,10 @@ public final class RecipesFactory {
 								Items.getItem("overclockerUpgrade"), 'C', Items
 										.getItem("electronicCircuit"), 'D',
 								Items.getItem("advancedCircuit"), 'E', Items
-										.getItem("carbonPlate"), 'F', Items
-										.getItem("advancedMachine"), 'G',
+										.getItem("carbonPlate"),
+								'F',
+								Items.getItem("advancedMachine"),
+								'G',
 								Items.getItem("extractor"),
 								'H',
 								Items.getItem("copperCableItem"), // Ic2 Stuff

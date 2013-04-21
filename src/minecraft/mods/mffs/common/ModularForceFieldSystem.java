@@ -90,7 +90,6 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 
-
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.FMLLog;
@@ -191,10 +190,16 @@ public class ModularForceFieldSystem {
 
 	public static Boolean influencedbyothermods;
 	public static Boolean adventuremap;
+
 	public static Boolean ic2found = false;
 	public static Boolean ee3found = false;
 	public static Boolean buildcraftfound = false;
 	public static Boolean ThermalExpansionfound = false;
+
+	public static boolean enableIC2Recipes = true;
+	public static boolean enableBC3Recipes = true;
+	public static boolean enableTERecipes = true;
+
 	public static boolean showZapperParticles;
 	public static boolean uumatterForcicium;
 	public static boolean chunckloader = true;
@@ -369,6 +374,21 @@ public class ModularForceFieldSystem {
 					Configuration.CATEGORY_GENERAL, "adventuremap", false);
 			Adventuremap.comment = "Set MFFS to AdventureMap Mode Extractor need no Forcecium and ForceField have no click damage";
 			adventuremap = Adventuremap.getBoolean(false);
+
+			Property ic2Recipes = MFFSconfig.get(
+					Configuration.CATEGORY_GENERAL, "enableIC2Recipes", true);
+			ic2Recipes.comment = "Set to false to disable IndustrialCraft 2 recipes for MFFS machines.";
+			enableIC2Recipes = ic2Recipes.getBoolean(true);
+
+			Property bc3Recipes = MFFSconfig.get(
+					Configuration.CATEGORY_GENERAL, "enableBC3Recipes", true);
+			bc3Recipes.comment = "Set to false to disable BuildCraft 3 recipes for MFFS machines.";
+			enableBC3Recipes = bc3Recipes.getBoolean(true);
+
+			Property teRecipes = MFFSconfig.get(Configuration.CATEGORY_GENERAL,
+					"enableTERecipes", true);
+			teRecipes.comment = "Set to false to disable Thermal Expansion recipes for MFFS machines.";
+			enableTERecipes = teRecipes.getBoolean(true);
 
 			// Machines + Blocks
 
