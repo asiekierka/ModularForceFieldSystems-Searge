@@ -22,6 +22,7 @@ package mods.mffs.common.block;
 
 import java.util.Random;
 
+import mods.mffs.common.ModularForceFieldSystem;
 import mods.mffs.common.tileentity.TileEntityMachines;
 import mods.mffs.common.tileentity.TileEntityProjector;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -45,85 +46,157 @@ public class BlockProjector extends BlockMFFSBase {
 	@Override
 	public void registerIcons(IconRegister iconRegister) {
 		activeFaceIcons[0] = iconRegister
-				.registerIcon("mffs:Projector/Empty/FaceActive");
+				.registerIcon("mffs:Projector/Empty/FaceActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		activeSideIcons[0] = iconRegister
-				.registerIcon("mffs:Projector/Empty/SideActive");
+				.registerIcon("mffs:Projector/Empty/SideActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveFaceIcons[0] = iconRegister
-				.registerIcon("mffs:Projector/Empty/FaceInactive");
+				.registerIcon("mffs:Projector/Empty/FaceInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveSideIcons[0] = iconRegister
-				.registerIcon("mffs:Projector/Empty/SideInactive");
+				.registerIcon("mffs:Projector/Empty/SideInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		activeFaceIcons[1] = iconRegister
-				.registerIcon("mffs:Projector/Wall/FaceActive");
+				.registerIcon("mffs:Projector/Wall/FaceActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		activeSideIcons[1] = iconRegister
-				.registerIcon("mffs:Projector/Wall/SideActive");
+				.registerIcon("mffs:Projector/Wall/SideActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveFaceIcons[1] = iconRegister
-				.registerIcon("mffs:Projector/Wall/FaceInactive");
+				.registerIcon("mffs:Projector/Wall/FaceInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveSideIcons[1] = iconRegister
-				.registerIcon("mffs:Projector/Wall/SideInactive");
+				.registerIcon("mffs:Projector/Wall/SideInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		activeFaceIcons[2] = iconRegister
-				.registerIcon("mffs:Projector/Deflector/FaceActive");
+				.registerIcon("mffs:Projector/Deflector/FaceActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		activeSideIcons[2] = iconRegister
-				.registerIcon("mffs:Projector/Deflector/SideActive");
+				.registerIcon("mffs:Projector/Deflector/SideActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveFaceIcons[2] = iconRegister
-				.registerIcon("mffs:Projector/Deflector/FaceInactive");
+				.registerIcon("mffs:Projector/Deflector/FaceInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveSideIcons[2] = iconRegister
-				.registerIcon("mffs:Projector/Deflector/SideInactive");
+				.registerIcon("mffs:Projector/Deflector/SideInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		activeFaceIcons[3] = iconRegister
-				.registerIcon("mffs:Projector/Tube/FaceActive");
+				.registerIcon("mffs:Projector/Tube/FaceActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		activeSideIcons[3] = iconRegister
-				.registerIcon("mffs:Projector/Tube/SideActive");
+				.registerIcon("mffs:Projector/Tube/SideActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveFaceIcons[3] = iconRegister
-				.registerIcon("mffs:Projector/Tube/FaceInactive");
+				.registerIcon("mffs:Projector/Tube/FaceInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveSideIcons[3] = iconRegister
-				.registerIcon("mffs:Projector/Tube/SideInactive");
+				.registerIcon("mffs:Projector/Tube/SideInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		activeFaceIcons[4] = iconRegister
-				.registerIcon("mffs:Projector/Cube/FaceActive");
+				.registerIcon("mffs:Projector/Cube/FaceActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		activeSideIcons[4] = iconRegister
-				.registerIcon("mffs:Projector/Cube/SideActive");
+				.registerIcon("mffs:Projector/Cube/SideActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveFaceIcons[4] = iconRegister
-				.registerIcon("mffs:Projector/Cube/FaceInactive");
+				.registerIcon("mffs:Projector/Cube/FaceInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveSideIcons[4] = iconRegister
-				.registerIcon("mffs:Projector/Cube/SideInactive");
+				.registerIcon("mffs:Projector/Cube/SideInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		activeFaceIcons[5] = iconRegister
-				.registerIcon("mffs:Projector/Sphere/FaceActive");
+				.registerIcon("mffs:Projector/Sphere/FaceActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		activeSideIcons[5] = iconRegister
-				.registerIcon("mffs:Projector/Sphere/SideActive");
+				.registerIcon("mffs:Projector/Sphere/SideActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveFaceIcons[5] = iconRegister
-				.registerIcon("mffs:Projector/Sphere/FaceInactive");
+				.registerIcon("mffs:Projector/Sphere/FaceInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveSideIcons[5] = iconRegister
-				.registerIcon("mffs:Projector/Sphere/SideInactive");
+				.registerIcon("mffs:Projector/Sphere/SideInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		activeFaceIcons[6] = iconRegister
-				.registerIcon("mffs:Projector/Containment/FaceActive");
+				.registerIcon("mffs:Projector/Containment/FaceActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		activeSideIcons[6] = iconRegister
-				.registerIcon("mffs:Projector/Containment/SideActive");
+				.registerIcon("mffs:Projector/Containment/SideActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveFaceIcons[6] = iconRegister
-				.registerIcon("mffs:Projector/Containment/FaceInactive");
+				.registerIcon("mffs:Projector/Containment/FaceInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveSideIcons[6] = iconRegister
-				.registerIcon("mffs:Projector/Containment/SideInactive");
+				.registerIcon("mffs:Projector/Containment/SideInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		activeFaceIcons[7] = iconRegister
-				.registerIcon("mffs:Projector/AdvCube/FaceActive");
+				.registerIcon("mffs:Projector/AdvCube/FaceActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		activeSideIcons[7] = iconRegister
-				.registerIcon("mffs:Projector/AdvCube/SideActive");
+				.registerIcon("mffs:Projector/AdvCube/SideActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveFaceIcons[7] = iconRegister
-				.registerIcon("mffs:Projector/AdvCube/FaceInactive");
+				.registerIcon("mffs:Projector/AdvCube/FaceInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveSideIcons[7] = iconRegister
-				.registerIcon("mffs:Projector/AdvCube/SideInactive");
+				.registerIcon("mffs:Projector/AdvCube/SideInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		activeFaceIcons[8] = iconRegister
-				.registerIcon("mffs:Projector/DiagWall/FaceActive");
+				.registerIcon("mffs:Projector/DiagWall/FaceActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		activeSideIcons[8] = iconRegister
-				.registerIcon("mffs:Projector/DiagWall/SideActive");
+				.registerIcon("mffs:Projector/DiagWall/SideActive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveFaceIcons[8] = iconRegister
-				.registerIcon("mffs:Projector/DiagWall/FaceInactive");
+				.registerIcon("mffs:Projector/DiagWall/FaceInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 		inactiveSideIcons[8] = iconRegister
-				.registerIcon("mffs:Projector/DiagWall/SideInactive");
+				.registerIcon("mffs:Projector/DiagWall/SideInactive"
+						+ (ModularForceFieldSystem.graphicsStyle == 1 ? "_32"
+								: ""));
 
 		blockIcon = inactiveFaceIcons[0];
 	}
