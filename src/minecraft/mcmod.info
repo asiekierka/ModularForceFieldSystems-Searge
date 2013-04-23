@@ -2,15 +2,17 @@
 {
   "modid": "ModularForceFieldSystem",
   "name": "Modular ForceField System V2",
-  "description": "This is a complete re-write of my Modular Force Field System Mod.I changed the whole concept to an item upgrade system (like the IC2 Overclockers, Storage Upgrades, and Transformer Upgrades) instead of multiple blocks.",
-  "version": "2.2.8.3.7",
-  "mcversion": "1.4.7",
-  "url": "http://forum.industrial-craft.net/index.php?page=Thread&postID=8063#post8063",
-  "updateUrl": "",
+  "description": "This is a maintained version of Thunderdark's MFFS 2 by Minalien and Searge.",
+  "version": "2.3.0.0.4",
+  "mcversion": "1.5.1",
+  "url": "http://forum.industrial-craft.net/index.php?page=Thread&threadID=9187",
+  "updateUrl": "http://forum.industrial-craft.net/index.php?page=Thread&threadID=9187",
   "authors": [
-    "Thunderdark,Lightone as Main Bughunter,mistaqur for NEI Plugin"
+    "Thunderdark",
+    "Searge",
+    "Minalien"
   ],
-  "credits": "By Thunderdark,Matchlighter,Lightone,mistaqur",
+  "credits": "By Thunderdark, Matchlighter, Lightone, mistaqur, Searge, Imalune and Minalien",
   "logoFile": "",
   "screenshots": [
   ],
