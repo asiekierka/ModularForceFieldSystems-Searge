@@ -33,6 +33,4 @@ Roadmap:
 
 - Clean up code and fix a few bugs
 
-- Update to Minecraft 1.5.x
-
 - Implement some (3) new feature requests from the community
