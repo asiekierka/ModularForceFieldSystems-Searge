@@ -67,7 +67,7 @@ public class Versioninfo {
 		Properties properties = new Properties();
 		try {
 
-			URL versionFile = new URL(ModularForceFieldSystem.VersionremoteUrl);
+			URL versionFile = new URL(ModularForceFieldSystem.VersionRemoteURL);
 			InputStreamReader inputstream = new InputStreamReader(
 					versionFile.openStream());
 

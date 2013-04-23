@@ -53,7 +53,7 @@ public class GuiConverter extends GuiContainer {
 		drawTexturedModalRect(w, k, 0, 0, xSize, ySize);
 		int i1 = (76 * Converter.getCapacity()) / 100;
 		drawTexturedModalRect(w + 14, k + 65, 0, 233, i1 + 1, 23);
-		if (!ModularForceFieldSystem.ic2found)
+		if (!ModularForceFieldSystem.ic2Found)
 			drawTexturedModalRect(w + 99, k + 45, 0, 217, 70, 13);
 	}
 
@@ -94,7 +94,7 @@ public class GuiConverter extends GuiContainer {
 			NetworkHandlerClient.fireTileEntityEvent(Converter, 10, "null");
 			NameeditMode = true;
 		}
-		if (ModularForceFieldSystem.ic2found) {
+		if (ModularForceFieldSystem.ic2Found) {
 			if (x >= 100 && y >= 46 && x <= 114 && y <= 57)
 				NetworkHandlerClient.fireTileEntityEvent(Converter, 200, "+");
 			if (x >= 115 && y >= 46 && x <= 128 && y <= 57)
@@ -117,7 +117,7 @@ public class GuiConverter extends GuiContainer {
 		buttonList.add(new GraphicButton(0, (width / 2) + 107,
 				(height / 2) - 104, Converter, 0));
 
-		if (ModularForceFieldSystem.ic2found)
+		if (ModularForceFieldSystem.ic2Found)
 			buttonList.add(new GraphicButton(100, (width / 2) - 25,
 					(height / 2) - 80, Converter, 1));
 
@@ -129,7 +129,7 @@ public class GuiConverter extends GuiContainer {
 		fontRenderer.drawString(Converter.getDeviceName(), 100, 8, 0x404040);
 		fontRenderer.drawString("MFFS Converter", 8, 8, 0x404040);
 
-		if (ModularForceFieldSystem.ic2found) {
+		if (ModularForceFieldSystem.ic2Found) {
 			fontRenderer.drawString("IC 2", 125, 33, 0x000000);
 			fontRenderer.drawString("EU", 110, 62, 0x000000);
 			fontRenderer.drawString("packets", 130, 62, 0x000000);

@@ -85,7 +85,7 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements
 		capacity = 0;
 		addedToEnergyNet = false;
 
-		if (ModularForceFieldSystem.buildcraftfound) {
+		if (ModularForceFieldSystem.buildcraftFound) {
 			powerProvider = PowerFramework.currentFramework
 					.createPowerProvider();
 			powerProvider.configure(10, 2, (int) (getMaxWorkEnergy() / 2.5),
@@ -182,7 +182,7 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements
 	}
 
 	@Override
-	public void dropplugins() {
+	public void dropPlugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a, this);
 		}
@@ -249,15 +249,15 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements
 		if (WorkCylce > 0) {
 			return true;
 		} else {
-			if (ModularForceFieldSystem.adventuremap) {
-				setMaxworkcylce(ModularForceFieldSystem.ForceciumCellWorkCylce);
+			if (ModularForceFieldSystem.adventureMapMode) {
+				setMaxworkcylce(ModularForceFieldSystem.ForciciumCellWorkCycle);
 				setWorkCylce(getMaxworkcylce());
 				return true;
 			}
 
 			if (getStackInSlot(0) != null) {
 				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicium) {
-					setMaxworkcylce(ModularForceFieldSystem.ForceciumWorkCylce);
+					setMaxworkcylce(ModularForceFieldSystem.ForciciumWorkCycle);
 					setWorkCylce(getMaxworkcylce());
 					decrStackSize(0, 1);
 					return true;
@@ -266,7 +266,7 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements
 				if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSitemForcicumCell) {
 					if (((ItemForcicumCell) getStackInSlot(0).getItem())
 							.useForcecium(1, getStackInSlot(0))) {
-						setMaxworkcylce(ModularForceFieldSystem.ForceciumCellWorkCylce);
+						setMaxworkcylce(ModularForceFieldSystem.ForciciumCellWorkCycle);
 						setWorkCylce(getMaxworkcylce());
 						return true;
 					}
@@ -329,7 +329,7 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements
 				checkslots(true);
 			}
 
-			if (!addedToEnergyNet && ModularForceFieldSystem.ic2found) {
+			if (!addedToEnergyNet && ModularForceFieldSystem.ic2Found) {
 				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 				addedToEnergyNet = true;
 			}
@@ -349,7 +349,7 @@ public class TileEntityExtractor extends TileEntityFEPoweredMachine implements
 				setActive(false);
 
 			if (isActive()) {
-				if (ModularForceFieldSystem.buildcraftfound)
+				if (ModularForceFieldSystem.buildcraftFound)
 					converMJtoWorkEnergy();
 			}
 

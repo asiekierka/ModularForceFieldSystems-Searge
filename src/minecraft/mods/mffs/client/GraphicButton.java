@@ -32,12 +32,9 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-
-public class GraphicButton extends GuiButton
-
-{
-	private TileEntity tileEntity;
-	private int typ;
+public class GraphicButton extends GuiButton {
+	private final TileEntity tileEntity;
+	private final int typ;
 
 	public GraphicButton(int par1, int par2, int par3, TileEntity tileEntity,
 			int typ) {

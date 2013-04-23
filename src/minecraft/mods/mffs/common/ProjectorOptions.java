@@ -69,7 +69,7 @@ public enum ProjectorOptions {
 			LanguageRegistry.instance().addNameForObject(mach.item, "en_US",
 					" MFFS Projector Upgrade " + mach.displayName);
 
-			if (ModularForceFieldSystem.ic2found)
+			if (ModularForceFieldSystem.ic2Found)
 				RecipesFactory.addRecipe(mach.recipeic, 1, 1, null, mach.item);
 
 		}

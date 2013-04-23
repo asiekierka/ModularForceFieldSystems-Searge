@@ -19,8 +19,10 @@
  */
 package mods.mffs.common.block;
 
+import java.util.List;
 import java.util.Random;
 
+import mods.mffs.api.IFieldTeleporter;
 import mods.mffs.api.IForceFieldBlock;
 import mods.mffs.api.PointXYZ;
 import mods.mffs.common.ForceFieldBlockStack;
@@ -32,6 +34,9 @@ import mods.mffs.common.ModularForceFieldSystem;
 import mods.mffs.common.SecurityHelper;
 import mods.mffs.common.SecurityRight;
 import mods.mffs.common.WorldMap;
+import mods.mffs.common.WorldMap.ForceFieldWorld;
+import mods.mffs.common.item.ItemCardPowerLink;
+import mods.mffs.common.multitool.ItemDebugger;
 import mods.mffs.common.tileentity.TileEntityCapacitor;
 import mods.mffs.common.tileentity.TileEntityForceField;
 import mods.mffs.common.tileentity.TileEntityProjector;
@@ -41,9 +46,13 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -170,21 +179,223 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 						if (ffworldmap.getTyp() == 1) {
 							Projector
 									.consumePower(
-											ModularForceFieldSystem.forcefieldblockcost
-													* ModularForceFieldSystem.forcefieldblockcreatemodifier,
+											ModularForceFieldSystem.forceFieldBlockCost
+													* ModularForceFieldSystem.forceFieldBlockCreateModifier,
 											false);
 						} else {
 							Projector
 									.consumePower(
-											ModularForceFieldSystem.forcefieldblockcost
-													* ModularForceFieldSystem.forcefieldblockcreatemodifier
-													* ModularForceFieldSystem.forcefieldblockzappermodifier,
+											ModularForceFieldSystem.forceFieldBlockCost
+													* ModularForceFieldSystem.forceFieldBlockCreateModifier
+													* ModularForceFieldSystem.forceFieldBlockZapperModifier,
 											false);
 						}
 					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z,
+			EntityPlayer player, int par6, float par7, float par8, float par9) {
+
+		if (world.isRemote)
+			return false;
+
+		ItemStack stack = player.getCurrentEquippedItem();
+		if (stack == null)
+			return false;
+
+		Item item = stack.getItem();
+		if (!(item instanceof IFieldTeleporter))
+			return false;
+
+		ForceFieldWorld wff = WorldMap.getForceFieldWorld(world);
+
+		ForceFieldBlockStack ffworldmap = wff
+				.getForceFieldStackMap(new PointXYZ(x, y, z, world));
+		if (ffworldmap != null) {
+			int Sec_Gen_ID = -1;
+			int First_Gen_ID = ffworldmap.getGenratorID();
+			int First_Pro_ID = ffworldmap.getProjectorID();
+
+			TileEntityCapacitor generator = Linkgrid.getWorldMap(world)
+					.getCapacitor().get(First_Gen_ID);
+			TileEntityProjector projector = Linkgrid.getWorldMap(world)
+					.getProjektor().get(First_Pro_ID);
+
+			if (projector != null && generator != null) {
+
+				if (projector.isActive()) {
+					boolean passtrue = false;
+
+					switch (projector.getaccesstyp()) {
+					case 0:
+						passtrue = false;
+
+						String[] ops = ModularForceFieldSystem.Admin.split(";");
+						for (int i = 0; i <= ops.length - 1; i++) {
+							if (player.username.equalsIgnoreCase(ops[i]))
+								passtrue = true;
+						}
+
+						List<Slot> slots = player.inventoryContainer.inventorySlots;
+						for (Slot slot : slots) {
+							ItemStack playerstack = slot.getStack();
+							if (playerstack != null) {
+								if (playerstack.getItem() instanceof ItemDebugger) {
+									passtrue = true;
+									break;
+								}
+							}
+						}
+
+						break;
+					case 1:
+						passtrue = true;
+						break;
+					case 2:
+						passtrue = SecurityHelper.isAccessGranted(generator,
+								player, world, SecurityRight.FFB);
+						break;
+					case 3:
+						passtrue = SecurityHelper.isAccessGranted(projector,
+								player, world, SecurityRight.FFB);
+						break;
+
+					}
+
+					if (passtrue) {
+						int typ = 99;
+						int ymodi = 0;
+
+						int lm = MathHelper
+								.floor_double((player.rotationYaw * 4F) / 360F + 0.5D) & 3;
+						int i1 = Math.round(player.rotationPitch);
+
+						if (i1 >= 65) { // Facing 1
+							typ = 1;
+						} else if (i1 <= -65) { // Facing 0
+							typ = 0;
+						} else if (lm == 0) { // Facing 2
+							typ = 2;
+						} else if (lm == 1) { // Facing 5
+							typ = 5;
+						} else if (lm == 2) { // Facing 3
+							typ = 3;
+						} else if (lm == 3) { // Facing 4
+							typ = 4;
+						}
+
+						int counter = 0;
+						while (Sec_Gen_ID != 0) {
+							Sec_Gen_ID = wff.isExistForceFieldStackMap(x, y, z,
+									counter, typ, world);
+							if (Sec_Gen_ID != 0) {
+								counter++;
+							}
+						}
+
+						if (First_Gen_ID != wff.isExistForceFieldStackMap(x, y,
+								z, counter - 1, typ, world)) {
+							Functions.ChattoPlayer(player,
+									"[Field Security] Fail: access denied");
+							return false;
+						}
+
+						switch (typ) {
+						case 0:
+							y += counter;
+							ymodi = -1;
+							break;
+						case 1:
+							y -= counter;
+							ymodi = 1;
+							break;
+						case 2:
+							z += counter;
+							break;
+						case 3:
+							z -= counter;
+							break;
+						case 4:
+							x += counter;
+							break;
+						case 5:
+							x -= counter;
+							break;
+						}
+
+						Functions.ChattoPlayer(player,
+								"[Field Security] Success: access granted");
+
+						if (counter >= 0 && counter <= 5) {
+
+							if ((world.getBlockMaterial(x, y, z).isLiquid() || world
+									.isAirBlock(x, y, z))
+									&& (world.getBlockMaterial(x, y - ymodi, z)
+											.isLiquid() || world.isAirBlock(x,
+											y - ymodi, z))) {
+
+								if (y - ymodi <= 0) {
+									Functions
+											.ChattoPlayer(player,
+													"[Field Security] Fail: transmission into Void not allowed ");
+								} else {
+									IFieldTeleporter teleporter = (IFieldTeleporter) item;
+									if (teleporter
+											.canFieldTeleport(
+													player,
+													stack,
+													ModularForceFieldSystem.forceFieldTransportCost)) {
+										teleporter
+												.onFieldTeleportSuccess(
+														player,
+														stack,
+														ModularForceFieldSystem.forceFieldTransportCost);
+										player.setPositionAndUpdate(x + 0.5, y
+												- ymodi, z + 0.5);
+									} else {
+										teleporter
+												.onFieldTeleportFailed(
+														player,
+														stack,
+														ModularForceFieldSystem.forceFieldTransportCost);
+									}
+								}
+							} else {
+
+								Functions
+										.ChattoPlayer(player,
+												"[Field Security] Fail: detected obstacle ");
+							}
+						} else {
+
+							Functions
+									.ChattoPlayer(player,
+											"[Field Security] Fail: Field to Strong >= 5 Blocks");
+						}
+					} else {
+						{
+							Functions.ChattoPlayer(player,
+									"[Field Security] Fail: access denied");
+						}
+					}
+				}
+
+			} else {
+				if (projector != null)
+					if (projector.getStackInSlot(projector.getPowerlinkSlot()) != null)
+						if (!(projector.getStackInSlot(
+								projector.getPowerlinkSlot()).getItem() instanceof ItemCardPowerLink))
+							Functions
+									.ChattoPlayer(player,
+											"[Field Security] Fail: Projector Powersource not Support this activities");
+			}
+		}
+
+		return false;
 	}
 
 	@Override
@@ -198,7 +409,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 				.getForceFieldWorld(par1World).getForceFieldStackMap(
 						new PointXYZ(par2, par3, par4, par1World).hashCode());
 
-		if (ffworldmap != null && !ModularForceFieldSystem.adventuremap) {
+		if (ffworldmap != null && !ModularForceFieldSystem.adventureMapMode) {
 
 			TileEntityProjector projector = Linkgrid.getWorldMap(par1World)
 					.getProjektor().get(ffworldmap.getProjectorID());
@@ -381,29 +592,6 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 		return icons[0];
 	}
 
-	/*
-	 * @Override public int getBlockTexture(IBlockAccess iblockaccess, int i,
-	 * int j, int k, int l) { TileEntity tileEntity =
-	 * iblockaccess.getBlockTileEntity(i, j, k);
-	 * 
-	 * if (tileEntity!=null && tileEntity instanceof TileEntityForceField ) {
-	 * if(l<0 ||l >5) return 0;
-	 * 
-	 * return ((TileEntityForceField)tileEntity).getTexturid(l); } else { if
-	 * (iblockaccess.getBlockMetadata(i, j, k) ==
-	 * ForceFieldTyps.Camouflage.ordinal()) { return 180; } else {
-	 * if(iblockaccess.getBlockMetadata(i, j, k) ==
-	 * ForceFieldTyps.Default.ordinal()) return 0;
-	 * if(iblockaccess.getBlockMetadata(i, j, k) ==
-	 * ForceFieldTyps.Zapper.ordinal()) return 1;
-	 * if(iblockaccess.getBlockMetadata(i, j, k) ==
-	 * ForceFieldTyps.Area.ordinal()) return 2;
-	 * if(iblockaccess.getBlockMetadata(i, j, k) ==
-	 * ForceFieldTyps.Containment.ordinal()) return 3;
-	 * 
-	 * return 5; } } }
-	 */
-
 	@Override
 	public float getExplosionResistance(Entity entity, World world, int i,
 			int j, int k, double d, double d1, double d2) {
@@ -417,8 +605,8 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 			if (tileEntity instanceof TileEntityProjector && tileEntity != null) {
 				((TileEntityProjector) tileEntity)
 						.consumePower(
-								ModularForceFieldSystem.forcefieldblockcost
-										* ModularForceFieldSystem.forcefieldblockcreatemodifier,
+								ModularForceFieldSystem.forceFieldBlockCost
+										* ModularForceFieldSystem.forceFieldBlockCreateModifier,
 								false);
 			}
 		}
@@ -488,7 +676,7 @@ public class BlockForceField extends BlockContainer implements IForceFieldBlock 
 
 	@Override
 	public void weakenForceField(World world, int x, int y, int z) {
-		if (ModularForceFieldSystem.influencedbyothermods) {
+		if (ModularForceFieldSystem.influencedByOtherMods) {
 			world.setBlock(x, y, z, 0, 0, 2);
 		}
 	}

@@ -193,7 +193,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 
 	public void ProjektorBurnout() {
 		this.setBurnedOut(true);
-		dropplugins();
+		dropPlugins();
 	}
 
 	public boolean isBurnout() {
@@ -259,7 +259,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 	// Start Slot / Upgrades System
 
 	@Override
-	public void dropplugins() {
+	public void dropPlugins() {
 		for (int a = 0; a < this.ProjektorItemStacks.length; a++) {
 			dropplugins(a, this);
 		}
@@ -702,14 +702,14 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 		int cost = 0;
 
 		if (init) {
-			cost = ModularForceFieldSystem.forcefieldblockcost
-					* ModularForceFieldSystem.forcefieldblockcreatemodifier;
+			cost = ModularForceFieldSystem.forceFieldBlockCost
+					* ModularForceFieldSystem.forceFieldBlockCreateModifier;
 		} else {
-			cost = ModularForceFieldSystem.forcefieldblockcost;
+			cost = ModularForceFieldSystem.forceFieldBlockCost;
 		}
 
 		if (getforcefieldblock_meta() == 1) {
-			cost *= ModularForceFieldSystem.forcefieldblockzappermodifier;
+			cost *= ModularForceFieldSystem.forceFieldBlockZapperModifier;
 		}
 
 		consumePower(cost * field_def.size(), false);
@@ -718,7 +718,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 
 		for (PointXYZ pnt : field_def) {
 
-			if (blockcounter >= ModularForceFieldSystem.forcefieldmaxblockpeerTick) {
+			if (blockcounter >= ModularForceFieldSystem.forceFieldMaxBlocksPerTick) {
 				break;
 			}
 			ForceFieldBlockStack ffb = WorldMap.getForceFieldWorld(worldObj)
@@ -841,7 +841,7 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 	public int Forcepowerneed(int factor) {
 		if (!field_def.isEmpty()) {
 			return field_def.size()
-					* ModularForceFieldSystem.forcefieldblockcost;
+					* ModularForceFieldSystem.forceFieldBlockCost;
 		}
 		int forcepower = 0;
 		int blocks = 0;
@@ -877,9 +877,9 @@ public class TileEntityProjector extends TileEntityFEPoweredMachine implements
 			break;
 		}
 
-		forcepower = blocks * ModularForceFieldSystem.forcefieldblockcost;
+		forcepower = blocks * ModularForceFieldSystem.forceFieldBlockCost;
 		if (factor != 1) {
-			forcepower = (forcepower * ModularForceFieldSystem.forcefieldblockcreatemodifier)
+			forcepower = (forcepower * ModularForceFieldSystem.forceFieldBlockCreateModifier)
 					+ (forcepower * 5);
 		}
 		return forcepower;

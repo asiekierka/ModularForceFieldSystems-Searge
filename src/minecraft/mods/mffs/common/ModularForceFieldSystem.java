@@ -60,7 +60,7 @@ import mods.mffs.common.modules.ItemProjectorModuleWall;
 import mods.mffs.common.modules.ItemProjectorModulediagonallyWall;
 import mods.mffs.common.multitool.ItemDebugger;
 import mods.mffs.common.multitool.ItemFieldtransporter;
-import mods.mffs.common.multitool.ItemManuelBook;
+import mods.mffs.common.multitool.ItemManualBook;
 import mods.mffs.common.multitool.ItemPersonalIDWriter;
 import mods.mffs.common.multitool.ItemSwitch;
 import mods.mffs.common.multitool.ItemWrench;
@@ -179,22 +179,22 @@ public class ModularForceFieldSystem {
 
 	public static int MonazitOreworldamount = 4;
 
-	public static int forcefieldblockcost;
-	public static int forcefieldblockcreatemodifier;
-	public static int forcefieldblockzappermodifier;
+	public static int forceFieldBlockCost;
+	public static int forceFieldBlockCreateModifier;
+	public static int forceFieldBlockZapperModifier;
 
-	public static int forcefieldtransportcost;
-	public static int forcefieldmaxblockpeerTick;
+	public static int forceFieldTransportCost;
+	public static int forceFieldMaxBlocksPerTick;
 
-	public static Boolean forcefieldremoveonlywaterandlava;
+	public static Boolean forceFieldRemoveOnlyWaterAndLava;
 
-	public static Boolean influencedbyothermods;
-	public static Boolean adventuremap;
+	public static Boolean influencedByOtherMods;
+	public static Boolean adventureMapMode;
 
-	public static Boolean ic2found = false;
-	public static Boolean ee3found = false;
-	public static Boolean buildcraftfound = false;
-	public static Boolean ThermalExpansionfound = false;
+	public static Boolean ic2Found = false;
+	public static Boolean ee3Found = false;
+	public static Boolean buildcraftFound = false;
+	public static Boolean thermalExpansionFound = false;
 
 	public static boolean enableIC2Recipes = true;
 	public static boolean enableBC3Recipes = true;
@@ -203,11 +203,11 @@ public class ModularForceFieldSystem {
 	public static int graphicsStyle = 1;
 
 	public static boolean showZapperParticles;
-	public static boolean uumatterForcicium;
-	public static boolean chunckloader = true;
+	public static boolean enableUUMatterForcicium;
+	public static boolean enableChunkLoader = true;
 
-	public static int ForceciumWorkCylce;
-	public static int ForceciumCellWorkCylce;
+	public static int ForciciumWorkCycle;
+	public static int ForciciumCellWorkCycle;
 	public static int ExtractorPassForceEnergyGenerate;
 
 	public static int DefenceStationKillForceEnergy;
@@ -219,9 +219,9 @@ public class ModularForceFieldSystem {
 	public static Configuration MFFSconfig;
 
 	public static String Admin;
-	public static String Versionlocal;
-	public static String Versionremote;
-	public static String VersionremoteUrl;
+	public static String VersionLocal;
+	public static String VersionRemote;
+	public static String VersionRemoteURL;
 
 	@SidedProxy(clientSide = "mods.mffs.client.ClientProxy", serverSide = "mods.mffs.common.CommonProxy")
 	public static CommonProxy proxy;
@@ -240,7 +240,7 @@ public class ModularForceFieldSystem {
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(proxy);
 
-		if (ee3found)
+		if (ee3Found)
 			MinecraftForge.EVENT_BUS.register(new EE3Event());
 
 		TickRegistry.registerScheduledTickHandler(
@@ -258,12 +258,12 @@ public class ModularForceFieldSystem {
 					.get(Configuration.CATEGORY_GENERAL, "VersionremoteUrl",
 							"https://bitbucket.org/SeargeDP/modularforcefieldsystem/downloads/versioninfo");
 			prop_VersionremoteUrl.comment = "URL to MFFS VersionInfo file";
-			VersionremoteUrl = prop_VersionremoteUrl.getString();
+			VersionRemoteURL = prop_VersionremoteUrl.getString();
 
 			Property chunckloader_prop = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "Chunkloader", true);
 			chunckloader_prop.comment = "Set this to false to turn off the MFFS Chuncloader ability";
-			chunckloader = chunckloader_prop.getBoolean(true);
+			enableChunkLoader = chunckloader_prop.getBoolean(true);
 
 			Property DefSationNPCScannoti = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL,
@@ -281,7 +281,7 @@ public class ModularForceFieldSystem {
 			Property uumatterForciciumprop = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "uumatterForcicium", true);
 			uumatterForciciumprop.comment = "Add IC2 UU-Matter Recipes for Forcicium";
-			uumatterForcicium = uumatterForciciumprop.getBoolean(true);
+			enableUUMatterForcicium = uumatterForciciumprop.getBoolean(true);
 
 			Property monazitWorldAmount = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "MonazitOreWorldGen", 4);
@@ -297,48 +297,48 @@ public class ModularForceFieldSystem {
 					Configuration.CATEGORY_GENERAL, "influencedbyothermods",
 					true);
 			influencedByOther.comment = "Should MFFS be influenced by other mods. e.g. ICBM's EMP";
-			influencedbyothermods = influencedByOther.getBoolean(true);
+			influencedByOtherMods = influencedByOther.getBoolean(true);
 
 			Property ffRemoveWaterLavaOnly = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL,
 					"forcefieldremoveonlywaterandlava", false);
 			ffRemoveWaterLavaOnly.comment = "Should forcefields only remove water and lava when sponge is enabled?";
-			forcefieldremoveonlywaterandlava = ffRemoveWaterLavaOnly
+			forceFieldRemoveOnlyWaterAndLava = ffRemoveWaterLavaOnly
 					.getBoolean(false);
 
 			Property feTransportCost = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "forcefieldtransportcost",
 					10000);
 			feTransportCost.comment = "How much FE should it cost to transport through a field?";
-			forcefieldtransportcost = feTransportCost.getInt(10000);
+			forceFieldTransportCost = feTransportCost.getInt(10000);
 
 			Property feFieldBlockCost = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "forcefieldblockcost", 1);
 			feFieldBlockCost.comment = "How much upkeep FE cost a default ForceFieldblock per second";
-			forcefieldblockcost = feFieldBlockCost.getInt(1);
+			forceFieldBlockCost = feFieldBlockCost.getInt(1);
 
 			Property BlockCreateMod = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL,
 					"forcefieldblockcreatemodifier", 10);
 			BlockCreateMod.comment = "Energy need for create a ForceFieldblock (forcefieldblockcost*forcefieldblockcreatemodifier)";
-			forcefieldblockcreatemodifier = BlockCreateMod.getInt(10);
+			forceFieldBlockCreateModifier = BlockCreateMod.getInt(10);
 
 			Property ffZapperMod = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL,
 					"forcefieldblockzappermodifier", 2);
 			ffZapperMod.comment = "Energy need multiplier used when the zapper option is installed";
-			forcefieldblockzappermodifier = ffZapperMod.getInt(2);
+			forceFieldBlockZapperModifier = ffZapperMod.getInt(2);
 
 			Property maxFFGenPerTick = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL,
 					"forcefieldmaxblockpeerTick", 5000);
 			maxFFGenPerTick.comment = "How many field blocks can be generated per tick?";
-			forcefieldmaxblockpeerTick = maxFFGenPerTick.getInt(5000);
+			forceFieldMaxBlocksPerTick = maxFFGenPerTick.getInt(5000);
 
 			Property fcWorkCycle = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "ForceciumWorkCylce", 250);
 			fcWorkCycle.comment = "WorkCycle amount of Forcecium inside a Extractor";
-			ForceciumWorkCylce = fcWorkCycle.getInt(250);
+			ForciciumWorkCycle = fcWorkCycle.getInt(250);
 
 			Property graphics = MFFSconfig.get(Configuration.CATEGORY_GENERAL,
 					"GraphicStyle", 1);
@@ -349,7 +349,7 @@ public class ModularForceFieldSystem {
 					Configuration.CATEGORY_GENERAL, "ForceciumCellWorkCylce",
 					230);
 			fcCellWorkCycle.comment = "WorkCycle amount of Forcecium Cell inside a Extractor";
-			ForceciumCellWorkCylce = fcCellWorkCycle.getInt(230);
+			ForciciumCellWorkCycle = fcCellWorkCycle.getInt(230);
 
 			Property extractorPassFEGen = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL,
@@ -380,7 +380,7 @@ public class ModularForceFieldSystem {
 			Property Adventuremap = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "adventuremap", false);
 			Adventuremap.comment = "Set MFFS to AdventureMap Mode Extractor need no Forcecium and ForceField have no click damage";
-			adventuremap = Adventuremap.getBoolean(false);
+			adventureMapMode = Adventuremap.getBoolean(false);
 
 			Property ic2Recipes = MFFSconfig.get(
 					Configuration.CATEGORY_GENERAL, "enableIC2Recipes", true);
@@ -647,7 +647,7 @@ public class ModularForceFieldSystem {
 					DefaultProps.item_MTDebugger_ID).getInt(
 					DefaultProps.item_MTDebugger_ID))
 					.setUnlocalizedName("itemMFDdebugger");
-			MFFSitemManuelBook = new ItemManuelBook(MFFSconfig.getItem(
+			MFFSitemManuelBook = new ItemManualBook(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemManuelBook",
 					DefaultProps.item_MTManual_ID).getInt(
 					DefaultProps.item_MTManual_ID))
@@ -680,8 +680,8 @@ public class ModularForceFieldSystem {
 			MFFSconfig.save();
 		}
 
-		Versionlocal = Versioninfo.curentversion();
-		Versionremote = Versioninfo.newestversion();
+		VersionLocal = Versioninfo.curentversion();
+		VersionRemote = Versioninfo.newestversion();
 	}
 
 	@Init
@@ -698,7 +698,6 @@ public class ModularForceFieldSystem {
 
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
-		proxy.registerRenderInformation();
 		proxy.registerTileEntitySpecialRenderer();
 
 		GameRegistry.registerWorldGenerator(new MFFSWorldGenerator());
@@ -818,7 +817,7 @@ public class ModularForceFieldSystem {
 		try {
 
 			Class.forName("buildcraft.core.Version");
-			buildcraftfound = true;
+			buildcraftFound = true;
 
 		} catch (Throwable t) {
 			System.out
@@ -835,7 +834,7 @@ public class ModularForceFieldSystem {
 		try {
 
 			Class.forName("thermalexpansion.ThermalExpansion");
-			ThermalExpansionfound = true;
+			thermalExpansionFound = true;
 
 		} catch (Throwable t) {
 			System.out
@@ -851,7 +850,7 @@ public class ModularForceFieldSystem {
 		try {
 
 			Class.forName("com.pahimar.ee3.event.ActionRequestEvent");
-			ee3found = true;
+			ee3Found = true;
 
 		} catch (Throwable t) {
 			System.out
@@ -867,7 +866,7 @@ public class ModularForceFieldSystem {
 		try {
 
 			Class.forName("ic2.core.IC2");
-			ic2found = true;
+			ic2Found = true;
 
 		} catch (Throwable t) {
 			System.out

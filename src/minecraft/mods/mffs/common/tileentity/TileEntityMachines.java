@@ -29,11 +29,11 @@ import java.util.Random;
 import mods.mffs.api.IMFFS_Wrench;
 import mods.mffs.api.ISwitchabel;
 import mods.mffs.api.PointXYZ;
+import mods.mffs.common.IModularProjector.Slots;
 import mods.mffs.common.Linkgrid;
 import mods.mffs.common.ModularForceFieldSystem;
 import mods.mffs.common.SecurityHelper;
 import mods.mffs.common.SecurityRight;
-import mods.mffs.common.IModularProjector.Slots;
 import mods.mffs.common.item.ItemCardDataLink;
 import mods.mffs.common.item.ItemCardPersonalID;
 import mods.mffs.common.item.ItemCardPowerLink;
@@ -81,7 +81,6 @@ public abstract class TileEntityMachines extends TileEntity implements
 		ticker = 0;
 		DeviceID = 0;
 		DeviceName = "Please set Name";
-
 	}
 
 	public int getPercentageCapacity() {
@@ -158,7 +157,7 @@ public abstract class TileEntityMachines extends TileEntity implements
 	public void init() {
 
 		DeviceID = Linkgrid.getWorldMap(worldObj).refreshID(this, DeviceID);
-		if (ModularForceFieldSystem.chunckloader)
+		if (ModularForceFieldSystem.enableChunkLoader)
 			registerChunkLoading();
 		init = false;
 	}
@@ -234,7 +233,7 @@ public abstract class TileEntityMachines extends TileEntity implements
 		return new PointXYZ(this.xCoord, this.yCoord, this.zCoord, worldObj);
 	}
 
-	public abstract void dropplugins();
+	public abstract void dropPlugins();
 
 	public void dropplugins(int slot, IInventory inventory) {
 
@@ -249,13 +248,12 @@ public abstract class TileEntityMachines extends TileEntity implements
 					|| inventory.getStackInSlot(slot).getItem() instanceof ItemCardPersonalID
 					|| inventory.getStackInSlot(slot).getItem() instanceof ItemCardDataLink) {
 				worldObj.spawnEntityInWorld(new EntityItem(worldObj,
-						this.xCoord, this.yCoord,
-						this.zCoord, new ItemStack(
+						this.xCoord, this.yCoord, this.zCoord, new ItemStack(
 								ModularForceFieldSystem.MFFSitemcardempty, 1)));
 			} else {
 				worldObj.spawnEntityInWorld(new EntityItem(worldObj,
-						this.xCoord, this.yCoord,
-						this.zCoord, inventory.getStackInSlot(slot)));
+						this.xCoord, this.yCoord, this.zCoord, inventory
+								.getStackInSlot(slot)));
 			}
 
 			inventory.setInventorySlotContents(slot, null);
@@ -419,8 +417,8 @@ public abstract class TileEntityMachines extends TileEntity implements
 		if (worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this) {
 			return false;
 		} else {
-			return entityplayer.getDistance(xCoord + 0.5D,
-					yCoord + 0.5D, zCoord + 0.5D) <= 64D;
+			return entityplayer.getDistance(xCoord + 0.5D, yCoord + 0.5D,
+					zCoord + 0.5D) <= 64D;
 		}
 	}
 

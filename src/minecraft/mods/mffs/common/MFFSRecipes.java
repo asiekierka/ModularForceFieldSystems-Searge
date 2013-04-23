@@ -75,20 +75,20 @@ public class MFFSRecipes {
 				ModularForceFieldSystem.MFFSMonazitOre.blockID, new ItemStack(
 						ModularForceFieldSystem.MFFSitemForcicium, 4), 0.5F);
 
-		if (ModularForceFieldSystem.ThermalExpansionfound) {
+		if (ModularForceFieldSystem.thermalExpansionFound) {
 			CraftingManagers.pulverizerManager.addRecipe(100, new ItemStack(
 					ModularForceFieldSystem.MFFSMonazitOre, 1), new ItemStack(
 					ModularForceFieldSystem.MFFSitemForcicium, 8), false);
 		}
 
-		if (ModularForceFieldSystem.ic2found) {
+		if (ModularForceFieldSystem.ic2Found) {
 			Recipes.macerator.addRecipe(new ItemStack(
 					ModularForceFieldSystem.MFFSMonazitOre, 1), new ItemStack(
 					ModularForceFieldSystem.MFFSitemForcicium, 8));
 			Recipes.matterAmplifier.addRecipe(new ItemStack(
 					ModularForceFieldSystem.MFFSitemForcicium, 1), 5000);
 
-			if (ModularForceFieldSystem.uumatterForcicium)
+			if (ModularForceFieldSystem.enableUUMatterForcicium)
 				Ic2Recipes
 						.addCraftingRecipe(
 								new ItemStack(

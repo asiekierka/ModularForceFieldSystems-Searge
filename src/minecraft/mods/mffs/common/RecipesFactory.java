@@ -88,7 +88,7 @@ public final class RecipesFactory {
 			return true;
 
 		case 1: // IndustrialCraft 2
-			if (ModularForceFieldSystem.ic2found
+			if (ModularForceFieldSystem.ic2Found
 					&& ModularForceFieldSystem.enableIC2Recipes) {
 
 				GameRegistry

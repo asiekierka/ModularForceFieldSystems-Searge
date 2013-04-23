@@ -69,7 +69,7 @@ public class TileEntityControlSystem extends TileEntityMachines implements
 	}
 
 	@Override
-	public void dropplugins() {
+	public void dropPlugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
 			dropplugins(a, this);
 		}

@@ -123,7 +123,7 @@ public enum MFFSMaschines {
 			GameRegistry.registerBlock(mach.block, mach.inCodeName);
 			GameRegistry.registerTileEntity(mach.clazz, mach.inCodeName);
 
-			if (ModularForceFieldSystem.ic2found)
+			if (ModularForceFieldSystem.ic2Found)
 				RecipesFactory.addRecipe(mach.recipeic, 1, 1, mach.block, null);
 
 			LanguageRegistry.instance().addNameForObject(mach.block, "en_US",

@@ -106,7 +106,7 @@ public class GuiExtractor extends GuiContainer {
 		drawTexturedModalRect(w + 49, k + 89, 176, 0, Workpowerslider, 6);
 
 		int WorkCylce = (32 * Extractor.getWorkCylce())
-				/ ModularForceFieldSystem.ForceciumWorkCylce;
+				/ ModularForceFieldSystem.ForciciumWorkCycle;
 
 		drawTexturedModalRect(w + 73, k + 50, 179, 81, WorkCylce, 32);
 

@@ -188,7 +188,7 @@ public class TileEntityAreaDefenseStation extends TileEntityFEPoweredMachine
 	}
 
 	@Override
-	public void dropplugins() {
+	public void dropPlugins() {
 		for (int a = 0; a < this.Inventory.length; a++) {
 			dropplugins(a, this);
 		}

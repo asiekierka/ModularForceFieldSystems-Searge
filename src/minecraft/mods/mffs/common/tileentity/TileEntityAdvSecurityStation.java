@@ -58,9 +58,9 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 	}
 
 	@Override
-	public void dropplugins() {
+	public void dropPlugins() {
 		for (int a = 0; a < this.inventory.length; a++) {
-			dropplugins(a);
+			dropPlugins(a);
 		}
 	}
 
@@ -75,7 +75,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		}
 	}
 
-	public void dropplugins(int slot) {
+	public void dropPlugins(int slot) {
 		if (getStackInSlot(slot) != null) {
 			if (getStackInSlot(slot).getItem() instanceof ItemCardSecurityLink
 					|| getStackInSlot(slot).getItem() instanceof ItemCardPowerLink
@@ -155,7 +155,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 						setActive(false);
 					}
 				}
-				checkslots();
+				checkSlots();
 				this.setTicker((short) 0);
 			}
 			this.setTicker((short) (this.getTicker() + 1));
@@ -164,7 +164,7 @@ public class TileEntityAdvSecurityStation extends TileEntityMachines {
 		super.updateEntity();
 	}
 
-	public void checkslots() {
+	public void checkSlots() {
 		if (getStackInSlot(0) != null) {
 			if (getStackInSlot(0).getItem() == ModularForceFieldSystem.MFFSItemIDCard) {
 				ItemCardPersonalID Card = (ItemCardPersonalID) getStackInSlot(0)

@@ -110,9 +110,9 @@ public class GuiManuelScreen extends GuiContainer {
 		case 2:
 			fontRenderer.drawString("Versions Check", 90, 45, 0xFFFFFF);
 			fontRenderer.drawString("Current Version: "
-					+ ModularForceFieldSystem.Versionlocal, 20, 65, 0xFFFFFF);
+					+ ModularForceFieldSystem.VersionLocal, 20, 65, 0xFFFFFF);
 			fontRenderer.drawString("Newest Version : "
-					+ ModularForceFieldSystem.Versionremote, 20, 75, 0xFFFFFF);
+					+ ModularForceFieldSystem.VersionRemote, 20, 75, 0xFFFFFF);
 			break;
 		case 3:
 			renderItem.renderItemIntoGUI(mc.fontRenderer, mc.renderEngine,

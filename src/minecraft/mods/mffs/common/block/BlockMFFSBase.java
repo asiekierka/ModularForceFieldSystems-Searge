@@ -143,7 +143,7 @@ public abstract class BlockMFFSBase extends BlockContainer {
 	public void breakBlock(World world, int i, int j, int k, int a, int b) {
 		TileEntity tileEntity = world.getBlockTileEntity(i, j, k);
 		if (tileEntity instanceof TileEntityMachines)
-			((TileEntityMachines) tileEntity).dropplugins();
+			((TileEntityMachines) tileEntity).dropPlugins();
 		world.removeBlockTileEntity(i, j, k);
 	}
 
