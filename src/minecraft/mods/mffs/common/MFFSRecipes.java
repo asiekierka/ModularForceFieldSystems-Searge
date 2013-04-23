@@ -23,16 +23,50 @@
 
 package mods.mffs.common;
 
-import thermalexpansion.api.crafting.CraftingManagers;
 import ic2.api.Ic2Recipes;
 import ic2.api.Items;
 import ic2.api.recipe.Recipes;
+
+import java.lang.reflect.Method;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.OreDictionary;
+import thermalexpansion.api.crafting.CraftingManagers;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class MFFSRecipes {
+
+	public static void AddIC2Recipes() {
+		Method addMaceratorRecipe = null;
+		Method addMatterAmplifier = null;
+
+		try {
+			// Look for the old (289 and previous) Add Macerator Recipe method.
+			addMaceratorRecipe = Ic2Recipes.class.getMethod(
+					"addMaceratorRecipe", ItemStack.class, ItemStack.class);
+			addMaceratorRecipe.invoke(null, new ItemStack(
+					ModularForceFieldSystem.MFFSMonazitOre, 1), new ItemStack(
+					ModularForceFieldSystem.MFFSitemForcicium, 8));
+
+			addMatterAmplifier = Ic2Recipes.class.getMethod(
+					"addMatterAmplifier", ItemStack.class, int.class);
+			addMatterAmplifier.invoke(null, new ItemStack(
+					ModularForceFieldSystem.MFFSitemForcicium, 1), 5000);
+
+			System.out
+					.println("[ModularForceFieldSystem] Detected pre-290 version of IndustrialCraft 2.");
+		} catch (Exception ex) {
+			Recipes.macerator.addRecipe(new ItemStack(
+					ModularForceFieldSystem.MFFSMonazitOre, 1), new ItemStack(
+					ModularForceFieldSystem.MFFSitemForcicium, 8));
+			Recipes.matterAmplifier.addRecipe(new ItemStack(
+					ModularForceFieldSystem.MFFSitemForcicium, 1), 5000);
+
+			System.out
+					.println("[ModularForceFieldSystem] Detected post-290 version of IndustrialCraft 2.");
+		}
+	}
 
 	public static void init() {
 
@@ -82,11 +116,7 @@ public class MFFSRecipes {
 		}
 
 		if (ModularForceFieldSystem.ic2Found) {
-			Recipes.macerator.addRecipe(new ItemStack(
-					ModularForceFieldSystem.MFFSMonazitOre, 1), new ItemStack(
-					ModularForceFieldSystem.MFFSitemForcicium, 8));
-			Recipes.matterAmplifier.addRecipe(new ItemStack(
-					ModularForceFieldSystem.MFFSitemForcicium, 1), 5000);
+			AddIC2Recipes();
 
 			if (ModularForceFieldSystem.enableUUMatterForcicium)
 				Ic2Recipes
