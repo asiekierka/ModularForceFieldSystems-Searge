@@ -20,12 +20,7 @@
 
 package mods.mffs.common.tileentity;
 
-import ic2.api.IWrenchable;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
+import ic2.api.tile.IWrenchable;
 import mods.mffs.api.IMFFS_Wrench;
 import mods.mffs.api.ISwitchabel;
 import mods.mffs.api.PointXYZ;
@@ -56,6 +51,10 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.ISidedInventory;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public abstract class TileEntityMachines extends TileEntity implements
 		INetworkHandlerListener, INetworkHandlerEventListener, ISidedInventory,

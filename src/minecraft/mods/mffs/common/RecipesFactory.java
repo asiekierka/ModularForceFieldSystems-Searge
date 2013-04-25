@@ -23,11 +23,11 @@
 
 package mods.mffs.common;
 
-import ic2.api.Items;
+import cpw.mods.fml.common.registry.GameRegistry;
+import ic2.api.item.Items;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class RecipesFactory {
 

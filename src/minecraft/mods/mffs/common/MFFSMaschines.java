@@ -23,12 +23,12 @@
 
 package mods.mffs.common;
 
-import ic2.api.ExplosionWhitelist;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import ic2.api.tile.ExplosionWhitelist;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public enum MFFSMaschines {
 

@@ -20,7 +20,8 @@
 
 package mods.mffs.common.multitool;
 
-import ic2.api.IWrenchable;
+import buildcraft.api.tools.IToolWrench;
+import ic2.api.tile.IWrenchable;
 import mods.mffs.api.IMFFS_Wrench;
 import mods.mffs.common.Functions;
 import mods.mffs.common.tileentity.TileEntityAdvSecurityStation;
@@ -35,7 +36,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import buildcraft.api.tools.IToolWrench;
 
 public class ItemWrench extends ItemMultitool implements IToolWrench,
 		IToolCrowbar {
