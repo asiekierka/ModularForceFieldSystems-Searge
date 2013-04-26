@@ -18,7 +18,8 @@ public class LocalizationManager {
 	private static final String LANG_RESOURCE_LOCATION = "/mods/mffs/lang/";
 
 	private static String[] localeFiles = new String[] {
-			LANG_RESOURCE_LOCATION + "en_US.xml"
+			LANG_RESOURCE_LOCATION + "en_US.xml",
+			LANG_RESOURCE_LOCATION + "de_DE.xml"
 	};
 
 	/***
