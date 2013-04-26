@@ -12,7 +12,6 @@ import mods.mffs.common.modules.ItemProjectorModuleDeflector;
 import mods.mffs.common.modules.ItemProjectorModuleSphere;
 import mods.mffs.common.modules.ItemProjectorModuleTube;
 import mods.mffs.common.modules.ItemProjectorModuleWall;
-import mods.mffs.common.modules.ItemProjectorModulediagonallyWall;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,22 +46,22 @@ public abstract class ItemProjectorOptionBase extends Item {
 			info.add("compatible with:");
 
 			if (ItemProjectorModuleWall.supportsOption(this))
-				info.add(ProjectorTyp.getdisplayName(ProjectorTyp.wall));
+				info.add(ProjectorTyp.getDisplayName(ProjectorTyp.wall));
 			if (ItemProjectorModuleWall.supportsOption(this))
 				info.add(ProjectorTyp
-						.getdisplayName(ProjectorTyp.diagonallywall));
+						.getDisplayName(ProjectorTyp.diagonallywall));
 			if (ItemProjectorModuleDeflector.supportsOption(this))
-				info.add(ProjectorTyp.getdisplayName(ProjectorTyp.deflector));
+				info.add(ProjectorTyp.getDisplayName(ProjectorTyp.deflector));
 			if (ItemProjectorModuleTube.supportsOption(this))
-				info.add(ProjectorTyp.getdisplayName(ProjectorTyp.tube));
+				info.add(ProjectorTyp.getDisplayName(ProjectorTyp.tube));
 			if (ItemProjectorModuleSphere.supportsOption(this))
-				info.add(ProjectorTyp.getdisplayName(ProjectorTyp.sphere));
+				info.add(ProjectorTyp.getDisplayName(ProjectorTyp.sphere));
 			if (ItemProjectorModuleCube.supportsOption(this))
-				info.add(ProjectorTyp.getdisplayName(ProjectorTyp.cube));
+				info.add(ProjectorTyp.getDisplayName(ProjectorTyp.cube));
 			if (ItemProjectorModuleAdvCube.supportsOption(this))
-				info.add(ProjectorTyp.getdisplayName(ProjectorTyp.AdvCube));
+				info.add(ProjectorTyp.getDisplayName(ProjectorTyp.AdvCube));
 			if (ItemProjectorModuleContainment.supportsOption(this))
-				info.add(ProjectorTyp.getdisplayName(ProjectorTyp.containment));
+				info.add(ProjectorTyp.getDisplayName(ProjectorTyp.containment));
 
 		} else {
 			info.add("compatible with: (Hold Shift)");

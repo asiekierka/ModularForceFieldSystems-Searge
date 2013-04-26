@@ -1,5 +1,6 @@
 syntax: glob
 
+.idea/*
 .git/*
 bin/*
 conf/*
@@ -9,6 +10,7 @@ forge/*
 jars/*
 lib/*
 logs/*
+out/*
 reobf/*
 runtime/*
 temp/*

@@ -23,11 +23,10 @@
 
 package mods.mffs.common;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public enum ProjectorTyp {
 
@@ -41,9 +40,9 @@ public enum ProjectorTyp {
 			ModularForceFieldSystem.MFFSProjectorTypsphere, false), containment(
 			6, "Containment", "BBBBABBBB",
 			ModularForceFieldSystem.MFFSProjectorTypcontainment, false), AdvCube(
-			7, "Adv.Cube", "AAAACAAAA",
+			7, "Adv. Cube", "AAAACAAAA",
 			ModularForceFieldSystem.MFFSProjectorTypAdvCube, false), diagonallywall(
-			8, "diagonal Wall", "A A B A A",
+			8, "Diagonal Wall", "A A B A A",
 			ModularForceFieldSystem.MFFSProjectorTypdiagowall, true);
 
 	public String displayName;
@@ -75,18 +74,10 @@ public enum ProjectorTyp {
 
 		for (ProjectorTyp mach : ProjectorTyp.values()) {
 			generateRecipesFor(mach);
-			addNameForObject(mach);
 		}
 	}
 
-	public static void addNameForObject(ProjectorTyp mach) {
-
-		LanguageRegistry.instance().addNameForObject(mach.item, "en_US",
-				" MFFS Projector Module  " + mach.displayName);
-
-	}
-
-	public static String getdisplayName(ProjectorTyp mach) {
+	public static String getDisplayName(ProjectorTyp mach) {
 
 		return "MFFS Projector Module  " + mach.displayName;
 	}

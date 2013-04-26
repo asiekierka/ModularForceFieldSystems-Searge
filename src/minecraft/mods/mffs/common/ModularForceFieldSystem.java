@@ -20,59 +20,29 @@
 
 package mods.mffs.common;
 
-import java.util.List;
-import java.util.logging.Level;
-
-import mods.mffs.common.block.BlockAdvSecurtyStation;
-import mods.mffs.common.block.BlockAreaDefenseStation;
-import mods.mffs.common.block.BlockCapacitor;
-import mods.mffs.common.block.BlockControlSystem;
-import mods.mffs.common.block.BlockConverter;
-import mods.mffs.common.block.BlockExtractor;
-import mods.mffs.common.block.BlockForceField;
-import mods.mffs.common.block.BlockMonazitOre;
-import mods.mffs.common.block.BlockProjector;
-import mods.mffs.common.block.BlockSecurtyStorage;
+import com.google.common.collect.Lists;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.PostInit;
+import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
+import mods.mffs.common.block.*;
 import mods.mffs.common.event.EE3Event;
-import mods.mffs.common.item.ItemAccessCard;
-import mods.mffs.common.item.ItemCapacitorUpgradeCapacity;
-import mods.mffs.common.item.ItemCapacitorUpgradeRange;
-import mods.mffs.common.item.ItemCardDataLink;
-import mods.mffs.common.item.ItemCardEmpty;
-import mods.mffs.common.item.ItemCardPersonalID;
-import mods.mffs.common.item.ItemCardPower;
-import mods.mffs.common.item.ItemCardPowerLink;
-import mods.mffs.common.item.ItemCardSecurityLink;
-import mods.mffs.common.item.ItemExtractorUpgradeBooster;
-import mods.mffs.common.item.ItemForcePowerCrystal;
-import mods.mffs.common.item.ItemForcicium;
-import mods.mffs.common.item.ItemForcicumCell;
-import mods.mffs.common.item.ItemProjectorFieldModulatorDistance;
-import mods.mffs.common.item.ItemProjectorFieldModulatorStrength;
-import mods.mffs.common.item.ItemProjectorFocusMatrix;
-import mods.mffs.common.modules.ItemProjectorModuleAdvCube;
-import mods.mffs.common.modules.ItemProjectorModuleContainment;
-import mods.mffs.common.modules.ItemProjectorModuleCube;
-import mods.mffs.common.modules.ItemProjectorModuleDeflector;
-import mods.mffs.common.modules.ItemProjectorModuleSphere;
-import mods.mffs.common.modules.ItemProjectorModuleTube;
-import mods.mffs.common.modules.ItemProjectorModuleWall;
-import mods.mffs.common.modules.ItemProjectorModulediagonallyWall;
-import mods.mffs.common.multitool.ItemDebugger;
-import mods.mffs.common.multitool.ItemFieldtransporter;
-import mods.mffs.common.multitool.ItemManualBook;
-import mods.mffs.common.multitool.ItemPersonalIDWriter;
-import mods.mffs.common.multitool.ItemSwitch;
-import mods.mffs.common.multitool.ItemWrench;
-import mods.mffs.common.options.ItemProjectorOptionBlockBreaker;
-import mods.mffs.common.options.ItemProjectorOptionCamoflage;
-import mods.mffs.common.options.ItemProjectorOptionDefenseStation;
-import mods.mffs.common.options.ItemProjectorOptionFieldFusion;
-import mods.mffs.common.options.ItemProjectorOptionFieldManipulator;
-import mods.mffs.common.options.ItemProjectorOptionForceFieldJammer;
-import mods.mffs.common.options.ItemProjectorOptionMobDefence;
-import mods.mffs.common.options.ItemProjectorOptionSponge;
-import mods.mffs.common.options.ItemProjectorOptionTouchDamage;
+import mods.mffs.common.item.*;
+import mods.mffs.common.localization.LocalizationManager;
+import mods.mffs.common.modules.*;
+import mods.mffs.common.multitool.*;
+import mods.mffs.common.options.*;
 import mods.mffs.common.tileentity.TileEntityForceField;
 import mods.mffs.common.tileentity.TileEntityMachines;
 import mods.mffs.network.client.ForceFieldClientUpdatehandler;
@@ -90,24 +60,8 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 
-import com.google.common.collect.Lists;
-
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
+import java.util.List;
+import java.util.logging.Level;
 
 @Mod(modid = "ModularForceFieldSystem", name = "Modular ForceField System", version = "2.3.0.0.1", dependencies = "after:ThermalExpansion")
 @NetworkMod(versionBounds = "[2.3.0.0.1]", clientSideRequired = true, serverSideRequired = false, clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerClient.class), serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = { "MFFS" }, packetHandler = NetworkHandlerServer.class))
@@ -416,7 +370,7 @@ public class ModularForceFieldSystem {
 					.getBlock("MFFSDefenceStation",
 							DefaultProps.block_DefenseStation_ID).getInt(
 							DefaultProps.block_DefenseStation_ID))
-					.setUnlocalizedName("MFFSDefenceStation");
+					.setUnlocalizedName("MFFSDefenseStation");
 			MFFSCapacitor = new BlockCapacitor(MFFSconfig.getBlock(
 					"MFFSCapacitor", DefaultProps.block_Capacitor_ID).getInt(
 					DefaultProps.block_Capacitor_ID))
@@ -431,12 +385,12 @@ public class ModularForceFieldSystem {
 			MFFSSecurtyStorage = new BlockSecurtyStorage(MFFSconfig.getBlock(
 					"MFFSSecurtyStorage", DefaultProps.block_SecureStorage_ID)
 					.getInt(DefaultProps.block_SecureStorage_ID))
-					.setUnlocalizedName("MFFSSecurtyStorage");
+					.setUnlocalizedName("MFFSSecureStorage");
 			MFFSSecurtyStation = new BlockAdvSecurtyStation(MFFSconfig
 					.getBlock("MFFSSecurtyStation",
 							DefaultProps.block_SecurityStation_ID).getInt(
 							DefaultProps.block_SecurityStation_ID))
-					.setUnlocalizedName("MFFSSecurtyStation");
+					.setUnlocalizedName("MFFSSecurityStation");
 			MFFSControlSystem = new BlockControlSystem(MFFSconfig.getBlock(
 					"MFFSControlSystem", DefaultProps.block_ControlSystem)
 					.getInt(DefaultProps.block_ControlSystem))
@@ -460,7 +414,7 @@ public class ModularForceFieldSystem {
 							"itemPorjectorFocusmatrix",
 							DefaultProps.item_FocusMatrix_ID).getInt(
 							DefaultProps.item_FocusMatrix_ID))
-					.setUnlocalizedName("itemPorjectorFocusmatrix");
+					.setUnlocalizedName("itemProjectorFocusMatrix");
 			MFFSitemForcePowerCrystal = new ItemForcePowerCrystal(MFFSconfig
 					.getItem(Configuration.CATEGORY_ITEM,
 							"itemForcePowerCrystal",
@@ -476,7 +430,7 @@ public class ModularForceFieldSystem {
 					Configuration.CATEGORY_ITEM, "itemForcicumCell",
 					DefaultProps.item_ForciciumCell_ID).getInt(
 					DefaultProps.item_ForciciumCell_ID))
-					.setUnlocalizedName("itemForcicumCell");
+					.setUnlocalizedName("itemForciciumCell");
 
 			// Modules
 			MFFSProjectorTypdiagowall = new ItemProjectorModulediagonallyWall(
@@ -484,37 +438,37 @@ public class ModularForceFieldSystem {
 							"itemProjectorModulediagonallyWall",
 							DefaultProps.item_ModDiag_ID).getInt(
 							DefaultProps.item_ModDiag_ID))
-					.setUnlocalizedName("itemProjectorModulediagonallyWall");
+					.setUnlocalizedName("itemProjectorModuleDiagonalWall");
 			MFFSProjectorTypsphere = new ItemProjectorModuleSphere(MFFSconfig
 					.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorTypsphere",
 							DefaultProps.item_ModSphere_ID).getInt(
 							DefaultProps.item_ModSphere_ID))
-					.setUnlocalizedName("itemProjectorTypsphere");
+					.setUnlocalizedName("itemProjectorModuleSphere");
 			MFFSProjectorTypkube = new ItemProjectorModuleCube(MFFSconfig
 					.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorTypkube",
 							DefaultProps.item_ModCube_ID).getInt(
 							DefaultProps.item_ModCube_ID))
-					.setUnlocalizedName("itemProjectorTypkube");
+					.setUnlocalizedName("itemProjectorModuleCube");
 			MFFSProjectorTypwall = new ItemProjectorModuleWall(MFFSconfig
 					.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorTypwall",
 							DefaultProps.item_ModWall_ID).getInt(
 							DefaultProps.item_ModWall_ID))
-					.setUnlocalizedName("itemProjectorTypwall");
+					.setUnlocalizedName("itemProjectorModuleWall");
 			MFFSProjectorTypdeflector = new ItemProjectorModuleDeflector(
 					MFFSconfig.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorTypdeflector",
 							DefaultProps.item_ModDeflector_ID).getInt(
 							DefaultProps.item_ModDeflector_ID))
-					.setUnlocalizedName("itemProjectorTypdeflector");
+					.setUnlocalizedName("itemProjectorModuleDeflector");
 			MFFSProjectorTyptube = new ItemProjectorModuleTube(MFFSconfig
 					.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorTyptube",
 							DefaultProps.item_ModTube_ID).getInt(
 							DefaultProps.item_ModTube_ID))
-					.setUnlocalizedName("itemProjectorTyptube");
+					.setUnlocalizedName("itemProjectorModuleTube");
 			MFFSProjectorTypcontainment = new ItemProjectorModuleContainment(
 					MFFSconfig.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorModuleContainment",
@@ -534,37 +488,37 @@ public class ModularForceFieldSystem {
 							"itemupgradeprozapper",
 							DefaultProps.item_OptTouchHurt_ID).getInt(
 							DefaultProps.item_OptTouchHurt_ID))
-					.setUnlocalizedName("itemupgradeprozapper");
+					.setUnlocalizedName("itemProjectorOptionZapper");
 			MFFSProjectorOptionSubwater = new ItemProjectorOptionSponge(
 					MFFSconfig.getItem(Configuration.CATEGORY_ITEM,
 							"itemupgradeprosubwater",
 							DefaultProps.item_OptSponge_ID).getInt(
 							DefaultProps.item_OptSponge_ID))
-					.setUnlocalizedName("itemupgradeprosubwater");
+					.setUnlocalizedName("itemProjectorOptionSponge");
 			MFFSProjectorOptionDome = new ItemProjectorOptionFieldManipulator(
 					MFFSconfig.getItem(Configuration.CATEGORY_ITEM,
 							"itemupgradeprodome",
 							DefaultProps.item_OptManipulator_ID).getInt(
 							DefaultProps.item_OptManipulator_ID))
-					.setUnlocalizedName("itemupgradeprodome");
+					.setUnlocalizedName("itemProjectorOptionDome");
 			MFFSProjectorOptionCutter = new ItemProjectorOptionBlockBreaker(
 					MFFSconfig.getItem(Configuration.CATEGORY_ITEM,
 							"itemUpgradeprocutter",
 							DefaultProps.item_OptBlockBreaker_ID).getInt(
 							DefaultProps.item_OptBlockBreaker_ID))
-					.setUnlocalizedName("itemUpgradeprocutter");
+					.setUnlocalizedName("itemProjectorOptionCutter");
 			MFFSProjectorOptionDefenceStation = new ItemProjectorOptionDefenseStation(
 					MFFSconfig.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorOptiondefencestation",
 							DefaultProps.item_OptDefense_ID).getInt(
 							DefaultProps.item_OptDefense_ID))
-					.setUnlocalizedName("itemProjectorOptiondefencestation");
+					.setUnlocalizedName("itemProjectorOptionDefenseStation");
 			MFFSProjectorOptionMoobEx = new ItemProjectorOptionMobDefence(
 					MFFSconfig.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorOptionMoobEx",
 							DefaultProps.item_OptMobDefense_ID).getInt(
 							DefaultProps.item_OptMobDefense_ID))
-					.setUnlocalizedName("itemProjectorOptionMoobEx");
+					.setUnlocalizedName("itemProjectorOptionMobKiller");
 			MFFSProjectorOptionForceFieldJammer = new ItemProjectorOptionForceFieldJammer(
 					MFFSconfig.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorOptionFFJammer",
@@ -576,7 +530,7 @@ public class ModularForceFieldSystem {
 							"itemProjectorOptionCamoflage",
 							DefaultProps.item_OptCamouflage_ID).getInt(
 							DefaultProps.item_OptCamouflage_ID))
-					.setUnlocalizedName("itemProjectorOptionCamoflage");
+					.setUnlocalizedName("itemProjectorOptionCamouflage");
 			MFFSProjectorOptionFieldFusion = new ItemProjectorOptionFieldFusion(
 					MFFSconfig.getItem(Configuration.CATEGORY_ITEM,
 							"itemProjectorOptionFieldFusion",
@@ -589,32 +543,32 @@ public class ModularForceFieldSystem {
 					Configuration.CATEGORY_ITEM, "itemcardempty",
 					DefaultProps.item_BlankCard_ID).getInt(
 					DefaultProps.item_BlankCard_ID))
-					.setUnlocalizedName("itemcardempty");
+					.setUnlocalizedName("itemCardEmpty");
 			MFFSitemfc = new ItemCardPowerLink(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemfc",
 					DefaultProps.item_CardPowerLink_ID).getInt(
 					DefaultProps.item_CardPowerLink_ID))
-					.setUnlocalizedName("itemfc");
+					.setUnlocalizedName("itemCardPowerLink");
 			MFFSItemIDCard = new ItemCardPersonalID(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemIDCard",
 					DefaultProps.item_CardPersonalID_ID).getInt(
 					DefaultProps.item_CardPersonalID_ID))
-					.setUnlocalizedName("itemIDCard");
+					.setUnlocalizedName("itemCardID");
 			MFFSItemSecLinkCard = new ItemCardSecurityLink(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemSecLinkCard",
 					DefaultProps.item_CardSecurityLink_ID).getInt(
 					DefaultProps.item_CardSecurityLink_ID))
-					.setUnlocalizedName("itemSecLinkCard");
+					.setUnlocalizedName("itemCardSecurityLink");
 			MFFSitemInfinitePowerCard = new ItemCardPower(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemInfinitePower",
 					DefaultProps.item_infPowerCard_ID).getInt(
 					DefaultProps.item_infPowerCard_ID))
-					.setUnlocalizedName("itemInfPowerCard");
+					.setUnlocalizedName("itemCardInfinitePower");
 			MFFSAccessCard = new ItemAccessCard(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemAccessCard",
 					DefaultProps.item_CardAccess_ID).getInt(
 					DefaultProps.item_CardAccess_ID))
-					.setUnlocalizedName("itemAccessCard");
+					.setUnlocalizedName("itemCardAccess");
 			MFFSitemDataLinkCard = new ItemCardDataLink(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemCardDataLink",
 					DefaultProps.item_CardDataLink_ID).getInt(
@@ -626,32 +580,32 @@ public class ModularForceFieldSystem {
 					Configuration.CATEGORY_ITEM, "itemWrench",
 					DefaultProps.item_MTWrench_ID).getInt(
 					DefaultProps.item_MTWrench_ID))
-					.setUnlocalizedName("itemWrench");
+					.setUnlocalizedName("itemMultiToolWrench");
 			MFFSitemSwitch = new ItemSwitch(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemSwitch",
 					DefaultProps.item_MTSwitch_ID).getInt(
 					DefaultProps.item_MTSwitch_ID))
-					.setUnlocalizedName("itemSwitch");
+					.setUnlocalizedName("itemMultiToolSwitch");
 			MFFSitemFieldTeleporter = new ItemFieldtransporter(MFFSconfig
 					.getItem(Configuration.CATEGORY_ITEM, "itemForceFieldsync",
 							DefaultProps.item_MTFieldTransporter_ID).getInt(
 							DefaultProps.item_MTFieldTransporter_ID))
-					.setUnlocalizedName("itemForceFieldsync");
+					.setUnlocalizedName("itemMultiToolFieldTransporter");
 			MFFSitemMFDidtool = new ItemPersonalIDWriter(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "ItemMFDIDwriter",
 					DefaultProps.item_MTIDWriter_ID).getInt(
 					DefaultProps.item_MTIDWriter_ID))
-					.setUnlocalizedName("ItemMFDIDwriter");
+					.setUnlocalizedName("itemMultiToolIDWriter");
 			MFFSitemMFDdebugger = new ItemDebugger(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemMFDdebugger",
 					DefaultProps.item_MTDebugger_ID).getInt(
 					DefaultProps.item_MTDebugger_ID))
-					.setUnlocalizedName("itemMFDdebugger");
+					.setUnlocalizedName("itemMultiToolDebugger");
 			MFFSitemManuelBook = new ItemManualBook(MFFSconfig.getItem(
 					Configuration.CATEGORY_ITEM, "itemManuelBook",
 					DefaultProps.item_MTManual_ID).getInt(
 					DefaultProps.item_MTManual_ID))
-					.setUnlocalizedName("itemManuelBook");
+					.setUnlocalizedName("itemMultiToolManual");
 
 			// Upgrades
 			MFFSitemupgradeexctractorboost = new ItemExtractorUpgradeBooster(
@@ -659,22 +613,22 @@ public class ModularForceFieldSystem {
 							"itemextractorbooster",
 							DefaultProps.item_upgradeBoost_ID).getInt(
 							DefaultProps.item_upgradeBoost_ID))
-					.setUnlocalizedName("itemextractorbooster");
+					.setUnlocalizedName("itemExtractorUpgradeBooster");
 			MFFSitemupgradecaprange = new ItemCapacitorUpgradeRange(MFFSconfig
 					.getItem(Configuration.CATEGORY_ITEM,
 							"itemupgradecaprange",
 							DefaultProps.item_upgradeRange_ID).getInt(
 							DefaultProps.item_upgradeRange_ID))
-					.setUnlocalizedName("itemupgradecaprange");
+					.setUnlocalizedName("itemCapacitorUpgradeRange");
 			MFFSitemupgradecapcap = new ItemCapacitorUpgradeCapacity(MFFSconfig
 					.getItem(Configuration.CATEGORY_ITEM, "itemupgradecapcap",
 							DefaultProps.item_upgradeCap_ID).getInt(
 							DefaultProps.item_upgradeCap_ID))
-					.setUnlocalizedName("itemupgradecapcap");
+					.setUnlocalizedName("itemCapacitorUpgradeCapacity");
 
 		} catch (Exception e) {
 			FMLLog.log(Level.SEVERE, e,
-					"ModularForceFieldSystem has a problem loading it's configuration");
+					"ModularForceFieldSystem has a problem loading its configuration!");
 			System.out.println(e.getMessage());
 		} finally {
 			MFFSconfig.save();
@@ -702,7 +656,9 @@ public class ModularForceFieldSystem {
 
 		GameRegistry.registerWorldGenerator(new MFFSWorldGenerator());
 
-		LanguageRegistry.instance().addNameForObject(MFFSitemInfinitePowerCard,
+		LocalizationManager.loadLanguages();
+
+		/*LanguageRegistry.instance().addNameForObject(MFFSitemInfinitePowerCard,
 				"en_US", "MFFS Infinite Power Card");
 
 		LanguageRegistry.instance().addNameForObject(
@@ -762,7 +718,7 @@ public class ModularForceFieldSystem {
 		LanguageRegistry.instance().addStringLocalization("death.fieldShock",
 				"en_US", "%1$s was fried by a forcefield");
 		LanguageRegistry.instance().addStringLocalization("death.fieldDefense",
-				"en_US", "%1$s was fried");
+				"en_US", "%1$s was fried");*/
 
 	}
 
