@@ -28,7 +28,6 @@ import ic2.api.item.Items;
 import ic2.api.recipe.Recipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraftforge.oredict.OreDictionary;
 import thermalexpansion.api.crafting.CraftingManagers;
 
 import java.lang.reflect.Method;
@@ -47,11 +46,6 @@ public class MFFSRecipes {
 	}
 
 	public static void init() {
-
-		OreDictionary.registerOre("ForciciumItem",
-				ModularForceFieldSystem.MFFSitemForcicium);
-		OreDictionary.registerOre("MonazitOre",
-				ModularForceFieldSystem.MFFSMonazitOre);
 
 		RecipesFactory.addRecipe("uuuuiuuuu", 1, 0, null,
 				ModularForceFieldSystem.MFFSitemForcePowerCrystal);

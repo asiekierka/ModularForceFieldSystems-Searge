@@ -59,6 +59,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -658,74 +659,17 @@ public class ModularForceFieldSystem {
 
 		LocalizationManager.loadLanguages();
 
-		/*LanguageRegistry.instance().addNameForObject(MFFSitemInfinitePowerCard,
-				"en_US", "MFFS Infinite Power Card");
-
-		LanguageRegistry.instance().addNameForObject(
-				MFFSitemupgradeexctractorboost, "en_US",
-				"MFFS Extractor Booster");
-		LanguageRegistry.instance().addNameForObject(MFFSMonazitOre, "en_US",
-				"Monazit Ore");
-		LanguageRegistry.instance().addNameForObject(MFFSitemForcicumCell,
-				"en_US", "MFFS compact Forcicium Cell");
-		LanguageRegistry.instance().addNameForObject(MFFSitemForcicium,
-				"en_US", "Forcicium");
-		LanguageRegistry.instance().addNameForObject(MFFSitemForcePowerCrystal,
-				"en_US", "MFFS Force Energy Crystal");
-		LanguageRegistry.instance().addNameForObject(MFFSitemSwitch, "en_US",
-				"MFFS MultiTool <Switch>");
-		LanguageRegistry.instance().addNameForObject(MFFSitemWrench, "en_US",
-				"MFFS MultiTool <Wrench>");
-		LanguageRegistry.instance().addNameForObject(MFFSitemManuelBook,
-				"en_US", "MFFS MultiTool <Guide>");
-		LanguageRegistry.instance().addNameForObject(MFFSitemFocusmatix,
-				"en_US", "MFFS Projector Focus Matrix");
-		LanguageRegistry.instance().addNameForObject(MFFSitemFieldTeleporter,
-				"en_US", "MFFS MultiTool <Field Teleporter>");
-
-		LanguageRegistry.instance().addNameForObject(MFFSitemDataLinkCard,
-				"en_US", "MFFS Card <Data Link> ");
-
-		LanguageRegistry.instance().addNameForObject(MFFSAccessCard, "en_US",
-				"MFFS Card <Access license> ");
-		LanguageRegistry.instance().addNameForObject(MFFSitemcardempty,
-				"en_US", "MFFS Card <blank> ");
-		LanguageRegistry.instance().addNameForObject(MFFSitemfc, "en_US",
-				"MFFS Card <Power Link>");
-		LanguageRegistry.instance().addNameForObject(MFFSItemIDCard, "en_US",
-				"MFFS Card <Personal ID>");
-		LanguageRegistry.instance().addNameForObject(MFFSItemSecLinkCard,
-				"en_US", "MFFS Card <Security Station Link> ");
-		LanguageRegistry.instance().addNameForObject(MFFSitemMFDdebugger,
-				"en_US", "MFFS MultiTool <Debugger>");
-		LanguageRegistry.instance().addNameForObject(MFFSitemMFDidtool,
-				"en_US", "MFFS MultiTool <PersonalID & Data Link  Coder>");
-		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecaprange,
-				"en_US", "MFFS Capacitor Upgrade <Range> ");
-		LanguageRegistry.instance().addNameForObject(MFFSitemupgradecapcap,
-				"en_US", "MFFS Capacitor Upgrade <Capacity> ");
-
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorFFDistance,
-				"en_US", "MFFS Projector Field Modulator <distance>");
-		LanguageRegistry.instance().addNameForObject(MFFSProjectorFFStrenght,
-				"en_US", "MFFS Projector Field Modulator <strength>");
-
-		LanguageRegistry.instance().addStringLocalization("itemGroup.MFFS",
-				"en_US", "Modular Force Field System");
-
-		LanguageRegistry.instance().addStringLocalization("death.areaDefense",
-				"en_US", "%1$s disregarded warnings and was fried");
-		LanguageRegistry.instance().addStringLocalization("death.fieldShock",
-				"en_US", "%1$s was fried by a forcefield");
-		LanguageRegistry.instance().addStringLocalization("death.fieldDefense",
-				"en_US", "%1$s was fried");*/
-
+		OreDictionary.registerOre("ForciciumItem",
+				MFFSitemForcicium);
+		OreDictionary.registerOre("MonazitOre",
+				MFFSMonazitOre);
 	}
 
 	@PostInit
 	public void postInit(FMLPostInitializationEvent evt) {
 
 		MFFSRecipes.init();
+
 		ForgeChunkManager.setForcedChunkLoadingCallback(instance,
 				new MFFSChunkloadCallback());
 	}
