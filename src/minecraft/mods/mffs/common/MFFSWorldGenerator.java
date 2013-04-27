@@ -20,12 +20,13 @@
 
 package mods.mffs.common;
 
-import java.util.Random;
-
+import cpw.mods.fml.common.IWorldGenerator;
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import cpw.mods.fml.common.IWorldGenerator;
+
+import java.util.Random;
 
 public class MFFSWorldGenerator implements IWorldGenerator {
 	@Override
@@ -36,7 +37,7 @@ public class MFFSWorldGenerator implements IWorldGenerator {
 
 		WorldGenMinable worldGenMinable = new WorldGenMinable(
 				ModularForceFieldSystem.MFFSMonazitOre.blockID, 0,
-				ModularForceFieldSystem.MonazitOreworldamount + 1);
+				ModularForceFieldSystem.MonazitOreworldamount + 1, Block.stone.blockID);
 
 		for (int i = 0; i < ModularForceFieldSystem.MonazitOreworldamount + 1; i++) {
 			int x = chunkX + rand.nextInt(16);
