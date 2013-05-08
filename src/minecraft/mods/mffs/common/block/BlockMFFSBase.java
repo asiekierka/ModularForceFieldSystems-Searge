@@ -82,7 +82,8 @@ public abstract class BlockMFFSBase extends BlockContainer {
 		TileEntityMachines tileentity = (TileEntityMachines) world
 				.getBlockTileEntity(x, y, z);
 
-		Item equipped = entityplayer.getCurrentEquippedItem().getItem();
+		Item equipped = (entityplayer.getCurrentEquippedItem() != null ? entityplayer.getCurrentEquippedItem().getItem
+				() : null);
 		if(equipped != null) {
 			// These items will handle their code.
 			if(equipped instanceof ItemMultitool || equipped instanceof ItemCardEmpty || equipped instanceof
