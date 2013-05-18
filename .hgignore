@@ -16,7 +16,6 @@ runtime/*
 temp/*
 
 src/minecraft/buildcraft
-src/minecraft/codechicken
 src/minecraft/com
 src/minecraft/cpw
 src/minecraft/dan200
