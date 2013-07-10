@@ -21,7 +21,7 @@ public class LocalizationManager {
 			LANG_RESOURCE_LOCATION + "en_US.xml",
 			LANG_RESOURCE_LOCATION + "de_DE.xml",
 			LANG_RESOURCE_LOCATION + "fi_FI.xml",
-			LANG_RESOURCE_LOCATION + "sr_RS.xml"
+			LANG_RESOURCE_LOCATION + "sr_SP.xml"
 	};
 
 	/***
