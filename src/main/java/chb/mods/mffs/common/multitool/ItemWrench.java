@@ -36,7 +36,7 @@ import chb.mods.mffs.common.tileentity.TileEntityAreaDefenseStation;
 import chb.mods.mffs.common.tileentity.TileEntityMachines;
 import chb.mods.mffs.common.tileentity.TileEntityProjector;
 
-public class ItemWrench extends ItemMultitool implements IToolWrench,ICrowbar  {
+public class ItemWrench extends ItemMultitool implements IToolWrench /*. ICrowbar */ {
 	
 	public ItemWrench(int id) {
 		super(id, 0);
